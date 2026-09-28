@@ -55,6 +55,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self._json(self.api.state(query.get('account'))['profile'])
             elif parsed.path == '/api/shop':
                 self._json(self.api.shop(query))
+            elif parsed.path == '/api/skins':
+                self._json(self.api.skins(query))
             elif parsed.path == '/api/maps':
                 self._json([{'guid': m.hex_guid, 'index': f'0x{m.index:X}', 'name_en': m.name_en,
                              'name_ru': m.name_ru, 'mode': m.mode, 'is_background': m.is_background}
@@ -85,6 +87,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 result = self.api.add_boxes(data)
             elif path == '/api/purchase':
                 result = self.api.purchase(data)
+            elif path == '/api/grant_skin':
+                result = self.api.grant_skin(data)
             elif path == '/api/select_account':
                 account = self.api.account(data.get('name'))
                 self.api.lobby.select_account(account.name)

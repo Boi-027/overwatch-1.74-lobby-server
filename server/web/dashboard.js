@@ -5,7 +5,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
   const number = value => new Intl.NumberFormat('en-US').format(Number(value) || 0);
-  const titles = {overview: 'Overview & profile', events: 'Events', boxes: 'Containers', shop: 'Collection & shop', sessions: 'Server & connections'};
+  const titles = {overview: 'Overview & profile', events: 'Events', boxes: 'Containers', shop: 'Collection & shop', skins: 'Skins', sessions: 'Server & connections'};
   const currencies = {
     credits: {label: 'Credits', unit: 'credits', symbol: 'C', className: 'credits-icon'},
     comp_points: {label: 'Competitive points', unit: 'competitive points', symbol: '◆', className: 'comp-icon'},
@@ -26,6 +26,13 @@ import {api, selectAccount} from './dashboard-api.mjs';
   let shopItems = [];
   let shopLoading = false;
   let searchTimer;
+  let skinsRequest = 0;
+  let skinsPage = 1;
+  let skinsPages = 1;
+  let skinsItems = [];
+  let skinsLoading = false;
+  let skinsHeroesLoaded = false;
+  let skinsSearchTimer;
   let purchase = null;
   let purchaseBusy = false;
   let eventBusy = false;
@@ -37,6 +44,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
   const challengeForm = $('#challenge-form');
   const boxForm = $('#box-form');
   const filters = $('#shop-filters');
+  const skinsFilters = $('#skins-filters');
 
   function node(tag, className, text) {
     const element = document.createElement(tag);
@@ -305,6 +313,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
       renderEvents(); renderBoxes(); renderChallengeRewards(); renderSessions(); updateButtons();
       showError('#global-error', ''); syncStatus(true);
       if (force || view === 'shop') await loadShop();
+      if (view === 'skins') await loadSkins();
     } catch (error) {
       if (request !== stateRequest) return;
       showError('#global-error', error.message); syncStatus(false);
@@ -360,6 +369,68 @@ import {api, selectAccount} from './dashboard-api.mjs';
     } catch (error) { if (request === shopRequest && requestedAccount === account) showError('#shop-error', error.message); }
     finally { if (request === shopRequest) { shopLoading = false; $('#shop-loading').hidden = true; updatePagination(); } }
   }
+  function renderSkins(result) {
+    skinsItems = result.items || [];
+    skinsPage = Number(result.page) || 1;
+    const pageSize = Number(result.page_size) || 48;
+    skinsPages = Math.max(1, Math.ceil((Number(result.total) || 0) / pageSize));
+    setText('#skins-account', `Account: ${account}`);
+    setText('#skins-result-count', result.unlock_all
+      ? `Everything is unlocked for this account (${number(result.total)} skins)`
+      : `Skins found: ${number(result.total)}`);
+    const heroSelect = skinsFilters.elements.hero;
+    if (!skinsHeroesLoaded && Array.isArray(result.heroes) && result.heroes.length) {
+      const chosen = heroSelect.value;
+      for (const hero of result.heroes) { const option = node('option', '', hero); option.value = hero; heroSelect.append(option); }
+      heroSelect.value = chosen; skinsHeroesLoaded = true;
+    }
+    const container = $('#skins-grid'); container.replaceChildren();
+    for (const item of skinsItems) {
+      const card = node('article', `item-card rarity-${String(item.rarity || '').toLowerCase()}`);
+      const art = node('div', 'item-art');
+      art.append(node('span', 'item-type', item.owl ? 'OWL' : (typeLabels[item.type] || item.type || 'Skin')));
+      art.append(node('span', 'item-monogram', (item.hero || item.name || 'OW').replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).map(word => word[0]).join('').slice(0, 2)));
+      if (item.owned) art.append(node('span', 'owned-badge', '✓ In collection'));
+      const copy = node('div', 'item-copy');
+      copy.append(node('span', 'item-hero', item.hero || 'Generic'), node('h3', '', item.name), node('span', 'item-rarity', rarityLabels[item.rarity] || item.rarity || ''));
+      const footer = node('div', 'item-footer');
+      const button = node('button', item.owned ? 'button secondary small' : 'button primary small', item.owned ? 'Remove' : 'Grant');
+      button.type = 'button'; button.dataset.skinGuid = item.guid;
+      button.addEventListener('click', () => grantSkin(item, item.owned));
+      footer.append(button);
+      card.append(art, copy, footer); container.append(card);
+    }
+    $('#skins-empty').hidden = skinsItems.length > 0;
+    setText('#skins-page-status', `Page ${number(skinsPage)} of ${number(skinsPages)}`);
+    updateSkinsPagination();
+  }
+  function updateSkinsPagination() {
+    $('#skins-prev').disabled = skinsLoading || skinsPage <= 1;
+    $('#skins-next').disabled = skinsLoading || skinsPage >= skinsPages;
+  }
+  async function loadSkins() {
+    if (!account || !state) return;
+    const request = ++skinsRequest; const requestedAccount = account;
+    skinsLoading = true; $('#skins-loading').hidden = false; updateSkinsPagination();
+    const params = new URLSearchParams({account, q: skinsFilters.elements.q.value.trim(),
+      hero: skinsFilters.elements.hero.value, owl: skinsFilters.elements.owl.checked ? '1' : '', page: String(skinsPage)});
+    try {
+      const result = await api(`/api/skins?${params}`);
+      if (request !== skinsRequest || requestedAccount !== account) return;
+      renderSkins(result); showError('#skins-error', '');
+    } catch (error) { if (request === skinsRequest && requestedAccount === account) showError('#skins-error', error.message); }
+    finally { if (request === skinsRequest) { skinsLoading = false; $('#skins-loading').hidden = true; updateSkinsPagination(); } }
+  }
+  async function grantSkin(item, revoke) {
+    try {
+      const payload = revoke ? {account, guid: item.guid, revoke: true} : {account, guid: item.guid};
+      const result = await api('/api/grant_skin', payload);
+      if (result.status !== 'ok') throw new Error('The server did not confirm the change.');
+      if (result.profile) { state.profile = result.profile; renderOverview(); }
+      toast(revoke ? `Removed ${item.name}` : `Granted ${item.name}`);
+      await loadSkins();
+    } catch (error) { showError('#skins-error', error.message); toast(error.message, true); }
+  }
   function openPurchase(item) {
     if (!state) return;
     const balance = Number(state.profile[item.currency]) || 0;
@@ -382,6 +453,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
     }
     setText('#view-context', titles[view]); document.title = `${titles[view]} · Overwatch 1.74`;
     if (view === 'shop') loadShop();
+    if (view === 'skins') loadSkins();
   }
   async function saveForm(event, form, dirty, errorSelector, successMessage) {
     event.preventDefault(); if (busyForms.has(form) || !dirty.size || !form.reportValidity()) return;
@@ -446,6 +518,12 @@ import {api, selectAccount} from './dashboard-api.mjs';
   $('#reset-filters').addEventListener('click', () => { filters.reset(); shopPage = 1; loadShop(); });
   $('#page-prev').addEventListener('click', () => { if (shopPage > 1) { shopPage--; loadShop(); } });
   $('#page-next').addEventListener('click', () => { if (shopPage < shopPages) { shopPage++; loadShop(); } });
+  skinsFilters.addEventListener('submit', event => { event.preventDefault(); clearTimeout(skinsSearchTimer); skinsPage = 1; loadSkins(); });
+  skinsFilters.elements.q.addEventListener('input', () => { clearTimeout(skinsSearchTimer); skinsSearchTimer = setTimeout(() => { skinsPage = 1; loadSkins(); }, 300); });
+  skinsFilters.elements.hero.addEventListener('change', () => { skinsPage = 1; loadSkins(); });
+  skinsFilters.elements.owl.addEventListener('change', () => { skinsPage = 1; loadSkins(); });
+  $('#skins-prev').addEventListener('click', () => { if (skinsPage > 1) { skinsPage--; loadSkins(); } });
+  $('#skins-next').addEventListener('click', () => { if (skinsPage < skinsPages) { skinsPage++; loadSkins(); } });
   $('#purchase-form').addEventListener('submit', async event => {
     event.preventDefault(); if (!purchase || purchaseBusy || $('#purchase-confirm').disabled) return;
     const target = purchase; purchaseBusy = true;

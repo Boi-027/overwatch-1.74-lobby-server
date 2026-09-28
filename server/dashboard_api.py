@@ -235,3 +235,75 @@ class DashboardService:
             account.profile = profile
             self.lobby.push_profile(account)
             return {'status': 'ok', 'receipt': receipt, 'profile': profile_snapshot(profile)}
+
+    SKIN_TYPES = ('Skin', 'WeaponSkin')
+    SKIN_PAGE_SIZE = 48
+
+    def _skin_unlocks(self):
+        return [u for u in self.lobby.items.unlocks.values() if u.type in self.SKIN_TYPES and u.name]
+
+    def skins(self, query):
+        """Searchable skin catalog with ownership - for granting skins directly
+        (including OWL/event skins that are no longer obtainable in the shop)."""
+        account = self.account(query.get('account'))
+        owned, unlock_all = account.profile.get_unlocked_set(), account.profile.unlock_all
+        hero = (query.get('hero') or '').strip()
+        text = (query.get('q') or '').strip().lower()
+        owl_only = str(query.get('owl') or '').lower() in ('1', 'true', 'yes', 'on')
+        try:
+            page = max(1, int(query.get('page', 1)))
+        except (TypeError, ValueError):
+            page = 1
+        rows = []
+        for u in self._skin_unlocks():
+            if hero and (u.hero or '') != hero:
+                continue
+            if owl_only and 'OWL' not in (u.categories or []):
+                continue
+            if text and text not in u.name.lower():
+                continue
+            rows.append(u)
+        rank = {r: i for i, r in enumerate(('Common', 'Rare', 'Epic', 'Legendary'))}
+        rows.sort(key=lambda u: (u.hero or '~', -rank.get(u.rarity, 0), u.name.lower()))
+        total = len(rows)
+        start = (page - 1) * self.SKIN_PAGE_SIZE
+        window = rows[start:start + self.SKIN_PAGE_SIZE]
+        heroes = sorted({u.hero for u in self._skin_unlocks() if u.hero})
+        return {
+            'items': [{'guid': f'0x{u.guid:016X}', 'name': u.name, 'hero': u.hero or '',
+                       'rarity': u.rarity, 'type': u.type, 'owl': 'OWL' in (u.categories or []),
+                       'owned': unlock_all or u.guid in owned} for u in window],
+            'page': page, 'page_size': self.SKIN_PAGE_SIZE, 'total': total,
+            'unlock_all': unlock_all, 'heroes': heroes,
+        }
+
+    def grant_skin(self, data):
+        """Grant (or revoke with 'revoke': true) one or more skins by GUID."""
+        raw = data.get('guids')
+        if raw is None and 'guid' in data:
+            raw = [data['guid']]
+        if not isinstance(raw, list) or not raw:
+            raise ApiError('No skin selected')
+        guids = []
+        for g in raw:
+            try:
+                value = int(g, 0) if isinstance(g, str) else int(g)
+            except (TypeError, ValueError):
+                raise ApiError('Invalid item') from None
+            if self.lobby.items.get(value) is None:
+                raise ApiError('Invalid item')
+            guids.append(value)
+        revoke = boolean(data['revoke']) if 'revoke' in data else False
+        with self.lock:
+            account = self.account(data.get('account'))
+            profile = deepcopy(account.profile)
+            owned = profile.get_unlocked_set()
+            owned = (owned - set(guids)) if revoke else (owned | set(guids))
+            profile.unlocked_items = [f'0x{g:016X}' for g in sorted(owned)]
+            save_profile(profile, account.path)
+            account.profile = profile
+            self.lobby.push_profile(account)
+            tag = [f'0x{g:016X}' for g in guids]
+            return {'status': 'ok', 'granted': [] if revoke else tag,
+                    'revoked': tag if revoke else [], 'unlocked_count': len(owned),
+                    'profile': profile_snapshot(profile)}
