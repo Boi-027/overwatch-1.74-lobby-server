@@ -24,7 +24,7 @@ After downloading this repo, just **double-click `START.bat`**. No commands. It:
 
 - asks once whether you want **Retail** (full menu with the lobby hero) or **Tournament** mode;
 - checks Python and installs the dependencies;
-- downloads the relay DLL (retail) and unblocks it;
+- for the relay (retail) it lets you **download the prebuilt DLL or build it from source** (it sets up the Visual Studio environment for you), and unblocks it;
 - opens a file dialog so you **pick your `Overwatch.exe`** — it only accepts the game `.exe`, not a shortcut or a launcher, and remembers it for next time;
 - launches the game for you and starts the servers.
 

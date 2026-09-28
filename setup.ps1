@@ -46,27 +46,65 @@ Line "`n[2/5] Installing dependencies..."
 if ($LASTEXITCODE -ne 0) { Die "Failed to install dependencies (check your internet connection)." }
 Line "    Dependencies ready." 'Green'
 
-# --- 3. relay DLL (retail only) ---
+# --- 3. relay DLL (retail only): use the prebuilt one or build from source ---
 function Get-RelayDll {
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     New-Item -ItemType Directory -Force -Path (Split-Path $DLL_PATH) | Out-Null
     Invoke-WebRequest -Uri $RELEASE_DLL -OutFile $DLL_PATH -UseBasicParsing
 }
 function Get-Sha { try { return (Get-FileHash -Path $DLL_PATH -Algorithm SHA256).Hash } catch { return $null } }
+function Build-Relay {
+    # Compile relay\build.bat, setting up the Visual Studio x64 environment first.
+    $build = Join-Path $root 'relay\build.bat'
+    if (-not (Test-Path $build)) { return $false }
+    Remove-Item $DLL_PATH -ErrorAction SilentlyContinue
+    $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+    $vcvars = $null
+    if (Test-Path $vswhere) {
+        $vsroot = (& $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath) 2>$null
+        if ($vsroot) { $cand = Join-Path $vsroot 'VC\Auxiliary\Build\vcvars64.bat'; if (Test-Path $cand) { $vcvars = $cand } }
+    }
+    if ($vcvars) { & cmd /c "`"$vcvars`" >nul && `"$build`"" }
+    else         { & cmd /c "`"$build`"" }   # works if already in a Native Tools prompt
+    return (Test-Path $DLL_PATH)
+}
 if ($retail) {
-    Line "`n[3/5] Checking the relay DLL..."
-    if (-not (Test-Path $DLL_PATH)) {
-        Line "    Not found - downloading the official one from GitHub Releases..."
-        try { Get-RelayDll } catch { Die "Could not download the relay DLL. Download it manually from the Releases page and put it in the 'relay' folder." }
+    Line "`n[3/5] Relay DLL (needed for the retail route)..."
+    $matchesOfficial = (Test-Path $DLL_PATH) -and ((Get-Sha) -eq $DLL_SHA256)
+    if ($matchesOfficial) {
+        try { Unblock-File -Path $DLL_PATH -ErrorAction SilentlyContinue } catch {}
+        Line "    Official relay DLL present and verified." 'Green'
     }
-    # if the DLL present is a different build, replace it with the official one automatically
-    if ((Get-Sha) -ne $DLL_SHA256) {
-        Line "    A different relay build was found - replacing it with the official one..." 'Yellow'
-        try { Get-RelayDll } catch {}
+    elseif (Test-Path $DLL_PATH) {
+        # a custom / self-built DLL is here - never overwrite it without asking
+        Line "    A relay DLL is here but it's not the official build (maybe you built it yourself)." 'Yellow'
+        $c = Read-Host "    Keep it [K] (default), or replace with the official prebuilt one [R]?"
+        if ($c -match '^[Rr]') {
+            try { Get-RelayDll; Unblock-File -Path $DLL_PATH -ErrorAction SilentlyContinue; Line "    Replaced with the official DLL." 'Green' }
+            catch { Line "    Download failed - keeping the existing DLL." 'Yellow' }
+        } else { Line "    Keeping your DLL." 'Green' }
     }
-    try { Unblock-File -Path $DLL_PATH -ErrorAction SilentlyContinue } catch {}
-    if ((Get-Sha) -eq $DLL_SHA256) { Line "    Relay DLL present and verified." 'Green' }
-    else { Line "    WARNING: relay DLL still does not match the expected build; it may not work." 'Yellow' }
+    else {
+        # no DLL yet - let them choose
+        Line "    How do you want the relay DLL?"
+        Line "       [1] Download the prebuilt one  (recommended, default)"
+        Line "       [2] Build it myself from source (needs Visual Studio 2022 with C++)"
+        $rc = Read-Host "    Enter 1 or 2 (Enter = 1)"
+        if ($rc -eq '2') {
+            Line "    Building the relay from source..."
+            if (Build-Relay) { Line "    Built successfully." 'Green' }
+            else {
+                Line "    Build did not produce the DLL (Visual Studio C++ not found, or a compile error)." 'Yellow'
+                $fb = Read-Host "    Download the prebuilt one instead? [Y/n]"
+                if ($fb -match '^[Nn]') { Die "No relay DLL. Build it in the 'x64 Native Tools Command Prompt for VS 2022' with relay\build.bat, then run START.bat again." }
+                try { Get-RelayDll } catch { Die "Could not download the relay DLL. Get it from the Releases page into the 'relay' folder." }
+            }
+        } else {
+            Line "    Downloading the prebuilt DLL from GitHub Releases..."
+            try { Get-RelayDll } catch { Die "Could not download the relay DLL. Get it from the Releases page into the 'relay' folder." }
+        }
+        try { Unblock-File -Path $DLL_PATH -ErrorAction SilentlyContinue } catch {}
+    }
 } else {
     Line "`n[3/5] Tournament mode - no relay needed. Skipping."
 }
