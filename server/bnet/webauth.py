@@ -25,6 +25,7 @@ LOGIN_TICKET = "US-0000000000000000000000000000000a-000000001"
 
 class Handler(BaseHTTPRequestHandler):
     logger = None
+    on_login = None  # called after the login page returns DONE (completes a fresh client's logon)
 
     def _log(self, msg):
         if Handler.logger:
@@ -59,6 +60,11 @@ class Handler(BaseHTTPRequestHandler):
                 "web.id": "US-00000000-0000-0000-0000-000000000000",
                 "JSESSIONID": "00000000-0000-0000-0000-000000000000",
             })
+            if Handler.on_login:
+                try:
+                    Handler.on_login()
+                except Exception as e:
+                    self._log(f"on_login hook error: {e}")
         else:
             self._log(f"GET {self.path} -> 404")
             self._send_json({"error": "not found"}, status=404)
@@ -74,8 +80,9 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"error": "not found"}, status=404)
 
 
-def start_web_server(host="127.0.0.1", port=6969, logger=None):
+def start_web_server(host="127.0.0.1", port=6969, logger=None, on_login=None):
     Handler.logger = logger
+    Handler.on_login = on_login
     httpd = ThreadingHTTPServer((host, port), Handler)
     (logger or print)(f"[webauth] login server on http://{host}:{port}{LOGIN_PATH}")
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)

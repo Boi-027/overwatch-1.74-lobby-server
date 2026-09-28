@@ -73,6 +73,17 @@ class BNetRpcServer:
         self.port = port
         self.web_url = web_url or "http://127.0.0.1:6969/battlenet/login?externalChallenge=login&app=pro"
         self._logger = logger
+        self._loop = None            # captured in serve(); used to complete login from the web thread
+        self._pending_session = None  # a session waiting on the external challenge (fresh client)
+
+    def web_login_completed(self):
+        """Called from the web-auth HTTP thread once a fresh client (no cached
+        ticket) finishes the web step. That is the valid moment to complete the
+        login: sending OnLogonComplete before this races the client's state
+        machine ('Invalid State for Response'). Thread-safe: hops onto the loop."""
+        session, loop = self._pending_session, self._loop
+        if session is not None and loop is not None:
+            asyncio.run_coroutine_threadsafe(self._send_logon_complete(session), loop)
 
     def log(self, msg: str):
         if self._logger:
@@ -81,6 +92,7 @@ class BNetRpcServer:
             print(f"[bnet] {msg}", flush=True)
 
     async def serve(self):
+        self._loop = asyncio.get_running_loop()
         self.log(f"RPC (WebSocket {SUBPROTOCOL}) listening on {self.host}:{self.port}")
         async with websockets.serve(
             self._handle, self.host, self.port,
@@ -190,10 +202,12 @@ class BNetRpcServer:
             await session.send_notification(
                 P.CHALLENGE_NOTIFY_HASH, P.ON_EXTERNAL_CHALLENGE, challenge.SerializeToString())
             session.log(f"   -> OnExternalChallenge {self.web_url}")
-            # Auto-complete the logon for a fresh client that never calls
-            # VerifyWebCredentials (it has no cached ticket to send). A client
-            # that DOES send VerifyWebCredentials is de-duped in _send_logon_complete.
-            await self._send_logon_complete(session)
+            # A fresh client (no cached ticket) never sends VerifyWebCredentials,
+            # so we complete its logon ourselves - but only AFTER it finishes the
+            # web step (web_login_completed), not now, or it errors with
+            # "Invalid State for Response". A cached-ticket client instead reaches
+            # VerifyWebCredentials below; whichever fires first wins (de-duped).
+            self._pending_session = session
         elif header.method_id == P.VERIFY_WEB_CREDENTIALS:
             req = P.VerifyWebCredentialsRequest.FromString(body)
             session.log(f"   VerifyWebCredentials ticket={req.web_credentials[:32]!r}")
