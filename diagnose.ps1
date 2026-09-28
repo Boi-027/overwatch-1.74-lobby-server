@@ -39,6 +39,25 @@ foreach ($p in 3724,3725,1119,21119,6969,3730) {
 $ow = Get-Process Overwatch -ErrorAction SilentlyContinue
 Add ("Overwatch running: " + $(if ($ow) { "yes (pid $($ow.Id))" } else { "no" }))
 
+Sec 'GAME LAUNCH FLAGS + CONNECTIONS (tournament mode check)'
+$proc = Get-CimInstance Win32_Process -Filter "Name='Overwatch.exe'" -ErrorAction SilentlyContinue
+if ($proc) {
+    foreach ($pr in $proc) {
+        Add ("Command line: " + $pr.CommandLine)
+        Add ("Has --tank_TournamentMode: " + ($pr.CommandLine -match 'tank_TournamentMode'))
+        Add ("Has --lobbyServer:         " + ($pr.CommandLine -match 'lobbyServer'))
+        Add ("Has --BNetServer:          " + ($pr.CommandLine -match 'BNetServer'))
+        $conns = Get-NetTCPConnection -OwningProcess $pr.ProcessId -ErrorAction SilentlyContinue | Where-Object { $_.State -ne 'Listen' }
+        if ($conns) { $conns | ForEach-Object { Add ("  conn: " + $_.LocalAddress + ":" + $_.LocalPort + " -> " + $_.RemoteAddress + ":" + $_.RemotePort + " " + $_.State) } }
+        else { Add "  (the game has no TCP connections open)" }
+    }
+} else { Add "Overwatch.exe is not running - start the game, reach the name screen, click Enter Game, then run DIAGNOSE.bat." }
+try {
+    $tc = New-Object System.Net.Sockets.TcpClient
+    $tc.Connect('127.0.0.1', 3724); $tc.Close()
+    Add "TCP test to 127.0.0.1:3724 : OK (something accepts connections)"
+} catch { Add "TCP test to 127.0.0.1:3724 : FAILED (nothing listening - the lobby server is not running)" }
+
 Sec 'HOSTS (blizzard/battle.net redirects)'
 $h = Get-Content "$env:WinDir\System32\drivers\etc\hosts" -ErrorAction SilentlyContinue |
      Where-Object { $_ -notmatch '^\s*#' -and $_ -match 'battle|blizzard' }

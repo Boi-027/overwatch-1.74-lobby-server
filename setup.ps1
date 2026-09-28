@@ -162,8 +162,14 @@ if ($retail) {
         Line "IMPORTANT: don't open the game any other way (no shortcut) - START.bat launches it for you."
     }
 } else {
-    Start-Process -FilePath 'cmd' -ArgumentList '/c', "$py -3 server\lobbyserv.py" -WorkingDirectory $root
-    Start-Sleep -Seconds 4
+    # /k keeps the lobby window open if it crashes, so the error stays readable
+    Start-Process -FilePath 'cmd' -ArgumentList '/k', "$py -B server\lobbyserv.py" -WorkingDirectory $root
+    $up = $false
+    for ($i = 0; $i -lt 20 -and -not $up; $i++) {
+        Start-Sleep -Milliseconds 500
+        $up = [bool](Get-NetTCPConnection -LocalPort 3724 -State Listen -ErrorAction SilentlyContinue)
+    }
+    if (-not $up) { Die "The lobby server did not start (nothing listens on port 3724). Read the error in the lobby window and send it to us." }
     Start-Process -FilePath $exe -ArgumentList '--tank_TournamentMode','--lobbyServer=127.0.0.1:3724','--console'
     Line "`nDone. Tournament mode is starting (reduced menu, no lobby hero)." 'Green'
     Line "Open the dashboard at http://127.0.0.1:3725 to manage the profile and events."
