@@ -46,7 +46,7 @@ Main menu, cosmetics, boxes, purchases and dashboard are implemented. Anniversar
 
 ## Credits
 
-Big thanks to **Boi-027**, **AyakaPS**, **Logo2K**, **Zagrion**, **Sidiusz**, **Blizless**, **overtools**, **Plasmawatch**, **Prometheus**, the community relay authors, and everyone else who contributed findings, tools or testing — including those not named in the surviving notes.
+Big thanks to **Boi-027**, the researchers in the **AyakaPS Discord community**, **Logo2K**, **Zagrion**, **Sidiusz**, **Blizless**, **overtools**, **Plasmawatch**, **Prometheus**, the community relay authors, and everyone else who contributed findings, tools or testing — including those not named in the surviving notes.
 
 See [CREDITS.md](CREDITS.md) for project links, Logo2K's research notes and attribution details.
 

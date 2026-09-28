@@ -9,10 +9,10 @@ This repository builds on existing Overwatch preservation work. Its lobby improv
 
 ## Protocol research and shared findings
 
-- **AyakaPS** — shared Overwatch preservation and protocol research that helped make this work possible.
-- **Logo2K (AyakaPS)** — research notes and findings:
+- **The AyakaPS Discord community** — fellow Overwatch researchers who share findings, information and research with one another. Thanks to the members whose shared work helped this project.
+- **Logo2K, a researcher in the AyakaPS community** — shared research notes and a lobby-map reference:
   - [Overwatch 1.74 lobby research](https://rentry.co/3bswrgmw#overwatch-174-lobby-protocol-channel-setup-login-and-loot-boxes)
-  - [Additional research notes](https://rentry.co/wcwyv3r8)
+  - [Lobby map list](https://rentry.co/wcwyv3r8) — a list of every lobby map, updated as additional information is found.
 - **Zagrion (AyakaPS)** — credited in the upstream research for the server-to-client key work and TCP reassembly method used to recover the reference traffic.
 - **Sidiusz** — credited by the upstream project for helping investigate and resolve research blockers.
 - **Blizless** — acknowledged alongside AyakaPS in the inherited handshake implementation for state-blob findings.
