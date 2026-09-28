@@ -40,7 +40,7 @@ The client reaches the main menu and the dashboard at **http://127.0.0.1:3725/**
 
 This runs the normal retail frontend (hero in the scene, shop/promo panels) by logging in through a local Battle.net emulator. It needs the TLS-strip relay DLL (see [About the relay](#about-the-relay) below):
 
-1. Build the relay **once** in an **x64 Native Tools Command Prompt for Visual Studio 2022**: `relay\build.bat`. (Or take the `owwfd_relay.dll` artifact from a successful Windows checks CI run and drop it in `relay/`.)
+1. Get `owwfd_relay.dll` into the `relay\` folder. Either **build it once** in an **x64 Native Tools Command Prompt for Visual Studio 2022** with `relay\build.bat`, or — if you can't build it (no Visual Studio / C++ toolchain, or for any other reason) — **download the prebuilt DLL from [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases)** and drop it in `relay\`. (A successful Windows checks CI run also produces the same DLL as an artifact.)
 2. Launch everything with `run_retail.bat --game-exe "X:\path\Overwatch.exe"`.
 3. Open the dashboard at **http://127.0.0.1:3725/**.
 
@@ -56,7 +56,7 @@ On client **1.74** the Battle.net connection is TLS with **public-key pinning**,
 - Inside the client it finds the live TLS stream object and swaps its send/receive to a **plaintext pipe** aimed at the local Battle.net emulator (`server/bnet`, on port 21119). This is a heap **data** write — it does not modify protected code, so it stays Arxan-compatible.
 - The client then speaks the normal (now plaintext) Battle.net WebSocket to our emulator, which answers the login handshake and hands back a referral to the local lobby on `127.0.0.1:3724`.
 
-So the relay is only about getting *past the pinned TLS* on the login socket; all the actual lobby behaviour is plain server code. You build the DLL once and never touch it again — the launcher handles loading it every run. Tournament mode (Route A) skips all of this, which is why it needs no relay or Battle.net emulator.
+So the relay is only about getting *past the pinned TLS* on the login socket; all the actual lobby behaviour is plain server code. You build the DLL once and never touch it again — the launcher handles loading it every run. If you can't (or don't want to) build it, a prebuilt `owwfd_relay.dll` is attached to the [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases) page; just drop it in `relay\`. Tournament mode (Route A) skips all of this, which is why it needs no relay or Battle.net emulator.
 
 ## Contents
 
