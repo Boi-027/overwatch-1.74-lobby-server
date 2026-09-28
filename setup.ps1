@@ -47,22 +47,26 @@ if ($LASTEXITCODE -ne 0) { Die "Failed to install dependencies (check your inter
 Line "    Dependencies ready." 'Green'
 
 # --- 3. relay DLL (retail only) ---
+function Get-RelayDll {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    New-Item -ItemType Directory -Force -Path (Split-Path $DLL_PATH) | Out-Null
+    Invoke-WebRequest -Uri $RELEASE_DLL -OutFile $DLL_PATH -UseBasicParsing
+}
+function Get-Sha { try { return (Get-FileHash -Path $DLL_PATH -Algorithm SHA256).Hash } catch { return $null } }
 if ($retail) {
     Line "`n[3/5] Checking the relay DLL..."
     if (-not (Test-Path $DLL_PATH)) {
-        Line "    Not found - downloading from GitHub Releases..."
-        try {
-            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-            New-Item -ItemType Directory -Force -Path (Split-Path $DLL_PATH) | Out-Null
-            Invoke-WebRequest -Uri $RELEASE_DLL -OutFile $DLL_PATH -UseBasicParsing
-        } catch { Die "Could not download the relay DLL. Download it manually from the Releases page and put it in the 'relay' folder." }
+        Line "    Not found - downloading the official one from GitHub Releases..."
+        try { Get-RelayDll } catch { Die "Could not download the relay DLL. Download it manually from the Releases page and put it in the 'relay' folder." }
+    }
+    # if the DLL present is a different build, replace it with the official one automatically
+    if ((Get-Sha) -ne $DLL_SHA256) {
+        Line "    A different relay build was found - replacing it with the official one..." 'Yellow'
+        try { Get-RelayDll } catch {}
     }
     try { Unblock-File -Path $DLL_PATH -ErrorAction SilentlyContinue } catch {}
-    try {
-        $h = (Get-FileHash -Path $DLL_PATH -Algorithm SHA256).Hash
-        if ($h -ne $DLL_SHA256) { Line "    WARNING: relay DLL checksum does not match the expected build." 'Yellow' }
-        else { Line "    Relay DLL present and verified." 'Green' }
-    } catch { Line "    Relay DLL present." 'Green' }
+    if ((Get-Sha) -eq $DLL_SHA256) { Line "    Relay DLL present and verified." 'Green' }
+    else { Line "    WARNING: relay DLL still does not match the expected build; it may not work." 'Yellow' }
 } else {
     Line "`n[3/5] Tournament mode - no relay needed. Skipping."
 }
