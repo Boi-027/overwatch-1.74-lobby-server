@@ -4,6 +4,8 @@
 
 A compact source distribution for local protocol research, targeting Windows x64 and client **1.74.0.0 / 104319**.
 
+Built on [Boi-027's Overwatch 1.74 Lobby Research](https://github.com/Boi-027/Overwatch-1-v1.74-Lobby-Research), with shared findings and tools from the wider preservation community. See [Credits](CREDITS.md).
+
 ## Run
 
 Clone this repository with `git clone https://github.com/squeeeezy/overwatch-1.74-lobby-server.git` and open its directory.
@@ -42,4 +44,10 @@ With a disposable lobby server running: `py -3 tools/fake_client.py --port 3724 
 
 Main menu, cosmetics, boxes, purchases and dashboard are implemented. Anniversary scene fixes were tested with the real client. **Actual match connection/gameplay, competitive seasons and complete native event announcements remain unfinished.** UDP workers are protocol-capture endpoints, not playable game servers. See `docs/STATE.md`.
 
-MIT-licensed source; see [LICENSE](LICENSE). Original project copyright: Arlecchino (2026). This repository builds on the Overwatch 1.74 lobby protocol research project; original notices and source attributions are retained.
+## Credits
+
+Big thanks to **Boi-027**, **AyakaPS**, **Logo2K**, **Zagrion**, **Sidiusz**, **Blizless**, **overtools**, **Plasmawatch**, **Prometheus**, the community relay authors, and everyone else who contributed findings, tools or testing — including those not named in the surviving notes.
+
+See [CREDITS.md](CREDITS.md) for project links, Logo2K's research notes and attribution details.
+
+MIT-licensed source; see [LICENSE](LICENSE). Original copyright: Arlecchino (2026). Original notices and source attributions are retained.
