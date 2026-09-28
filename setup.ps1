@@ -95,11 +95,17 @@ if (-not $exe) {
 }
 
 # --- 5. launch ---
-Line "`n[5/5] Cleaning up any old helpers and launching..."
+Line "`n[5/5] Cleaning up anything already running and launching fresh..."
+# stop our old helper processes (lobby / bnet / launcher) so nothing stale is reused
 try {
     Get-CimInstance Win32_Process -Filter "Name='python.exe' OR Name='py.exe'" -ErrorAction SilentlyContinue |
         Where-Object { $_.CommandLine -match 'lobbyserv\.py|bnet\.main|launch_retail\.py' } |
         ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+} catch {}
+# close any running game so the retail launcher never hits "already running"
+try {
+    Get-Process Overwatch -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Start-Sleep -Milliseconds 800
 } catch {}
 
 if ($retail) {
