@@ -25,7 +25,6 @@ LOGIN_TICKET = "US-0000000000000000000000000000000a-000000001"
 
 class Handler(BaseHTTPRequestHandler):
     logger = None
-    on_login = None  # called after the login page returns DONE (completes a fresh client's logon)
 
     def _log(self, msg):
         if Handler.logger:
@@ -50,21 +49,11 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.split("?", 1)[0] == LOGIN_PATH:
-            # Auto-complete the challenge: this is a local, offline, zero-auth
-            # server, so instead of asking the player for an email/password we
-            # return DONE immediately. A fresh client (no cached ticket) then
-            # proceeds straight to VerifyWebCredentials and logs in with no
-            # interaction. (A client with a cached ticket never hits this URL.)
-            self._log(f"GET {self.path} -> DONE (auto-login)")
-            self._send_json({"authentication_state": "DONE", "login_ticket": LOGIN_TICKET}, cookies={
+            self._log(f"GET {self.path} -> login form")
+            self._send_json(FORM, cookies={
                 "web.id": "US-00000000-0000-0000-0000-000000000000",
                 "JSESSIONID": "00000000-0000-0000-0000-000000000000",
             })
-            if Handler.on_login:
-                try:
-                    Handler.on_login()
-                except Exception as e:
-                    self._log(f"on_login hook error: {e}")
         else:
             self._log(f"GET {self.path} -> 404")
             self._send_json({"error": "not found"}, status=404)
@@ -80,9 +69,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"error": "not found"}, status=404)
 
 
-def start_web_server(host="127.0.0.1", port=6969, logger=None, on_login=None):
+def start_web_server(host="127.0.0.1", port=6969, logger=None):
     Handler.logger = logger
-    Handler.on_login = on_login
     httpd = ThreadingHTTPServer((host, port), Handler)
     (logger or print)(f"[webauth] login server on http://{host}:{port}{LOGIN_PATH}")
     thread = threading.Thread(target=httpd.serve_forever, daemon=True)

@@ -45,11 +45,10 @@ async def _stall_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
 
 
 async def _run(args):
-    server = BNetRpcServer(host=args.host, port=args.rpc_port, logger=_logger)
-    # A fresh client finishes login on the web-auth GET; that hook completes its logon.
-    start_web_server(args.host, args.web_port, logger=_logger, on_login=server.web_login_completed)
+    start_web_server(args.host, args.web_port, logger=_logger)
     stall = await asyncio.start_server(_stall_client, args.host, args.stall_port)
     _logger(f"[stall] holding client dials on {args.host}:{args.stall_port}")
+    server = BNetRpcServer(host=args.host, port=args.rpc_port, logger=_logger)
     async with stall:
         await server.serve()
 

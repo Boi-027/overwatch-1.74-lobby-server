@@ -73,17 +73,6 @@ class BNetRpcServer:
         self.port = port
         self.web_url = web_url or "http://127.0.0.1:6969/battlenet/login?externalChallenge=login&app=pro"
         self._logger = logger
-        self._loop = None            # captured in serve(); used to complete login from the web thread
-        self._pending_session = None  # a session waiting on the external challenge (fresh client)
-
-    def web_login_completed(self):
-        """Called from the web-auth HTTP thread once a fresh client (no cached
-        ticket) finishes the web step. That is the valid moment to complete the
-        login: sending OnLogonComplete before this races the client's state
-        machine ('Invalid State for Response'). Thread-safe: hops onto the loop."""
-        session, loop = self._pending_session, self._loop
-        if session is not None and loop is not None:
-            asyncio.run_coroutine_threadsafe(self._send_logon_complete(session), loop)
 
     def log(self, msg: str):
         if self._logger:
@@ -92,7 +81,6 @@ class BNetRpcServer:
             print(f"[bnet] {msg}", flush=True)
 
     async def serve(self):
-        self._loop = asyncio.get_running_loop()
         self.log(f"RPC (WebSocket {SUBPROTOCOL}) listening on {self.host}:{self.port}")
         async with websockets.serve(
             self._handle, self.host, self.port,
@@ -169,28 +157,6 @@ class BNetRpcServer:
             session.log(f"   ConnectionService.method{header.method_id} unhandled")
 
     # ---- AuthenticationServer ----
-    async def _send_logon_complete(self, session):
-        if getattr(session, "logon_done", False):
-            return  # only once per session (a cached-ticket client also calls VerifyWebCredentials)
-        session.logon_done = True
-        result = P.LogonResult()
-        result.error_code = 0
-        result.account_id.high = ACCOUNT_HIGH
-        result.account_id.low = ACCOUNT_LOW
-        game = result.game_account_id.add()
-        game.high = GAME_ACCOUNT_HIGH
-        game.low = GAME_ACCOUNT_LOW
-        result.email = "player@localhost"
-        result.available_region.append(1)
-        result.connected_region = 1
-        result.battle_tag = "Player#11111"
-        result.geoip_country = "US"
-        result.session_key = SESSION_KEY
-        result.restricted_mode = False
-        await session.send_notification(
-            P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, result.SerializeToString())
-        session.log("   -> OnLogonComplete (error_code=0)")
-
     async def _auth(self, session, header, body):
         if header.method_id == P.LOGON:
             req = P.LogonRequest.FromString(body)
@@ -202,17 +168,27 @@ class BNetRpcServer:
             await session.send_notification(
                 P.CHALLENGE_NOTIFY_HASH, P.ON_EXTERNAL_CHALLENGE, challenge.SerializeToString())
             session.log(f"   -> OnExternalChallenge {self.web_url}")
-            # A fresh client (no cached ticket) never sends VerifyWebCredentials,
-            # so we complete its logon ourselves - but only AFTER it finishes the
-            # web step (web_login_completed), not now, or it errors with
-            # "Invalid State for Response". A cached-ticket client instead reaches
-            # VerifyWebCredentials below; whichever fires first wins (de-duped).
-            self._pending_session = session
         elif header.method_id == P.VERIFY_WEB_CREDENTIALS:
             req = P.VerifyWebCredentialsRequest.FromString(body)
             session.log(f"   VerifyWebCredentials ticket={req.web_credentials[:32]!r}")
             await session.send_response(header, b"")  # NoData ack
-            await self._send_logon_complete(session)
+            result = P.LogonResult()
+            result.error_code = 0
+            result.account_id.high = ACCOUNT_HIGH
+            result.account_id.low = ACCOUNT_LOW
+            game = result.game_account_id.add()
+            game.high = GAME_ACCOUNT_HIGH
+            game.low = GAME_ACCOUNT_LOW
+            result.email = "player@localhost"
+            result.available_region.append(1)
+            result.connected_region = 1
+            result.battle_tag = "Player#11111"
+            result.geoip_country = "US"
+            result.session_key = SESSION_KEY
+            result.restricted_mode = False
+            await session.send_notification(
+                P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, result.SerializeToString())
+            session.log("   -> OnLogonComplete (error_code=0)")
         else:
             session.log(f"   AuthenticationServer.method{header.method_id} unhandled")
             await session.send_response(header, b"")
