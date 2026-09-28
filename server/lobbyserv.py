@@ -725,6 +725,11 @@ def inject_watcher(server: Server):
 def serve_client(c: socket.socket, addr, server: Server):
     try:
         handle_connection(c, addr, server)
+    except (ConnectionError, OSError) as e:
+        # A client that dials the lobby and drops before/at the handshake is
+        # normal (e.g. while it is still finishing the Battle.net login) - log
+        # one line, not a scary traceback.
+        print(f"[lobby] Client disconnected early: {e}")
     except Exception as e:
         print(f"[lobby] Connection error: {e}")
         traceback.print_exc()
