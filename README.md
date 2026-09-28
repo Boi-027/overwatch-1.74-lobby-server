@@ -18,6 +18,18 @@ py -3 -m pip install -r requirements.txt
 
 The game client is **not** included — bring your own `1.74.0.0 / 104319` `Overwatch.exe`. There are two ways to connect it, depending on how much of the menu you need.
 
+### Easiest (Windows): `START.bat`
+
+After downloading this repo, just **double-click `START.bat`**. No commands. It:
+
+- asks once whether you want **Retail** (full menu with the lobby hero) or **Tournament** mode;
+- checks Python and installs the dependencies;
+- downloads the relay DLL (retail) and unblocks it;
+- opens a file dialog so you **pick your `Overwatch.exe`** — it only accepts the game `.exe`, not a shortcut or a launcher, and remembers it for next time;
+- launches the game for you and starts the servers.
+
+If Python is missing it points you to the download and stops. The manual steps below are the equivalent if you prefer to run them yourself.
+
 ### Route A — Tournament mode (simplest, no build)
 
 One command each, no Battle.net emulator and no relay DLL:

@@ -40,3 +40,6 @@ data/ow_image*
 .codex/
 .claude/
 .mcp.json
+
+# one-click launcher: user-specific saved game path
+game_path.txt
