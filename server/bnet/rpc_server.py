@@ -157,6 +157,28 @@ class BNetRpcServer:
             session.log(f"   ConnectionService.method{header.method_id} unhandled")
 
     # ---- AuthenticationServer ----
+    async def _send_logon_complete(self, session):
+        if getattr(session, "logon_done", False):
+            return  # only once per session (a cached-ticket client also calls VerifyWebCredentials)
+        session.logon_done = True
+        result = P.LogonResult()
+        result.error_code = 0
+        result.account_id.high = ACCOUNT_HIGH
+        result.account_id.low = ACCOUNT_LOW
+        game = result.game_account_id.add()
+        game.high = GAME_ACCOUNT_HIGH
+        game.low = GAME_ACCOUNT_LOW
+        result.email = "player@localhost"
+        result.available_region.append(1)
+        result.connected_region = 1
+        result.battle_tag = "Player#11111"
+        result.geoip_country = "US"
+        result.session_key = SESSION_KEY
+        result.restricted_mode = False
+        await session.send_notification(
+            P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, result.SerializeToString())
+        session.log("   -> OnLogonComplete (error_code=0)")
+
     async def _auth(self, session, header, body):
         if header.method_id == P.LOGON:
             req = P.LogonRequest.FromString(body)
@@ -168,27 +190,15 @@ class BNetRpcServer:
             await session.send_notification(
                 P.CHALLENGE_NOTIFY_HASH, P.ON_EXTERNAL_CHALLENGE, challenge.SerializeToString())
             session.log(f"   -> OnExternalChallenge {self.web_url}")
+            # Auto-complete the logon for a fresh client that never calls
+            # VerifyWebCredentials (it has no cached ticket to send). A client
+            # that DOES send VerifyWebCredentials is de-duped in _send_logon_complete.
+            await self._send_logon_complete(session)
         elif header.method_id == P.VERIFY_WEB_CREDENTIALS:
             req = P.VerifyWebCredentialsRequest.FromString(body)
             session.log(f"   VerifyWebCredentials ticket={req.web_credentials[:32]!r}")
             await session.send_response(header, b"")  # NoData ack
-            result = P.LogonResult()
-            result.error_code = 0
-            result.account_id.high = ACCOUNT_HIGH
-            result.account_id.low = ACCOUNT_LOW
-            game = result.game_account_id.add()
-            game.high = GAME_ACCOUNT_HIGH
-            game.low = GAME_ACCOUNT_LOW
-            result.email = "player@localhost"
-            result.available_region.append(1)
-            result.connected_region = 1
-            result.battle_tag = "Player#11111"
-            result.geoip_country = "US"
-            result.session_key = SESSION_KEY
-            result.restricted_mode = False
-            await session.send_notification(
-                P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, result.SerializeToString())
-            session.log("   -> OnLogonComplete (error_code=0)")
+            await self._send_logon_complete(session)
         else:
             session.log(f"   AuthenticationServer.method{header.method_id} unhandled")
             await session.send_response(header, b"")
