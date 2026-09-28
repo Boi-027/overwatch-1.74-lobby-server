@@ -25,6 +25,7 @@ BOX_TYPE_NAMES = {
 @dataclass
 class Profile:
     player_name: str = "Researcher"
+    region: str = "US"  # shop currency and country, see region.py
     level: int = 100
     credits: int = 50000
     comp_points: int = 6000
@@ -93,6 +94,7 @@ def load_or_create_profile(path: Path) -> Profile:
                 data = json.load(f)
             prof = Profile(
                 player_name=data.get("player_name", "Researcher"),
+                region=data.get("region", "US"),
                 level=data.get("level", 100),
                 credits=data.get("credits", 50000),
                 comp_points=data.get("comp_points", 6000),
@@ -140,6 +142,7 @@ def save_profile(profile: Profile, path: Path):
     """Saves profile to JSON atomically."""
     data = {
         "player_name": profile.player_name,
+        "region": profile.region,
         "level": profile.level,
         "credits": profile.credits,
         "comp_points": profile.comp_points,

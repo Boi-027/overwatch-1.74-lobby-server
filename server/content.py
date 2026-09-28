@@ -20,10 +20,12 @@ from pathlib import Path
 try:
     from jam_codec import id16, clone
     from retail import personalize, RETAIL_ACCOUNT
+    from region import localize
     from protocol import get_portrait_frame_guid
 except ImportError:
     from .jam_codec import id16, clone
     from .retail import personalize, RETAIL_ACCOUNT
+    from .region import localize
     from .protocol import get_portrait_frame_guid
 
 IN_CONNECT = 0xF5FF548A       # 20500 hello, 20502 player record, 20504 content keys, 20505 preload
@@ -612,7 +614,7 @@ class LobbyContent:
 
     def retail_static(self, profile, ident: Identity) -> list:
         now = int(server_time(profile))
-        return [(crc, msg_id, self._refresh(crc, msg_id, personalize(value, profile.player_name, ident.account_lo), now))
+        return [(crc, msg_id, self._refresh(crc, msg_id, localize(personalize(value, profile.player_name, ident.account_lo), profile.region), now))
                 for crc, msg_id in RETAIL_AT_LOGIN for _, value in self.retail.all(crc, msg_id)]
 
     def _refresh(self, crc, msg_id, value, now: int):

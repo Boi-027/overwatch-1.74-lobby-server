@@ -7,10 +7,12 @@ import time
 
 try:
     from storage import BOX_TYPE_NAMES, save_profile
+    from region import REGIONS
     from content import EVENT_PRESETS
     from social import account_id_for
 except ImportError:
     from .storage import BOX_TYPE_NAMES, save_profile
+    from .region import REGIONS
     from .content import EVENT_PRESETS
     from .social import account_id_for
 
@@ -53,7 +55,7 @@ def boolean(value):
 
 
 def profile_snapshot(profile):
-    fields = ('player_name', 'level', 'credits', 'comp_points', 'league_tokens',
+    fields = ('player_name', 'region', 'level', 'credits', 'comp_points', 'league_tokens',
               'endorsement_level', 'lobby_hero', 'events', 'server_date', 'challenge',
               'challenge_wins', 'unlock_all', 'stats')
     result = {name: deepcopy(getattr(profile, name)) for name in fields}
@@ -126,7 +128,7 @@ class DashboardService:
         }
 
     def update_profile(self, data):
-        allowed = {'account', 'player_name', 'level', 'credits', 'comp_points',
+        allowed = {'account', 'player_name', 'region', 'level', 'credits', 'comp_points',
                    'league_tokens', 'endorsement_level', 'lobby_hero', 'events',
                    'server_date', 'challenge', 'challenge_wins', 'unlock_all'}
         unknown = set(data) - allowed
@@ -143,6 +145,10 @@ class DashboardService:
                 if not (1 <= len(name) <= 32) or any(ord(c) < 32 for c in name):
                     raise ApiError('Nickname must be 1 to 32 characters')
                 profile.player_name = name
+            if 'region' in data:
+                if data['region'] not in REGIONS:
+                    raise ApiError('Unknown region')
+                profile.region = data['region']
             for field in ('level', 'credits', 'comp_points', 'league_tokens', 'challenge_wins'):
                 if field in data:
                     setattr(profile, field, integer(data[field], field, 1 if field == 'level' else 0))

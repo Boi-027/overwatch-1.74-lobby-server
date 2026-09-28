@@ -49,6 +49,7 @@ from protocol import send_frame
 from storage import load_or_create_profile, save_profile
 from jam_codec import Schemas, DecodeError, to_jsonable
 from retail import RetailCapture
+from region import localize
 from items import ItemDB
 from content import (
     LobbyContent, Identity, OUT_CONNECT, PROGRESSION_IN, PROGRESSION_OUT, NAME_QUERY, NAME_REPLY,
@@ -74,6 +75,8 @@ PARTY_OUT = 0xB2FF5A5E        # 22102 invite, 22103 answer, 22105 kick, 22107 le
 FRIENDS_OUT = 0xA287DF29      # 27004 whisper {token, target, sender, text}
 GAME_REQUEST = 0xA6E53896    # 24000 create game; kind2/flags4 observed for Practice Range
 CANCEL_QUEUE = 44102         # Confirmed by manual Arcade search/cancel trace 2026-09-28
+GROUP_FINDER = 0x9529F0ED    # 52200-52205 group finder / role slots (1.74); the client drops the
+                             # connection on server messages it did not ask for, so only reply
 
 
 def recvn(c: socket.socket, n: int, timeout=30) -> bytes:
@@ -180,6 +183,8 @@ class LobbySession:
             (MATCHMAKE, ENTER_QUEUE): self.on_enter_queue,
             (MATCHMAKE, CANCEL_QUEUE): self.on_cancel_queue,
             (GAME_REQUEST, 24000): self.on_game_request,
+            (GROUP_FINDER, 52201): self.on_group_update,
+            (GROUP_FINDER, 52203): self.on_group_roles,
         }
 
     @property
@@ -294,6 +299,15 @@ class LobbySession:
         if self.srv.matches is not None:
             self.srv.matches.cancel(self.cid, mode=value['+0x78']['+0x0']['+0x0'])
         self.log('[MM] CANCEL QUEUE (44102): stopped this search instance')
+
+    def on_group_update(self, value):
+        """52201: the client's group state (mode, hero slots, name). Log only: replying 52200 to it,
+        like any unsolicited 52200-52205, makes the client close the connection."""
+        group = value['+0x78']
+        self.log(f"[group] 52201 slots={list(group.get('+0x80', []))} name={group.get('+0xA0')!r}")
+
+    def on_group_roles(self, value):
+        self.log(f"[group] 52203 selected roles={list(value.get('+0x78', []))}")
 
     def on_game_request(self, value):
         if value.get('+0x78') == 2 and value.get('+0xA8') == 4:
@@ -459,7 +473,7 @@ class LobbySession:
 
     def on_store_query(self, value: dict):
         for msg_id, store in self.srv.retail.all(STORE):
-            self.send(STORE, msg_id, store)
+            self.send(STORE, msg_id, localize(store, self.profile.region))
 
     # ------------------------------------------------------------ chat
 
