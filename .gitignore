@@ -43,3 +43,6 @@ data/ow_image*
 
 # one-click launcher: user-specific saved game path
 game_path.txt
+
+# diagnostics report (generated on the user machine)
+diagnostics.txt

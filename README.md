@@ -70,6 +70,18 @@ On client **1.74** the Battle.net connection is TLS with **public-key pinning**,
 
 So the relay is only about getting *past the pinned TLS* on the login socket; all the actual lobby behaviour is plain server code. You build the DLL once and never touch it again — the launcher handles loading it every run. If you can't (or don't want to) build it, a prebuilt `owwfd_relay.dll` is attached to the [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases) page; just drop it in `relay\`. Tournament mode (Route A) skips all of this, which is why it needs no relay or Battle.net emulator.
 
+## Troubleshooting
+
+If the retail route fails (for example the game shows **"Unable to Authenticate"**), double-click **`DIAGNOSE.bat`** after the failed attempt. It writes `diagnostics.txt` (build/hash of your `Overwatch.exe`, listening ports, `hosts` redirects, the relay log, the Battle.net login log, and a one-line verdict) and opens it — send that file when asking for help. It only reads; it changes nothing.
+
+Common causes:
+
+- **Launching the game yourself** (a shortcut, or the Battle.net launcher). The game must be started **by** `START.bat` / `run_retail.bat` — that's what passes `--BNetServer` and injects the relay. Nothing else will authenticate.
+- **Antivirus / Windows Defender** blocking the injection. Add an exclusion for the game folder and the relay, then retry.
+- **A different `Overwatch.exe` build.** The relay targets a specific 1.74.0.0.104319 build; a different repack won't be hooked (the diagnostics report flags this and shows `swaps=0` in the relay log).
+- **A leftover `hosts` redirect** of `battle.net`/`blizzard` domains from another guide — remove those lines (this project doesn't use `hosts`).
+- **A stale session** after several attempts — close the game and every `python.exe`, then launch once via `START.bat` (it now does this cleanup for you).
+
 ## Contents
 
 - `server/`: lobby, profiles, events, shop, dashboard API, local Battle.net, and per-session UDP workers.
