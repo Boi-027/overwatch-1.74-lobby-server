@@ -126,15 +126,23 @@ class DashboardService:
         }
 
     def update_profile(self, data):
-        allowed = {'account', 'level', 'credits', 'comp_points', 'league_tokens',
-                   'endorsement_level', 'lobby_hero', 'events', 'server_date',
-                   'challenge', 'challenge_wins', 'unlock_all'}
+        allowed = {'account', 'player_name', 'level', 'credits', 'comp_points',
+                   'league_tokens', 'endorsement_level', 'lobby_hero', 'events',
+                   'server_date', 'challenge', 'challenge_wins', 'unlock_all'}
         unknown = set(data) - allowed
         if unknown:
             raise ApiError('Unknown field: ' + ', '.join(sorted(unknown)))
         with self.lock:
             account = self.account(data.get('account'))
             profile = deepcopy(account.profile)
+            if 'player_name' in data:
+                name = data['player_name']
+                if not isinstance(name, str):
+                    raise ApiError('Enter a valid nickname')
+                name = name.strip()
+                if not (1 <= len(name) <= 32) or any(ord(c) < 32 for c in name):
+                    raise ApiError('Nickname must be 1 to 32 characters')
+                profile.player_name = name
             for field in ('level', 'credits', 'comp_points', 'league_tokens', 'challenge_wins'):
                 if field in data:
                     setattr(profile, field, integer(data[field], field, 1 if field == 'level' else 0))
