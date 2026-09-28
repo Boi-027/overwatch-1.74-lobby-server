@@ -1,0 +1,14 @@
+* text=auto eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.cpp text eol=lf
+*.yml text eol=lf
+*.bat text eol=crlf
+*.pb binary
+data/*.json linguist-generated=true
+server/bnet/descriptors.pb linguist-generated=true

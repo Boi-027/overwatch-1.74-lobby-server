@@ -1,0 +1,947 @@
+{
+ "2": {
+  "name": null,
+  "key": "62D90EFA7F36D71C398AE2F1FE37BDB9",
+  "note": ""
+ },
+ "15": {
+  "name": null,
+  "key": "2E2CB8C397C2F24ED0B5E452F18DC267",
+  "note": ""
+ },
+ "16": {
+  "name": "402CD9D8D6BFED98",
+  "key": "AEB0EADEA47612FE6C041A03958DF241",
+  "note": "[1.29] ???"
+ },
+ "3D": {
+  "name": null,
+  "key": "0196CB6F5ECBAD7CB5283891B9712B4B",
+  "note": ""
+ },
+ "51": {
+  "name": null,
+  "key": "685E86C6063DFDA6C9E85298076B3D42",
+  "note": ""
+ },
+ "65": {
+  "name": null,
+  "key": "E45A1793B37EE31A8EB85CEE0EEE1B68",
+  "note": ""
+ },
+ "79": {
+  "name": null,
+  "key": "98B78E8774BF275093CB1B5FC714511B",
+  "note": ""
+ },
+ "8D": {
+  "name": null,
+  "key": "AD740CE3FFFF9231468126985708E1B9",
+  "note": ""
+ },
+ "8E": {
+  "name": null,
+  "key": "8F41809DA55366AD416D3C337459EEE3",
+  "note": ""
+ },
+ "8F": {
+  "name": null,
+  "key": "34E397ACE6DD30EEFDC98A2AB093CD3C",
+  "note": ""
+ },
+ "A1": {
+  "name": null,
+  "key": "53D859DDA2635A38DC32E72B11B32F29",
+  "note": ""
+ },
+ "B6": {
+  "name": null,
+  "key": "667868CD94EA0135B9B16C93B1124ABA",
+  "note": ""
+ },
+ "B9": {
+  "name": "57A5A33B226B8E0A",
+  "key": "FDFC35C99B9DB11A326260CA246ACB41",
+  "note": "Ana"
+ },
+ "BA": {
+  "name": "061581CA8496C80C",
+  "key": "DA2EF5052DB917380B8AA6EF7A5F8E6A",
+  "note": "< 1.1.0.0"
+ },
+ "BB": {
+  "name": null,
+  "key": "DEC7A4E721F425D133039895C36036F8",
+  "note": ""
+ },
+ "BC": {
+  "name": null,
+  "key": "69BD2A78D05C503E93994959B30E5AEC",
+  "note": ""
+ },
+ "BD": {
+  "name": null,
+  "key": "54A99F081CAD0D08F7E336F4368E894C",
+  "note": ""
+ },
+ "BE": {
+  "name": null,
+  "key": "31100C00FDE0CE18BBB33F3AC15B309F",
+  "note": ""
+ },
+ "BF": {
+  "name": "4F0FE18E9FA1AC1A",
+  "key": "89381C748F6531BBFCD97753D06CC3CD",
+  "note": "1.2.0.1"
+ },
+ "C2": {
+  "name": "7758B2CF1E4E3E1B",
+  "key": "3DE60D37C664723595F27C5CDBF08BFA",
+  "note": "1.2.0.1"
+ },
+ "C3": {
+  "name": "42B9AB1AF5015920",
+  "key": "C68778823C964C6F247ACC0F4A2584F8",
+  "note": "Summer Games 2016"
+ },
+ "C4": {
+  "name": "BE2CB0FAD3698123",
+  "key": "902A1285836CE6DA5895020DD603B065",
+  "note": "< 1.1.0.0"
+ },
+ "C5": {
+  "name": "E5317801B3561125",
+  "key": "7DD051199F8401F95E4C03C884DCEA33",
+  "note": "Halloween Terror 2016"
+ },
+ "C6": {
+  "name": "11131FFDA0D18D30",
+  "key": "C32AD1B82528E0A456897B3CE1C2D27E",
+  "note": "Sombra"
+ },
+ "C7": {
+  "name": "11DDB470ABCBA130",
+  "key": "66198766B1C4AF7589EFD13AD4DD667A",
+  "note": "Winter Wonderland 2016"
+ },
+ "C8": {
+  "name": "1A46302EF8896F34",
+  "key": "8029AD5451D4BC18E9D0F5AC449DC055",
+  "note": "Lunar New Year 2017 (Rooster)"
+ },
+ "C9": {
+  "name": "B7DBC693758A5C36",
+  "key": "BC3A92BFE302518D91CC30790671BF10",
+  "note": "Genji Oni"
+ },
+ "CA": {
+  "name": "16B866D7BA3A8036",
+  "key": "1395E882BF25B481F61A4D621141DA6E",
+  "note": "Blizzcon 2016 Bastion Skin"
+ },
+ "CB": {
+  "name": "9359B46E49D2DA42",
+  "key": "173D65E7FCAE298A9363BD6AA189F200",
+  "note": "Diablo 20th Anniversary"
+ },
+ "D3": {
+  "name": "CAC6B95B2724144A",
+  "key": "73E4BEA145DF2B89B65AEF02F83FA260",
+  "note": "Ecopoint: Antarctica"
+ },
+ "D4": {
+  "name": "6DD3212FB942714A",
+  "key": "E02C1643602EC16C3AE2A4D254A08FD9",
+  "note": "1.6.1.0"
+ },
+ "D5": {
+  "name": "5BEF27EEE95E0B4B",
+  "key": "36BCD2B551FF1C84AA3A3994CCEB033E",
+  "note": "1.6.1.0"
+ },
+ "D6": {
+  "name": "90CA73B2CDE3164B",
+  "key": "5CBFF11F22720BACC2AE6AAD8FE53317",
+  "note": "Oasis"
+ },
+ "D7": {
+  "name": "693529F7D40A064C",
+  "key": "CE54873C62DAA48EFF27FCC032BD07E3",
+  "note": "CTF"
+ },
+ "D8": {
+  "name": "E218F69AAC6C104D",
+  "key": "F43D12C94A9A528497971F1CBE41AD4D",
+  "note": "[1.09] Orisa"
+ },
+ "D9": {
+  "name": "F432F0425363F250",
+  "key": "BA69F2B33C2768F5F29BFE78A5A1FAD5",
+  "note": "[1.10] Archives 2017 (Uprising)"
+ },
+ "DA": {
+  "name": "BD4E42661A432951",
+  "key": "6DE8E28C8511644D5595FC45E5351472",
+  "note": "[1.11] Anniversary 2017"
+ },
+ "DB": {
+  "name": "C43CB14355249451",
+  "key": "0EA2B44F96A269A386856D049A3DEC86",
+  "note": "[1.12] Horizon Lunar Colony"
+ },
+ "DC": {
+  "name": "E6D914F8E4744953",
+  "key": "C8477C289DCE66D9136507A33AA33301",
+  "note": "[1.13] Doomfist"
+ },
+ "DD": {
+  "name": "8175CE3C694C6659",
+  "key": "E3F3FA7726C70D26AE130D969DDDF399",
+  "note": "[1.16] Halloween 2017"
+ },
+ "DE": {
+  "name": "B8DE51690075435A",
+  "key": "C07E9260BB711217E7DE6FED911F4296",
+  "note": "[1.16] Blizzcon 2017 Winston Skin"
+ },
+ "DF": {
+  "name": "0E4D9426F2891F5C",
+  "key": "9FF064C38BE52CCDF73748180F628205",
+  "note": "[1.18] Winter Wonderland 2017"
+ },
+ "E0": {
+  "name": "8162E5313A9C135D",
+  "key": "F407834D9521587C5012B0A59D7E064B",
+  "note": "[1.20] Lunar New Year 2018 (Dog) / Ayutthaya / Comp CTF"
+ },
+ "E1": {
+  "name": "388B85AEEDCB685D",
+  "key": "D926E659D04A096B24C19151076D379A",
+  "note": "Numbani map Doomfist teaser"
+ },
+ "E2": {
+  "name": "061D52F86830B35D",
+  "key": "D779F9C6CC9A4BE103A4E90A7338F793",
+  "note": "[1.10] Police D.Va"
+ },
+ "E3": {
+  "name": "1275C84CF113EF65",
+  "key": "CF58B6933EAF98AF53E76F8426CC7E6C",
+  "note": "???"
+ },
+ "E4": {
+  "name": "D9C7C7AC0F14C868",
+  "key": "3AFDF68E3A5D63BABA1E6821883F067D",
+  "note": "???"
+ },
+ "E5": {
+  "name": "21DBFD65F3E54269",
+  "key": "AB580C3837CAF8A461F243A566B2AE4D",
+  "note": "[1.13] Summer Games 2017"
+ },
+ "E6": {
+  "name": "21E1F90E71D33C71",
+  "key": "328742339162B32676C803C2255931A6",
+  "note": "[1.14] Team Deathmatch"
+ },
+ "E7": {
+  "name": "D9CB055BCDD40B6E",
+  "key": "49FB4477A4A0825327E9A73682BECD0C",
+  "note": "[1.15] Junkertown"
+ },
+ "E8": {
+  "name": "9ADF00AA1A174A69",
+  "key": "9A4AC899261A2F1C6969F39397C358E7",
+  "note": "[1.19] Blizzard World"
+ },
+ "E9": {
+  "name": "5694C503F8C80178",
+  "key": "7F4CF1C1FBBAD92B184336D677EBF937",
+  "note": "[1.13] Doomfist Cosmetics"
+ },
+ "EA": {
+  "name": "3B3ED0874091B174",
+  "key": "5D09C2688B1D9F1A4DB64602C1661D24",
+  "note": "[1.21] Brigitte"
+ },
+ "EB": {
+  "name": "68D8EB839DC15D75",
+  "key": "29AFFECA5299C4140A12A66F954EF1E3",
+  "note": "[1.22] Archives 2018 (Retribution)"
+ },
+ "ED": {
+  "name": "F6CF23955B5D437D",
+  "key": "AEBA227328A5B0AA9F51DAE3F6A7DFE4",
+  "note": "[1.17] Moira"
+ },
+ "EF": {
+  "name": null,
+  "key": "DF8D3F3C6EF9C5336A68CD2906B46A94",
+  "note": ""
+ },
+ "F0": {
+  "name": "82297FBAB7F5EB80",
+  "key": "B534C20965852FB15AECAC17E381B417",
+  "note": "[1.19] Lootbox Update / Blizzard World Items"
+ },
+ "F1": {
+  "name": null,
+  "key": "8DEAFCF2572D806E2E9DB1C2C6F1D8D8",
+  "note": ""
+ },
+ "F2": {
+  "name": "CFA05AA76B49F881",
+  "key": "526DDDEF19BF373C25B629A334CD7237",
+  "note": "[1.19] WoW's battle for Azeroth preorder"
+ },
+ "F3": {
+  "name": "9240BA6A2A0CF684",
+  "key": "DF2E37D78B43108FA6242068B70D1F65",
+  "note": "[1.19] Overwatch League"
+ },
+ "F4": {
+  "name": "6362C5AD65DAE686",
+  "key": "62F603D5390F763ED51773F0164FEDB5",
+  "note": "[1.19] White/Gray OWL Skins ??"
+ },
+ "F5": {
+  "name": "493455579DA0B18E",
+  "key": "C0BABF72AD2C05DFC14017D1ADBF5977",
+  "note": "[1.19] Inaugural Season Spray/Icon ??"
+ },
+ "F7": {
+  "name": "F412C6327C4BF091",
+  "key": "6FAFC648CBF1C2115B769593C170E732",
+  "note": "[1.21] SC2 20th Anniversary (Kerrigan Skin)"
+ },
+ "F8": {
+  "name": "37FD04E05D2A6292",
+  "key": "F06455E56CD144914295F2EF153D23BA",
+  "note": "[1.21] Brigitte Cosmetics"
+ },
+ "F9": {
+  "name": "A55F8C6F20454D94",
+  "key": "42D76285412461B0C75AB75FB52F596E",
+  "note": "[1.23b] Mercy BCRF Items"
+ },
+ "FA": {
+  "name": "C0DDC77552BE5794",
+  "key": "F2BB7F35990E2900CBD877B4D3A7139C",
+  "note": "[1.22] OWL away skins"
+ },
+ "FB": {
+  "name": "209F33BBAC9D1295",
+  "key": "BD535438D0CDEE0E9567E0EF671C809F",
+  "note": "[1.23] Rialto"
+ },
+ "FC": {
+  "name": "3EEEDB8E7C29A09B",
+  "key": "837AC79305E4BFBA3B2226F1B98200BF",
+  "note": "[1.24] Anniversary 2018 Map/Items"
+ },
+ "FD": {
+  "name": "22C1AF6758F8449E",
+  "key": "28AA1BD2B9A1E3633989B1BBF64AEAC4",
+  "note": "[1.26] Emily / Comp Season 11 / Comp 3v3 Items"
+ },
+ "FE": {
+  "name": "11B2E01B9331799E",
+  "key": "9A1C99303D6A58978E29C98873327A6A",
+  "note": "[1.26] Wrecking Ball"
+ },
+ "FF": {
+  "name": "CA13F0C79042A1A0",
+  "key": "FCD89CE8812E6346076FC82DD7A92487",
+  "note": "[1.28] Busan"
+ },
+ "101": {
+  "name": "0BFE5A2B3C606BA1",
+  "key": "D6419B8E42820B0B24E08DA444A06822",
+  "note": "[1.29] Halloween Terror 2018"
+ },
+ "103": {
+  "name": "2AD4834DAB3986AB",
+  "key": "EA6971F78ABEBD2AF883D46A5486F39F",
+  "note": "[1.31] Winter Wonderland 2018"
+ },
+ "104": {
+  "name": "27F9D85973DCD5AF",
+  "key": "C5FE1015BCE0B7848F022868AFF654D1",
+  "note": "[1.27] Summer Games 2018"
+ },
+ "105": {
+  "name": "8498337C740329B3",
+  "key": "EC73D663E3FC72416B3E467915708B4F",
+  "note": "[1.26] Wrecking Ball Cosmetics"
+ },
+ "106": {
+  "name": "5D4AC0DC6F3113BA",
+  "key": "D1C9F1FF69585D1398EBA0463481F5CF",
+  "note": "[1.27] Summer Games 2018"
+ },
+ "107": {
+  "name": "C4D84093A32684BD",
+  "key": "38E182423EEDD8E3F57AC1D407B470D0",
+  "note": "[1.28] Blizzcon 2018 Sombra Demon Hunter Skin"
+ },
+ "108": {
+  "name": "FEBBF66DAEF6C9BE",
+  "key": "4A220AE3A6808ED2697410C94C1CE970",
+  "note": "[1.30b] Ashe"
+ },
+ "109": {
+  "name": "E6E8BCABE3CC96C1",
+  "key": "57727E52600665EAC02BD87F0692898F",
+  "note": "[1.26] OWL Grand Finals Unlocks / Lucio Emote"
+ },
+ "10B": {
+  "name": "67AAD845CC0F03BD",
+  "key": "6CD8AD3F37F54ABEC7630294D49041BF",
+  "note": "[1.27b] D.Va Nano Cola Challenge"
+ },
+ "10E": {
+  "name": "32DDC40236DAEA7B",
+  "key": "2DBDE4FB9FDA776AA294870854FE9B02",
+  "note": "[1.31c] Lunar New Year 2019 (Pig)"
+ },
+ "111": {
+  "name": "F1CBDF48147D26C6",
+  "key": "4B6944695157D43D33E40B5692445ADB",
+  "note": "[1.30] 1.30 + World Cup Viewer"
+ },
+ "112": {
+  "name": "01A48CFAE25F85CD",
+  "key": "60D77A58062D03DC693C01954DD18021",
+  "note": "[1.30] 1.30 + World Cup Viewer"
+ },
+ "114": {
+  "name": "F481EFC2302EE415",
+  "key": "37A7F2B87D0B8B700456C6A92C71D6DD",
+  "note": "[1.33] Paris Map"
+ },
+ "115": {
+  "name": "D89B24D62F00A04E",
+  "key": "C3A4D010AAA7287A3EACCD45ED471345",
+  "note": "[1.31b] Ana Bastet Mini Event"
+ },
+ "117": {
+  "name": "D1AC8C1903524D9A",
+  "key": "D781D0AA35E5C106BCA7CF01DEBD1494",
+  "note": "[1.34] Baptiste"
+ },
+ "118": {
+  "name": "71EEBE93590AA903",
+  "key": "0CCD10D4553EEC7E97FD36A9E8ADF0FF",
+  "note": "[1.34] Baptiste cosmetics"
+ },
+ "119": {
+  "name": "CD98671BE0FDE066",
+  "key": "E108603E831C6BD481775664F8DFC359",
+  "note": "[1.35] Archives 2019 (Storm Rising)"
+ },
+ "11A": {
+  "name": "D82EAA1385492BFD",
+  "key": "7D1CC33CE799FB8408E97B3DEEEF977D",
+  "note": "[1.37] OWL 2018 MVP JJonak Skin"
+ },
+ "11B": {
+  "name": "A2F97FC654E613E4",
+  "key": "A8FBD86CA167A2D33065F581F617027E",
+  "note": "[1.39] OWL 2018 Grand Finals Winston Flying Ace Skin"
+ },
+ "11C": {
+  "name": "3373C0DA7CE301BB",
+  "key": "237D1A5817079FD3A1F743D19C48D2B7",
+  "note": "[1.35.1] All Stars 2019"
+ },
+ "11E": {
+  "name": "681B4FE66CBBBF1B",
+  "key": "BB5418A718CFA6E37436C91987678ECC",
+  "note": "[1.36] Anniversary 2019"
+ },
+ "11F": {
+  "name": "B2BBEB6C56F505A8",
+  "key": "52C934D2C50BC6A1D00C880383C99369",
+  "note": "[1.35.1] Havana Map"
+ },
+ "120": {
+  "name": "12E876A22A71628E",
+  "key": "AEDCF4031F3908702B2D91A042DF3817",
+  "note": "[1.41] WoW Sprays/Player Icons"
+ },
+ "121": {
+  "name": "CF472D5C194E6264",
+  "key": "621DFEF5DE0EB7790DF282F5B224485D",
+  "note": "[1.37] Competitive season 17 / comp deathmatch 2019"
+ },
+ "122": {
+  "name": "97345DA0D19F549B",
+  "key": "830C71698FA20264A8E44B6A3BE254CE",
+  "note": "[1.37] Combat Medic Cosmetics"
+ },
+ "123": {
+  "name": "9118B267B0544567",
+  "key": "9B15182B43BDEF685F2EA07A5FB14247",
+  "note": "[1.38] Summer Games 2019"
+ },
+ "124": {
+  "name": "306CF2AF0F6B4C62",
+  "key": "CD790BF3450A3194CBBB87F66000C458",
+  "note": "[1.39] Sigma"
+ },
+ "125": {
+  "name": "FABBBA646614908C",
+  "key": "FCAE81791D279646BBD34F27BE719934",
+  "note": "[1.39] Sigma Cosmetics"
+ },
+ "126": {
+  "name": null,
+  "key": "98B78E8774BF275093CB1B5FC714511B",
+  "note": ""
+ },
+ "127": {
+  "name": "4EE47123221964CF",
+  "key": "6524D0C450D77AFF468F9E1553835FA8",
+  "note": "[1.41] Blizzcon 2019 Skins Symmetra/Genji Skins"
+ },
+ "128": {
+  "name": "4590DFE894F13ED3",
+  "key": "D2A7B06103173C59256021A1253F5119",
+  "note": "[1.40] Bastion Lego Mini Event"
+ },
+ "129": {
+  "name": "6FDE3253A9819DD8",
+  "key": "CD3D4416B8F46E83B2C618FA0BB00C78",
+  "note": "[1.40] Path To Pro"
+ },
+ "12A": {
+  "name": "671A91804C9756D6",
+  "key": "DC78D0F9ACC652CB83CCC79CD5AB05F3",
+  "note": "[1.40] OWL Grand Final 2019"
+ },
+ "12B": {
+  "name": "261402CCA8A8EB97",
+  "key": "4A494CAB76187E0157FB5A19CA39FD00",
+  "note": "[1.41] Halloween Terror 2019"
+ },
+ "12C": {
+  "name": null,
+  "key": "E7FE91CF6237624AB52B57369E1F2D2F",
+  "note": ""
+ },
+ "12D": {
+  "name": "97B74B37FB1D0E4E",
+  "key": "92233C81C7825AF6AB31E67E2C47B435",
+  "note": "[1.42] Competitive Season 19 / Deathmatch"
+ },
+ "12E": {
+  "name": "4241134912164014",
+  "key": "4C233B4738C23C0E717AF6592E0D8C20",
+  "note": "[1.42] Mercy's Recall Mini Event"
+ },
+ "12F": {
+  "name": "D28BDCFB2E58DDDA",
+  "key": "836550FC97809E22B4ACF1D2F74112AC",
+  "note": "[1.44] Lunar New Year 2020 (Rat)"
+ },
+ "130": {
+  "name": "04E69783B1E37179",
+  "key": "25F79C3C7EB5E711D5377122D6F7380C",
+  "note": "[1.42] ???"
+ },
+ "131": {
+  "name": "BEB75B7A5040111D",
+  "key": "ACACE0528A6BB07AD26606271527B2DA",
+  "note": "[1.43] Winter Wonderland 2019"
+ },
+ "132": {
+  "name": "C54BB721E83A0A40",
+  "key": "E196BC936E5B486948E46E2A3485208F",
+  "note": "[1.44] New OWL Skins 2020"
+ },
+ "133": {
+  "name": "71827FE861E43867",
+  "key": "456CB8A5132B2971985617C67E1DF86B",
+  "note": "[1.43] ???"
+ },
+ "134": {
+  "name": "4FE1974C5911C0EB",
+  "key": "1D2E2D5ED2B4DD3ACEED31E8519AF2BF",
+  "note": "[1.43] ??? Arcade Modes"
+ },
+ "135": {
+  "name": "6C87997610FD3C15",
+  "key": "85356E7CB5CE379E45C2EC4951CDC8B6",
+  "note": "[1.45] New workshop stuff"
+ },
+ "136": {
+  "name": "9D3EED3ADF977834",
+  "key": "74F082D43093CEFD27505219DD4C7944",
+  "note": "[1.46] Archives 2020"
+ },
+ "137": {
+  "name": "1A4C02B89426E20D",
+  "key": "0C0F504862A588380A1B6D42599FB9A5",
+  "note": "[1.47] Echo"
+ },
+ "138": {
+  "name": "4009F09800332E91",
+  "key": "0959D3EA152CEBF3D100CDA702310CEF",
+  "note": "[1.48] Anniversary 2020"
+ },
+ "13A": {
+  "name": "B78B1E48338ABB67",
+  "key": "E7F7032FFD96EDA1C818B3DBD647EF10",
+  "note": "[1.46b] OWL 2019 Grand Finals Doomfist Shock Skin"
+ },
+ "13B": {
+  "name": "05EE37FEF365840F",
+  "key": "D15C2C6C5C522716985C01E1F411821D",
+  "note": "[1.52b] All Stars 2020"
+ },
+ "13C": {
+  "name": "B65BA9E7B6D2633E",
+  "key": "494A8C65AD299938880F98BA7C479BB3",
+  "note": "[1.47] Echo Cosmetics"
+ },
+ "13D": {
+  "name": "BC0115268E626D0A",
+  "key": "98CC6D3C813DB51FF2EDF5A4307A2707",
+  "note": "[1.46] ???"
+ },
+ "13E": {
+  "name": "46DD3BD4737B1DAF",
+  "key": "1C763CFC967CBC8C7E42AA05DD4B681B",
+  "note": "[1.48] Workshop Stuff / New Communications Wheel"
+ },
+ "13F": {
+  "name": "33F1E67C7F662BE4",
+  "key": "F54ED49D8CD615D5DDBE389D0756AB6E",
+  "note": "[1.50] Sigma Maestro Mini Event"
+ },
+ "140": {
+  "name": "E40FE0E00554F5C6",
+  "key": "C251AA1EA729049E62845D112E3196A4",
+  "note": "[1.49] OWL 2019 MVP Sinatraa Skin"
+ },
+ "141": {
+  "name": "EAF5FF2725E4CF6A",
+  "key": "63C6CF2EE7A9B5D79D68D7D95D9086FD",
+  "note": "[1.51] Summer Games 2020"
+ },
+ "142": {
+  "name": "0745B19B2F9EC62D",
+  "key": "DB2FAF6FD402303D8917C3769019AE69",
+  "note": "[1.64.1] Malevento"
+ },
+ "143": {
+  "name": "8ADB67A31D4EF822",
+  "key": "EBB453EB5047F9587F5AAAA1F32DFF43",
+  "note": "[1.45] Ashe Mardi Gras Mini Event"
+ },
+ "144": {
+  "name": "211FC7961A58F579",
+  "key": "CE0519370819E51702FFDEA98EEF1008",
+  "note": "[1.47] Echo Cosmetics"
+ },
+ "147": {
+  "name": "262A589516B70C09",
+  "key": "90AE4F5F98F709B441CA133855894BF8",
+  "note": "[1.49] Competitive Open Queue Season 2"
+ },
+ "148": {
+  "name": "D8BB7B8EDBE3C6FA",
+  "key": "F86292A9619807E6ECF6E99F62121FEF",
+  "note": "[1.50] Assault Test"
+ },
+ "149": {
+  "name": "6EE9D3BA6D65EAAC",
+  "key": "0F80EEF411A5E9587389A4DF39272D2F",
+  "note": "[1.50] Competitive Season 23"
+ },
+ "14A": {
+  "name": "903FD9402962FDAB",
+  "key": "9E30B9AFE3FDF78EB32DBF7B7EE53BFD",
+  "note": "[1.53] Contenders"
+ },
+ "14B": {
+  "name": "48DA42EFAADE707B",
+  "key": "33CBF36CAE99D31F1293F2E4C279D281",
+  "note": "[1.51] Competitive Season 24 / OWL Playoffs"
+ },
+ "14C": {
+  "name": "3F011FDD1AC05F37",
+  "key": "E5F823765E3D821769F754FF5179152B",
+  "note": "[1.52] Competitive 3v3 Elimination 2020"
+ },
+ "14D": {
+  "name": "C816607BA5611657",
+  "key": "59A71505A00AAEDD13CDCA165DCA09B3",
+  "note": "[1.52] Tracer Comic Challenge"
+ },
+ "14E": {
+  "name": "0D0EE6198B023866",
+  "key": "C3EFCAB31FEEDF83A6D9ED9EC4DC2658",
+  "note": "[1.53] Competitive Season 25"
+ },
+ "14F": {
+  "name": "AE19F22DBA79458B",
+  "key": "D7E27E38D33BD2976B4F32E94BCA176C",
+  "note": "[1.53] Halloween 2020"
+ },
+ "150": {
+  "name": "C59548A4FD7BC298",
+  "key": "4C7F08F6A524BF11DFD971C90E8702FE",
+  "note": "[1.52] Legendary Lootbox"
+ },
+ "151": {
+  "name": "4FEEE9549164A422",
+  "key": "768A038C6F111EDA87B395DA5624AE54",
+  "note": "[1.54] Workshop FEEEEEEEEEEEEEEEEEEEE"
+ },
+ "152": {
+  "name": "4377B5049F92D967",
+  "key": "C7E5F12E1F1FDCAE91178ECA6653DED9",
+  "note": "[1.54] Symmetra Event"
+ },
+ "153": {
+  "name": "F172AA1C17B24B1A",
+  "key": "7D6E9012698C8BA75818EDE9EECDF0B0",
+  "note": "[1.55] Winter Wonderland 2020"
+ },
+ "154": {
+  "name": "4A70C306E855177C",
+  "key": "FC71236A5260E1A8DDD6EE4CE452EA15",
+  "note": "[1.55] Winter Wonderland 2020"
+ },
+ "156": {
+  "name": "B5D252B5D9EC5BD4",
+  "key": "AE7052BD51DD546EAFE09948A9B73CAC",
+  "note": "[1.56] Kanezaka"
+ },
+ "159": {
+  "name": "B505E056417C8655",
+  "key": "5D3566BC6D7249593E7B21AF39396187",
+  "note": "[1.56] Kanezaka Mini Challenge"
+ },
+ "15A": {
+  "name": "DBEFFEABDA372A51",
+  "key": "BA7B94B1D4D6C7F3A975F8C60EEB56A6",
+  "note": "[1.57] Path to Pro 2021"
+ },
+ "15B": {
+  "name": "26895BEDD4F8D34C",
+  "key": "396DDE7E227261649232D3A06B840F5E",
+  "note": "[1.57] Lunar New Year 2021 (Ox)"
+ },
+ "15C": {
+  "name": "B98821CC07CBAE8F",
+  "key": "7CBB7375D23591FA7CA23539AFEC67B1",
+  "note": "[1.56b] ???"
+ },
+ "15E": {
+  "name": "F6A88BF71420A298",
+  "key": "E1638355D18242E2693AE123D698043B",
+  "note": "[1.57] Blizzcon 2021 Reinhardt Skin"
+ },
+ "164": {
+  "name": "C0318B3C23B8783B",
+  "key": "4A882EE315506E1CB838EBA5B29593D3",
+  "note": "[1.58] ???"
+ },
+ "165": {
+  "name": "72184DCD18CDE7B0",
+  "key": "DD20CB89E036596682448D98CFBA4839",
+  "note": "[1.58] PachiMarchi Mini Challenge / Competitive Season 27"
+ },
+ "166": {
+  "name": "E88EA7E6876D1D87",
+  "key": "E2B5666ED9C1C6E44C4E55FAE9781A7B",
+  "note": "[1.58.1] OWL MvP & Grand Finals Skins"
+ },
+ "168": {
+  "name": "C20108ACEC2DDDC8",
+  "key": "88B3FE7498775C78D3CE143CFD6AE9DA",
+  "note": "[1.59] ???"
+ },
+ "169": {
+  "name": "4ACB69358E1041B1",
+  "key": "543F612A0BE7EF9CE5FCAEE1BE8AC93F",
+  "note": "[1.59] Archives 2021 / Competitive Season 28"
+ },
+ "16A": {
+  "name": "7C2898181E327ECE",
+  "key": "37B351B1EBDA1E2ED64EFFD7AD7CC9FB",
+  "note": "[1.61] ???"
+ },
+ "16B": {
+  "name": "A13EE3E86EDCAAC0",
+  "key": "B471744214A7C9E76680A1AE6AEF6DF3",
+  "note": "[1.59.1] Mei OWL Skin"
+ },
+ "16C": {
+  "name": "B2CFB328AB6B2CE1",
+  "key": "B39E50E761F14B9D1E20FC84C037180D",
+  "note": "[1.60] ???"
+ },
+ "16D": {
+  "name": "755C396C36F63C3F",
+  "key": "2B80AFDDE63C64A41852B615C8427553",
+  "note": "[1.60] Anniversary 2021"
+ },
+ "16E": {
+  "name": "B5DBDD8E9D9F79AF",
+  "key": "B740A344A10D9EDC1E55746F9AB15CB5",
+  "note": "[1.61] ???"
+ },
+ "16F": {
+  "name": "E9F46FBDA2AF4CEA",
+  "key": "C67A01E359568036DCF7BC58B26B4A60",
+  "note": "[1.61] Ashe's Deadlock Mini Challenge / Competitive Season 29"
+ },
+ "171": {
+  "name": "A81A551E36F06593",
+  "key": "4CD4064B0FAFA0A61D5F0A93A8C9D781",
+  "note": "[1.60.1] Widowmaker OWL Skin"
+ },
+ "172": {
+  "name": "25BD551AA3E59CE8",
+  "key": "33B92E3DD1B6EAB6BD540F83661431B7",
+  "note": "[1.61.1] Ana OWL Skin"
+ },
+ "176": {
+  "name": "092D97698AB698F8",
+  "key": "4AF36D946E613DC2543E8A9C6B568565",
+  "note": "[1.60.1] \"Rainbow\" Icon"
+ },
+ "177": {
+  "name": "49E2D0C0F882CB5E",
+  "key": "7103154DA416AA7A938A84E334BD2865",
+  "note": "[1.62] ???"
+ },
+ "178": {
+  "name": "DF47AE62D6B9A486",
+  "key": "2D99F57454E6B6E36D3890976D47300D",
+  "note": "[1.62] Summer Games 2021"
+ },
+ "179": {
+  "name": "666C3BA371DF6A89",
+  "key": "417AD15F54EDECF815631CB959BEFAEA",
+  "note": "[1.63] Competitive Season 30"
+ },
+ "17A": {
+  "name": "0E88DA692E39D077",
+  "key": "62C6DCEB816A114A09445507F774FC75",
+  "note": "[1.63] Legacy OWL Skin Crap"
+ },
+ "17B": {
+  "name": "027D26EBCA810211",
+  "key": "A6C4C7B50D8D33FDEB581FAFE222FEA7",
+  "note": "[1.63] Bastion OWL Skin"
+ },
+ "17C": {
+  "name": "C008F40BD55D7E76",
+  "key": "2069BDF84A2952BF006889184BD43976",
+  "note": "[1.64] ???"
+ },
+ "17D": {
+  "name": "5443B374197DAE15",
+  "key": "343760252D7937CF2732D0879C1066C3",
+  "note": "[1.64] Competitive 3v3 Elimination 2021"
+ },
+ "17E": {
+  "name": "18CA191EADD6EBD8",
+  "key": "5ED075606E0CDFADECD485EDC2F5BC17",
+  "note": "[1.64] OWL All Stars Skin Vault"
+ },
+ "17F": {
+  "name": "6A8CDCC7A0C500D8",
+  "key": "863DD3C5B3AEBDE48238AAD9A8BB2CBC",
+  "note": "[1.66] McCree New Blood Challenge"
+ },
+ "180": {
+  "name": "837A616BB73DE209",
+  "key": "A0E76680DDB1E59A211E1B79718D2F4C",
+  "note": "[1.65] ???"
+ },
+ "181": {
+  "name": "5D21A47DB7D0132D",
+  "key": "502E739C833B8FA195EC5AA1AA033743",
+  "note": "[1.65] Halloween Terror 2021 / Competitive Season 31 / OWL Sprays"
+ },
+ "182": {
+  "name": "22C966A20F94E455",
+  "key": "024F6BC8D5528C5AFDFBE295D684DA64",
+  "note": "[1.66] ???"
+ },
+ "183": {
+  "name": "7B6F2669DBC0D349",
+  "key": "1519A39CF18716861962CE2B73819206",
+  "note": "[1.66] ???"
+ },
+ "184": {
+  "name": "CD6E9288A589C56B",
+  "key": "04537A4A31090A26C1824A3B4BEB3BAB",
+  "note": "[1.67] ???"
+ },
+ "185": {
+  "name": "66EC03F9A64F7C76",
+  "key": "1BD46F4013D3CD7FABC63B318041F2A6",
+  "note": "[1.67] ???"
+ },
+ "187": {
+  "name": "6D93B683A0AA92FE",
+  "key": "706FAF95A85CB238C86735F85B0F6FC7",
+  "note": "[1.68] ???"
+ },
+ "188": {
+  "name": "30C4FCFD17F18F63",
+  "key": "5E4F0D15C93A989F53A59C83F195D44B",
+  "note": "[1.68] ???"
+ },
+ "189": {
+  "name": "C658E67E69912244",
+  "key": "F9E20EB51EE145485E11DA4FF959817F",
+  "note": "[1.69] Reaper Challenge"
+ },
+ "195": {
+  "name": "7D561385AAD2AB53",
+  "key": "2A1615AB434640B1A3D7347CC45B0B5E",
+  "note": "[1.70] Competitive 6v6 Elim Season 5 / Ukraine Flag"
+ },
+ "196": {
+  "name": "D7B2F07FE90A6E85",
+  "key": "8A5F52A09DCB15B2EF76DA972885866C",
+  "note": "[1.71] Anniversary Remix Vol 1"
+ },
+ "197": {
+  "name": "FD9930F17F3C5E8C",
+  "key": "020AC07288FE40754FD7D634DD1B872C",
+  "note": "[1.72] Anniversary Remix Vol 2"
+ },
+ "198": {
+  "name": "C96A78D36B923E65",
+  "key": "5C49FEDA7B8A10183EF900F20DEB0472",
+  "note": "[1.73] Anniversary Remix Vol 3"
+ },
+ "1A1": {
+  "name": "E5683ACDF4657E5C",
+  "key": "090A708E52059F433D01F50D099CB69A",
+  "note": "[1.72.1] Founders Skins"
+ },
+ "1A2": {
+  "name": "CA45762A1A086A89",
+  "key": "D2347C04C5689CAE09682A16F1337517",
+  "note": "[1.72.1] Medic Brigitte Event"
+ },
+ "1A3": {
+  "name": "28B8EBB462B83EEA",
+  "key": "238BA6993D60A97A464CEBB4AAC438B5",
+  "note": "[1.74] ???"
+ },
+ "1A5": {
+  "name": "6D162DA3E1E9BE15",
+  "key": "27825B802D8C2C7C5E22EACBBB062F86",
+  "note": "[1.72.2] Mercy OWL Skin"
+ }
+}

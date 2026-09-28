@@ -1,0 +1,3183 @@
+{
+  "000000000002.075": {
+    "GUID": "000000000002.075",
+    "Name": "Reaper",
+    "Description": "Some speak of a black-robed terrorist known only as the Reaper. His identity and motives are a mystery. What is known is that where he appears, death follows.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#1D0003 1",
+    "sRGBColor": "#5E0020 1",
+    "GalleryColor": {
+      "R": 0.111932434,
+      "G": 0,
+      "B": 0.010329823,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Death Blossom",
+        "Description": "Damage all nearby enemies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000A3.0B6",
+        "TextureGUID": "000000001306.004"
+      },
+      {
+        "Name": "Hellfire Shotguns",
+        "Description": "Short-range spread weapons.",
+        "Category": "Weapon",
+        "MovieGUID": "00000000009C.0B6",
+        "TextureGUID": "000000001338.004"
+      },
+      {
+        "Name": "Shadow Step",
+        "Description": "Teleport to a targeted location.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000CF.0B6",
+        "TextureGUID": "000000001307.004"
+      },
+      {
+        "Name": "The Reaping",
+        "Description": "Dealing damage heals you.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "000000003FCF.004"
+      },
+      {
+        "Name": "Wraith Form",
+        "Description": "Move faster and become invulnerable, but you cannot shoot.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000B5.0B6",
+        "TextureGUID": "000000001308.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FE.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D9B.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128A.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0D.004"
+      }
+    ]
+  },
+  "000000000003.075": {
+    "GUID": "000000000003.075",
+    "Name": "Tracer",
+    "Description": "The former Overwatch agent known as Tracer is a time-jumping adventurer and an irrepressible force for good.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#BA3200 1",
+    "sRGBColor": "#DD7900 1",
+    "GalleryColor": {
+      "R": 0.73046076,
+      "G": 0.19461784,
+      "B": 0,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Blink",
+        "Description": "Teleport in the direction you are moving.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E6.0B6",
+        "TextureGUID": "000000001310.004"
+      },
+      {
+        "Name": "Recall",
+        "Description": "Travel back in time to your previous location and health.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000DD.0B6",
+        "TextureGUID": "000000001312.004"
+      },
+      {
+        "Name": "Pulse Bomb",
+        "Description": "Throw out a powerful sticky explosive.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "00000000009F.0B6",
+        "TextureGUID": "000000001311.004"
+      },
+      {
+        "Name": "Pulse Pistols",
+        "Description": "Short-range automatic weapons.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000AF.0B6",
+        "TextureGUID": "00000000133C.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006505.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007DF7.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128E.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C14.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FDD.004"
+      }
+    ]
+  },
+  "000000000004.075": {
+    "GUID": "000000000004.075",
+    "Name": "Mercy",
+    "Description": "A guardian angel to those who come under her care, Mercy is a peerless healer, a brilliant scientist, and a staunch advocate for peace.",
+    "Class": "Support",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#F4E26B 1",
+    "sRGBColor": "#FAF2AC 1",
+    "GalleryColor": {
+      "R": 0.9559733,
+      "G": 0.8879231,
+      "B": 0.4178851,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Caduceus Staff ",
+        "Description": "Hold to heal an ally.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000F0.0B6",
+        "TextureGUID": "000000001332.004"
+      },
+      {
+        "Name": "Guardian Angel",
+        "Description": "Fly towards an ally.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000A4.0B6",
+        "TextureGUID": "0000000012F3.004"
+      },
+      {
+        "Name": "Caduceus Staff",
+        "Description": "Hold to increase an ally's damage inflicted.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000E0.0B6",
+        "TextureGUID": "000000001332.004"
+      },
+      {
+        "Name": "Resurrect",
+        "Description": "Revive a dead teammate.",
+        "Category": "Ability",
+        "MovieGUID": null,
+        "TextureGUID": "000000011E06.004"
+      },
+      {
+        "Name": "Caduceus Blaster",
+        "Description": "Automatic weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000BE.0B6",
+        "TextureGUID": "000000001331.004"
+      },
+      {
+        "Name": "Angelic Descent",
+        "Description": "Fall very slowly.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000D7.0B6",
+        "TextureGUID": "0000000012F6.004"
+      },
+      {
+        "Name": "Regeneration",
+        "Description": "Automatically heal over time.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "0000000029E9.004"
+      },
+      {
+        "Name": "Valkyrie",
+        "Description": "Gain the ability to fly. Abilities are enhanced.",
+        "Category": "UltimateAbility",
+        "MovieGUID": null,
+        "TextureGUID": "000000011E07.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F2.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D15.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001288.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012BFE.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FCF.004"
+      }
+    ]
+  },
+  "000000000005.075": {
+    "GUID": "000000000005.075",
+    "Name": "Hanzo",
+    "Description": "Mastering his skills as a bowman and an assassin, Hanzo Shimada strives to prove himself as a warrior without peer.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#726421 1",
+    "sRGBColor": "#B1A765 1",
+    "GalleryColor": {
+      "R": 0.44520122,
+      "G": 0.3915725,
+      "B": 0.13013647,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Dragonstrike",
+        "Description": "Launch a deadly Dragon Spirit that devastates enemies it passes through.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000E1.0B6",
+        "TextureGUID": "0000000012F7.004"
+      },
+      {
+        "Name": "Storm Arrows",
+        "Description": "The next 5 arrows fire instantly at reduced damage.",
+        "Category": "Ability",
+        "MovieGUID": "000000000189.0B6",
+        "TextureGUID": "000000016F30.004"
+      },
+      {
+        "Name": "Sonic Arrow",
+        "Description": "Reveals enemies for a short time upon impact.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000EA.0B6",
+        "TextureGUID": "0000000012F9.004"
+      },
+      {
+        "Name": "Storm Bow",
+        "Description": "Hold to charge then release to launch arrows further.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000D1.0B6",
+        "TextureGUID": "000000001333.004"
+      },
+      {
+        "Name": "Wall Climb",
+        "Description": "Jump at walls to climb up them.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "00000000009B.0B6",
+        "TextureGUID": "0000000029E9.004"
+      },
+      {
+        "Name": "Lunge",
+        "Description": "Double Jump.",
+        "Category": "Ability",
+        "MovieGUID": "00000000018A.0B6",
+        "TextureGUID": "000000014F0C.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F3.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D23.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001287.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012BFF.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD0.004"
+      }
+    ]
+  },
+  "000000000006.075": {
+    "GUID": "000000000006.075",
+    "Name": "Torbjörn",
+    "Description": "At its height, Overwatch possessed one of the most advanced armaments on the planet, which could be traced to the workshop of an ingenious engineer named Torbjörn Lindholm.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#7D120D 1",
+    "sRGBColor": "#B94D41 1",
+    "GalleryColor": {
+      "R": 0.4910209,
+      "G": 0.07227185,
+      "B": 0.049706567,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Deploy Turret",
+        "Description": "Deploy a self-building turret. ",
+        "Category": "Ability",
+        "MovieGUID": "0000000001CC.0B6",
+        "TextureGUID": "000000001301.004"
+      },
+      {
+        "Name": "Overload",
+        "Description": "Gain additional armor as well as improved attack, movement, and reload speed. ",
+        "Category": "Ability",
+        "MovieGUID": "0000000001CA.0B6",
+        "TextureGUID": "0000000013A1.004"
+      },
+      {
+        "Name": "Molten Core",
+        "Description": "Create pools of molten slag that damage enemies. Deals additional damage to armor.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000001CE.0B6",
+        "TextureGUID": "00000001B650.004"
+      },
+      {
+        "Name": "Rivet Gun",
+        "Description": "Slow firing, long-ranged weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001CD.0B6",
+        "TextureGUID": "000000001336.004"
+      },
+      {
+        "Name": "Rivet Gun - Alt Fire",
+        "Description": "Inaccurate but powerful short-range weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001CB.0B6",
+        "TextureGUID": "000000001336.004"
+      },
+      {
+        "Name": "Forge Hammer",
+        "Description": "Swing to repair your turret or damage an enemy.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001C9.0B6",
+        "TextureGUID": "000000001335.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FA.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D6C.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128D.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C08.004"
+      }
+    ]
+  },
+  "000000000007.075": {
+    "GUID": "000000000007.075",
+    "Name": "Reinhardt",
+    "Description": "Reinhardt Wilhelm styles himself as a champion of a bygone age, who lives by the knightly codes of valor, justice, and courage.",
+    "Class": "Tank",
+    "Gender": "Male",
+    "Size": "Large",
+    "Color": "#334243 1",
+    "sRGBColor": "#7B8A8B 1",
+    "GalleryColor": {
+      "R": 0.20155625,
+      "G": 0.25818288,
+      "B": 0.2622507,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Charge",
+        "Description": "Charge forward and smash an enemy against a wall.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000F1.0B6",
+        "TextureGUID": "000000001303.004"
+      },
+      {
+        "Name": "Earthshatter",
+        "Description": "Knock down all enemies in front of you.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000BC.0B6",
+        "TextureGUID": "000000001304.004"
+      },
+      {
+        "Name": "Fire Strike",
+        "Description": "Launch a fiery projectile.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000EF.0B6",
+        "TextureGUID": "000000001305.004"
+      },
+      {
+        "Name": "Rocket Hammer",
+        "Description": "Devastating melee weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000CE.0B6",
+        "TextureGUID": "000000001337.004"
+      },
+      {
+        "Name": "Barrier Field",
+        "Description": "Hold %1$s to deploy a frontal energy barrier.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E2.0B6",
+        "TextureGUID": "00000000133D.004"
+      },
+      {
+        "Name": "Steadfast",
+        "Description": "Resistant to knock back effects.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "000000020F3E.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FB.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D76.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128B.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C09.004"
+      }
+    ]
+  },
+  "000000000008.075": {
+    "GUID": "000000000008.075",
+    "Name": "Pharah",
+    "Description": "Pharah's commitment to duty runs in her blood. She comes from a long line of highly decorated soldiers and burns with the desire to serve with honor.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#001980 1",
+    "sRGBColor": "#0059BB 1",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0.097587354,
+      "B": 0.5028865,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Barrage",
+        "Description": "Launch a continuous volley of mini-rockets.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000B8.0B6",
+        "TextureGUID": "0000000013EB.004"
+      },
+      {
+        "Name": "Jump Jet",
+        "Description": "Fly rapidly upwards.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000BF.0B6",
+        "TextureGUID": "00000000130A.004"
+      },
+      {
+        "Name": "Concussive Blast",
+        "Description": "Launch an explosive blast to knock back enemies.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E3.0B6",
+        "TextureGUID": "000000001309.004"
+      },
+      {
+        "Name": "Rocket Launcher",
+        "Description": "Long-range explosive projectile weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000D8.0B6",
+        "TextureGUID": "000000001339.004"
+      },
+      {
+        "Name": "Hover Jets",
+        "Description": "Hold to hover.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "000000000096.0B6",
+        "TextureGUID": "0000000029E9.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006500.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007E2F.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001289.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0F.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD9.004"
+      }
+    ]
+  },
+  "000000000009.075": {
+    "GUID": "000000000009.075",
+    "Name": "Winston",
+    "Description": "A super-intelligent, genetically engineered gorilla, Winston is a brilliant scientist and a champion for humanity's potential.",
+    "Class": "Tank",
+    "Gender": "Male",
+    "Size": "Large",
+    "Color": "#46496C 1",
+    "sRGBColor": "#8E91AD 1",
+    "GalleryColor": {
+      "R": 0.27467734,
+      "G": 0.28744087,
+      "B": 0.4232677,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Jump Pack",
+        "Description": "Leap forward into the air. Landing on an enemy damages them.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000C8.0B6",
+        "TextureGUID": "00000000130B.004"
+      },
+      {
+        "Name": "Primal Rage",
+        "Description": "Gain immense health, but you can only leap and punch enemies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000CB.0B6",
+        "TextureGUID": "00000000130C.004"
+      },
+      {
+        "Name": "Barrier Projector",
+        "Description": "Deploy a protective energy dome.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E8.0B6",
+        "TextureGUID": "00000000130D.004"
+      },
+      {
+        "Name": "Tesla Cannon",
+        "Description": "Electric frontal-cone weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000E7.0B6",
+        "TextureGUID": "00000000133A.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006501.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007DB9.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001290.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C10.004"
+      }
+    ]
+  },
+  "00000000000A.075": {
+    "GUID": "00000000000A.075",
+    "Name": "Widowmaker",
+    "Description": "Widowmaker is the perfect assassin: a patient, ruthlessly efficient killer who shows neither emotion nor remorse.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#420D46 1",
+    "sRGBColor": "#8A418E 1",
+    "GalleryColor": {
+      "R": 0.25818288,
+      "G": 0.049706567,
+      "B": 0.27467734,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Grappling Hook",
+        "Description": "Launch a hook that pulls you towards a ledge.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000BA.0B6",
+        "TextureGUID": "000000001313.004"
+      },
+      {
+        "Name": "Infra-Sight",
+        "Description": "Provide your team with a view of the enemy's location.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000CD.0B6",
+        "TextureGUID": "000000001314.004"
+      },
+      {
+        "Name": "Venom Mine",
+        "Description": "Launch a poison trap.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000C5.0B6",
+        "TextureGUID": "000000001315.004"
+      },
+      {
+        "Name": "Widow's Kiss",
+        "Description": "Automatic assault weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000C2.0B6",
+        "TextureGUID": "000000001407.004"
+      },
+      {
+        "Name": "Sniper Mode",
+        "Description": "Hold for long-ranged sniper weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000D3.0B6",
+        "TextureGUID": null
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006506.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007E24.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128F.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C15.004"
+      }
+    ]
+  },
+  "000000000015.075": {
+    "GUID": "000000000015.075",
+    "Name": "Bastion",
+    "Description": "Once a frontline combatant in the Omnic Crisis, this curious Bastion unit now explores the world, fascinated by nature but wary of a fearful humanity.",
+    "Class": "Damage",
+    "Gender": "Generic",
+    "Size": "Large",
+    "Color": "#1B2C15 1",
+    "sRGBColor": "#5B7252 1",
+    "GalleryColor": {
+      "R": 0.10461649,
+      "G": 0.17144111,
+      "B": 0.082282715,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Self-Repair",
+        "Description": "Hold to heal yourself.",
+        "Category": "Ability",
+        "MovieGUID": "000000000100.0B6",
+        "TextureGUID": "0000000012FE.004"
+      },
+      {
+        "Name": "Reconfigure",
+        "Description": "Switch between weapon configurations.",
+        "Category": "Ability",
+        "MovieGUID": "000000000104.0B6",
+        "TextureGUID": "0000000012FF.004"
+      },
+      {
+        "Name": "Configuration: Sentry",
+        "Description": "Immobile with a powerful rotary cannon.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000102.0B6",
+        "TextureGUID": "000000001BAD.004"
+      },
+      {
+        "Name": "Configuration: Recon",
+        "Description": "Mobile with a light automatic weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000101.0B6",
+        "TextureGUID": "0000000016F3.004"
+      },
+      {
+        "Name": "Configuration: Tank",
+        "Description": "Mobile with a powerful cannon.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000103.0B6",
+        "TextureGUID": "000000002A8A.004"
+      },
+      {
+        "Name": "Ironclad",
+        "Description": "Reduces damage taken while transformed.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "0000000029E9.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F9.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D60.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001285.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C06.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD6.004"
+      }
+    ]
+  },
+  "000000000016.075": {
+    "GUID": "000000000016.075",
+    "Name": "Symmetra",
+    "Description": "Symmetra literally bends reality. By manipulating hard-light constructs, she crafts the world as she wishes it to be, in hopes of engineering a perfect society.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#2E7495 1",
+    "sRGBColor": "#75B3C8 1",
+    "GalleryColor": {
+      "R": 0.18116425,
+      "G": 0.45641103,
+      "B": 0.58407843,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Photon Projector",
+        "Description": "Short-range beam weapon with increasing damage. Damaging Barriers does not consume ammunition.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001AF.0B6",
+        "TextureGUID": "00000000133B.004"
+      },
+      {
+        "Name": "Photon Projector",
+        "Description": "Hold to charge, release to fire explosive orb.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001B2.0B6",
+        "TextureGUID": "00000000133B.004"
+      },
+      {
+        "Name": "Sentry Turret",
+        "Description": "Deploy a small turret that damages and slows enemies.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001B5.0B6",
+        "TextureGUID": "00000000130E.004"
+      },
+      {
+        "Name": "Photon Barrier",
+        "Description": "Deploy a massive energy barrier.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000001B4.0B6",
+        "TextureGUID": "000000017CE7.004"
+      },
+      {
+        "Name": "Teleporter",
+        "Description": "Create two teleporters that enable instant travel between them.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001AE.0B6",
+        "TextureGUID": "00000000130F.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006504.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007DE5.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000128C.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C13.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FDC.004"
+      }
+    ]
+  },
+  "000000000020.075": {
+    "GUID": "000000000020.075",
+    "Name": "Zenyatta",
+    "Description": "Zenyatta is an omnic monk who wanders the world in search of spiritual enlightenment. It is said that those who cross his path are never the same again.",
+    "Class": "Support",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#F8DA1A 1",
+    "sRGBColor": "#FCED5A 1",
+    "GalleryColor": {
+      "R": 0.9734453,
+      "G": 0.8549926,
+      "B": 0.10224174,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Orb of Destruction",
+        "Description": "Energy projectile weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000AA.0B6",
+        "TextureGUID": "000000001334.004"
+      },
+      {
+        "Name": "Orb of Destruction",
+        "Description": "Charge to release more projectiles.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000DE.0B6",
+        "TextureGUID": "000000001334.004"
+      },
+      {
+        "Name": "Orb of Discord",
+        "Description": "Launch this orb at an enemy to increase the damage they take.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000CC.0B6",
+        "TextureGUID": "0000000012FA.004"
+      },
+      {
+        "Name": "Orb of Harmony",
+        "Description": "Launch this orb at an ally to heal them.",
+        "Category": "Ability",
+        "MovieGUID": "000000000093.0B6",
+        "TextureGUID": "0000000012FB.004"
+      },
+      {
+        "Name": "Transcendence",
+        "Description": "Become invulnerable, move faster, and heal nearby allies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000DA.0B6",
+        "TextureGUID": "0000000012FC.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F5.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007C77.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001291.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C01.004"
+      }
+    ]
+  },
+  "000000000029.075": {
+    "GUID": "000000000029.075",
+    "Name": "Genji",
+    "Description": "Genji Shimada has made peace with the cyborg body he once rejected, and in doing so, he has discovered a higher humanity.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#37F600 1",
+    "sRGBColor": "#7FFB00 1",
+    "GalleryColor": {
+      "R": 0.21586053,
+      "G": 0.9646863,
+      "B": 0,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Dragonblade",
+        "Description": "Unsheathe a deadly melee weapon.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000097.0B6",
+        "TextureGUID": "000000004E93.004"
+      },
+      {
+        "Name": "Deflect",
+        "Description": "Deflect incoming projectiles towards the direction you are aiming and block melee attacks.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E5.0B6",
+        "TextureGUID": "000000004E95.004"
+      },
+      {
+        "Name": "Swift Strike",
+        "Description": "Rapidly dash forward and inflict damage on enemies. Eliminations reset the cooldown.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000C4.0B6",
+        "TextureGUID": "000000004E94.004"
+      },
+      {
+        "Name": "Shuriken",
+        "Description": "Throw an accurate burst of 3 projectiles.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000B0.0B6",
+        "TextureGUID": "000000004E83.004"
+      },
+      {
+        "Name": "Fan of Blades",
+        "Description": "Throw a fan of 3 projectiles in an arc.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000AC.0B6",
+        "TextureGUID": "000000004E83.004"
+      },
+      {
+        "Name": "Cyber-Agility",
+        "Description": "Climb on walls and double jump.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "0000000000A2.0B6",
+        "TextureGUID": "0000000029E9.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006502.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007DC5.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001286.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C11.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FDA.004"
+      }
+    ]
+  },
+  "000000000040.075": {
+    "GUID": "000000000040.075",
+    "Name": "Roadhog",
+    "Description": "Roadhog is a ruthless killer with a well-earned reputation for cruelty and wanton destruction.",
+    "Class": "Tank",
+    "Gender": "Male",
+    "Size": "Large",
+    "Color": "#6C2903 1",
+    "sRGBColor": "#AD6F22 1",
+    "GalleryColor": {
+      "R": 0.4232677,
+      "G": 0.15896083,
+      "B": 0.011612245,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Whole Hog",
+        "Description": "Damage and knock back enemies in front of you.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000D6.0B6",
+        "TextureGUID": "000000003382.004"
+      },
+      {
+        "Name": "Scrap Gun",
+        "Description": "Short-range spread weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000BB.0B6",
+        "TextureGUID": "000000003383.004"
+      },
+      {
+        "Name": "Scrap Gun",
+        "Description": "Medium-range spread weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000D0.0B6",
+        "TextureGUID": "000000003383.004"
+      },
+      {
+        "Name": "Chain Hook",
+        "Description": "Drag a targeted enemy to you.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000B9.0B6",
+        "TextureGUID": "000000003381.004"
+      },
+      {
+        "Name": "Take a Breather",
+        "Description": "Heal yourself and reduce damage taken over a short time.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000A8.0B6",
+        "TextureGUID": "000000003380.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FF.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007CD3.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000012C0E.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0E.004"
+      }
+    ]
+  },
+  "000000000042.075": {
+    "GUID": "000000000042.075",
+    "Name": "Cassidy",
+    "Description": "Armed with his Peacekeeper revolver, the outlaw Cole Cassidy doles out justice on his own terms.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#610605 1",
+    "sRGBColor": "#A52D2B 1",
+    "GalleryColor": {
+      "R": 0.38132605,
+      "G": 0.022173885,
+      "B": 0.020288564,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Deadeye",
+        "Description": "Face off against your enemies. Press %1$s to lock on, then %1$s or %2$s to fire.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000D5.0B6",
+        "TextureGUID": "000000002693.004"
+      },
+      {
+        "Name": "Combat Roll",
+        "Description": "Roll in the direction you're moving and reload.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000C7.0B6",
+        "TextureGUID": "000000002692.004"
+      },
+      {
+        "Name": "Flashbang",
+        "Description": "Stun enemies in front of you.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000B1.0B6",
+        "TextureGUID": "000000002694.004"
+      },
+      {
+        "Name": "Peacekeeper",
+        "Description": "Accurate, powerful revolver.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000DB.0B6",
+        "TextureGUID": "000000002697.004"
+      },
+      {
+        "Name": "Peacekeeper",
+        "Description": "Wildly fire remaining rounds.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000B3.0B6",
+        "TextureGUID": "000000002697.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F4.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D2E.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000001656.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C00.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD1.004"
+      }
+    ]
+  },
+  "000000000065.075": {
+    "GUID": "000000000065.075",
+    "Name": "Junkrat",
+    "Description": "Junkrat is an explosives-obsessed freak who lives to cause chaos and destruction.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#ED7202 1",
+    "sRGBColor": "#F7B11D 1",
+    "GalleryColor": {
+      "R": 0.9301109,
+      "G": 0.44520122,
+      "B": 0.008568126,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Frag Launcher",
+        "Description": "Bouncing explosive projectile weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "00000000009A.0B6",
+        "TextureGUID": "000000004E58.004"
+      },
+      {
+        "Name": "Concussion Mine",
+        "Description": "Throw a knockback mine with %1$s then detonate it with %2$s.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000E9.0B6",
+        "TextureGUID": "000000004E57.004"
+      },
+      {
+        "Name": "Steel Trap",
+        "Description": "Place an immobilizing trap.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000EB.0B6",
+        "TextureGUID": "000000004E56.004"
+      },
+      {
+        "Name": "RIP-Tire",
+        "Description": "Drive and detonate an exploding tire.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000C3.0B6",
+        "TextureGUID": "000000004E55.004"
+      },
+      {
+        "Name": "Total Mayhem",
+        "Description": "Deals no damage to self with explosives. Drop bombs on death.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "0000000000EE.0B6",
+        "TextureGUID": "000000004E54.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F6.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D39.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000227D.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C02.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD2.004"
+      }
+    ]
+  },
+  "000000000068.075": {
+    "GUID": "000000000068.075",
+    "Name": "Zarya",
+    "Description": "Zarya is one of the world's strongest women, a celebrated athlete who sacrificed personal glory to protect her family, friends, and country in a time of war.",
+    "Class": "Tank",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#EB1D61 1",
+    "sRGBColor": "#F65EA5 1",
+    "GalleryColor": {
+      "R": 0.92158186,
+      "G": 0.111932434,
+      "B": 0.38132605,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Graviton Surge",
+        "Description": "Launch a gravity well that pulls enemies to it.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000AB.0B6",
+        "TextureGUID": "000000002695.004"
+      },
+      {
+        "Name": "Particle Barrier",
+        "Description": "Create a damage barrier around you.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000D4.0B6",
+        "TextureGUID": "000000002699.004"
+      },
+      {
+        "Name": "Projected Barrier",
+        "Description": "Create a damage barrier around an ally.",
+        "Category": "Ability",
+        "MovieGUID": "00000000009E.0B6",
+        "TextureGUID": "000000002698.004"
+      },
+      {
+        "Name": "Particle Cannon",
+        "Description": "Short-range linear beam weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000A0.0B6",
+        "TextureGUID": "000000002696.004"
+      },
+      {
+        "Name": "Particle Cannon",
+        "Description": "Energy grenade launcher.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000092.0B6",
+        "TextureGUID": "000000002696.004"
+      },
+      {
+        "Name": "Energy",
+        "Description": "Damage blocked by barriers increases Particle Cannon damage.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "000000003FD1.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FD.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D90.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000002284.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0C.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD7.004"
+      }
+    ]
+  },
+  "00000000006E.075": {
+    "GUID": "00000000006E.075",
+    "Name": "Soldier: 76",
+    "Description": "Currently the target of an international manhunt, the vigilante known as Soldier: 76 wages a personal war to expose the truth behind Overwatch's collapse.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#0F162D 1",
+    "sRGBColor": "#465374 1",
+    "GalleryColor": {
+      "R": 0.057805438,
+      "G": 0.084376216,
+      "B": 0.17788842,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Sprint",
+        "Description": "Run faster while moving forward.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000C9.0B6",
+        "TextureGUID": "000000014ADF.004"
+      },
+      {
+        "Name": "Biotic Field",
+        "Description": "Deploy a field that heals you and your allies.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000AE.0B6",
+        "TextureGUID": "00000000333A.004"
+      },
+      {
+        "Name": "Heavy Pulse Rifle",
+        "Description": "Automatic assault weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000098.0B6",
+        "TextureGUID": "000000003592.004"
+      },
+      {
+        "Name": "Helix Rockets",
+        "Description": "Launch a volley of explosive rockets.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000B6.0B6",
+        "TextureGUID": "000000003C1A.004"
+      },
+      {
+        "Name": "Tactical Visor",
+        "Description": "Automatically aims your weapon at targets in view.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000F2.0B6",
+        "TextureGUID": "00000000356C.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000006503.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007DA7.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000227F.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C12.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FDB.004"
+      }
+    ]
+  },
+  "000000000079.075": {
+    "GUID": "000000000079.075",
+    "Name": "Lúcio",
+    "Description": "Lúcio is an international celebrity and musician who inspires social change through his music and actions.",
+    "Class": "Support",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#238E02 1",
+    "sRGBColor": "#67C41F 1",
+    "GalleryColor": {
+      "R": 0.13563333,
+      "G": 0.55834043,
+      "B": 0.009721218,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Crossfade",
+        "Description": "Switches between two songs: Healing Boost heals nearby allies, and Speed Boost makes nearby allies move faster.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000D9.0B6",
+        "TextureGUID": "000000003E78.004"
+      },
+      {
+        "Name": "Amp It Up",
+        "Description": "Increase the effectiveness of your current song.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000DC.0B6",
+        "TextureGUID": "000000003C5E.004"
+      },
+      {
+        "Name": "Sonic Amplifier",
+        "Description": "Sonic projectile launcher.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000094.0B6",
+        "TextureGUID": "0000000035CD.004"
+      },
+      {
+        "Name": "Soundwave",
+        "Description": "Create a short-range blast wave to knock enemies away from you.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000DF.0B6",
+        "TextureGUID": "000000003E7A.004"
+      },
+      {
+        "Name": "Sound Barrier",
+        "Description": "Create temporary shields for nearby allies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000B2.0B6",
+        "TextureGUID": "000000003C5F.004"
+      },
+      {
+        "Name": "Wall Ride",
+        "Description": "Jump onto a wall to ride along it.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "0000000000A6.0B6",
+        "TextureGUID": "0000000029E9.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F7.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D44.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000002286.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C03.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD3.004"
+      }
+    ]
+  },
+  "00000000007A.075": {
+    "GUID": "00000000007A.075",
+    "Name": "D.Va",
+    "Description": "D.Va is a former professional gamer who now uses her skills to pilot a state-of-the-art mech in defense of her country.",
+    "Class": "Tank",
+    "Gender": "Female",
+    "Size": "Large",
+    "Color": "#F83182 1",
+    "sRGBColor": "#FC78BC 1",
+    "GalleryColor": {
+      "R": 0.9734453,
+      "G": 0.19120169,
+      "B": 0.50888133,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Boosters",
+        "Description": "Fly in the direction you are facing.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000A7.0B6",
+        "TextureGUID": "000000004EA2.004"
+      },
+      {
+        "Name": "Defense Matrix",
+        "Description": "Block projectiles in an area in front of you.",
+        "Category": "Ability",
+        "MovieGUID": null,
+        "TextureGUID": "000000004EA1.004"
+      },
+      {
+        "Name": "Self-Destruct",
+        "Description": "Eject and overload your mech, causing it to explode after a short time.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000A1.0B6",
+        "TextureGUID": "000000004EA7.004"
+      },
+      {
+        "Name": "Fusion Cannons",
+        "Description": "Automatic short-range spread weapons.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000F6.0B6",
+        "TextureGUID": "000000004EA8.004"
+      },
+      {
+        "Name": "Micro Missiles",
+        "Description": "Launch a volley of explosive rockets.",
+        "Category": "Ability",
+        "MovieGUID": null,
+        "TextureGUID": "000000011DFA.004"
+      },
+      {
+        "Name": "Eject!",
+        "Description": "Eject out of your mech when it is destroyed.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "0000000000BD.0B6",
+        "TextureGUID": "000000005405.004"
+      },
+      {
+        "Name": "Call Mech",
+        "Description": "Call down a new mech.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000000C0.0B6",
+        "TextureGUID": "000000004EAB.004"
+      },
+      {
+        "Name": "Light Gun",
+        "Description": "Automatic weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000B4.0B6",
+        "TextureGUID": "000000004EA9.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064FC.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D85.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000002285.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0B.004"
+      }
+    ]
+  },
+  "0000000000DD.075": {
+    "GUID": "0000000000DD.075",
+    "Name": "Mei",
+    "Description": "Mei is a climatologist who has taken the fight to preserve the environment and protect the world into her own hands.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#1052DE 1",
+    "sRGBColor": "#4899F0 1",
+    "GalleryColor": {
+      "R": 0.06124606,
+      "G": 0.32314324,
+      "B": 0.8713671,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Blizzard",
+        "Description": "Launch a weather control drone that freezes enemies in a wide area.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000099.0B6",
+        "TextureGUID": "000000004E6C.004"
+      },
+      {
+        "Name": "Cryo-Freeze",
+        "Description": "Become invulnerable and heal yourself.",
+        "Category": "Ability",
+        "MovieGUID": "000000000095.0B6",
+        "TextureGUID": "000000004E6A.004"
+      },
+      {
+        "Name": "Ice Wall",
+        "Description": "Create a wall in front of you.",
+        "Category": "Ability",
+        "MovieGUID": "0000000000B7.0B6",
+        "TextureGUID": "000000004E6B.004"
+      },
+      {
+        "Name": "Endothermic Blaster",
+        "Description": "Short-range spray weapon that freezes.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000C6.0B6",
+        "TextureGUID": "000000004E75.004"
+      },
+      {
+        "Name": "Icicle",
+        "Description": "Long-range icicle launcher.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000000D2.0B6",
+        "TextureGUID": "000000004E75.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000064F8.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007D53.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "0000000023EA.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C05.004"
+      }
+    ]
+  },
+  "00000000012E.075": {
+    "GUID": "00000000012E.075",
+    "Name": "Sombra",
+    "Description": "One of the world's most notorious hackers, Sombra uses information to manipulate those in power.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#150565 1",
+    "sRGBColor": "#522CA8 1",
+    "GalleryColor": {
+      "R": 0.082282715,
+      "G": 0.021219011,
+      "B": 0.39675525,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Translocator",
+        "Description": "Throw a beacon, then press %1$s again to teleport to it. Press %2$s to remove it.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001C8.0B6",
+        "TextureGUID": "000000009F9A.004"
+      },
+      {
+        "Name": "Stealth",
+        "Description": "Become invisible and move quickly.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001C7.0B6",
+        "TextureGUID": "00000000A6B6.004"
+      },
+      {
+        "Name": "Machine Pistol",
+        "Description": "Short-range automatic weapon.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000113.0B6",
+        "TextureGUID": "00000000A180.004"
+      },
+      {
+        "Name": "EMP",
+        "Description": "Hack enemies and destroy enemy shields and barriers around you.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000114.0B6",
+        "TextureGUID": "000000009F75.004"
+      },
+      {
+        "Name": "Hack",
+        "Description": "Hold to hack. Hacked enemies cannot use abilities. Hacked health packs spawn faster but can't be used by enemies. Taking damage interrupts the hack attempt.",
+        "Category": "Ability",
+        "MovieGUID": "000000000115.0B6",
+        "TextureGUID": "00000000A6B5.004"
+      },
+      {
+        "Name": "Opportunist",
+        "Description": "You detect critically injured enemies through walls.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "00000000AFBF.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000009AEE.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "0000000094A6.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "0000000094A3.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C07.004"
+      }
+    ]
+  },
+  "00000000012F.075": {
+    "GUID": "00000000012F.075",
+    "Name": "Doomfist",
+    "Description": "One of the leaders of Talon, Doomfist is determined to plunge the world into a new conflict that he believes will make humanity stronger.",
+    "Class": "Damage",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#220301 1",
+    "sRGBColor": "#662316 1",
+    "GalleryColor": {
+      "R": 0.13286832,
+      "G": 0.0129830325,
+      "B": 0.0047769537,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Seismic Slam",
+        "Description": "Leap forward and smash the ground.",
+        "Category": "Ability",
+        "MovieGUID": "00000000012B.0B6",
+        "TextureGUID": "00000000F445.004"
+      },
+      {
+        "Name": "Rising Uppercut",
+        "Description": "Knock an enemy into the air.",
+        "Category": "Ability",
+        "MovieGUID": "00000000012F.0B6",
+        "TextureGUID": "00000000F44D.004"
+      },
+      {
+        "Name": "Rocket Punch",
+        "Description": "Hold to charge then release to launch forward and knock an enemy back. Damage increases if the enemy hits a wall.",
+        "Category": "Ability",
+        "MovieGUID": "00000000012E.0B6",
+        "TextureGUID": "00000000F446.004"
+      },
+      {
+        "Name": "Meteor Strike",
+        "Description": "Press %1$s to leap up into the air. Move the targeting circle, then press %2$s to strike the targeted area.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "00000000012D.0B6",
+        "TextureGUID": "00000000F448.004"
+      },
+      {
+        "Name": "Hand Cannon",
+        "Description": "Short-range weapon with spread. Reloads automatically.",
+        "Category": "Weapon",
+        "MovieGUID": "00000000012C.0B6",
+        "TextureGUID": "00000000F447.004"
+      },
+      {
+        "Name": "The Best Defense...",
+        "Description": "Dealing damage with abilities creates temporary personal shields.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "00000000F4C2.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000000C3CE.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000000F4D5.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000C421.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C04.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FD4.004"
+      }
+    ]
+  },
+  "00000000013B.075": {
+    "GUID": "00000000013B.075",
+    "Name": "Ana",
+    "Description": "Former second in command of Overwatch, Ana Amari uses her skills and expertise to defend her home and the people she cares for.",
+    "Class": "Support",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#112457 1",
+    "sRGBColor": "#4A699D 1",
+    "GalleryColor": {
+      "R": 0.06480327,
+      "G": 0.14126329,
+      "B": 0.34191445,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": true,
+    "Loadouts": [
+      {
+        "Name": "Sleep Dart",
+        "Description": "Fires a dart that puts an enemy to sleep.",
+        "Category": "Ability",
+        "MovieGUID": "000000000105.0B6",
+        "TextureGUID": "000000009B36.004"
+      },
+      {
+        "Name": "Biotic Rifle",
+        "Description": "Long-range rifle that heals allies and damages enemies.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000107.0B6",
+        "TextureGUID": "000000009AF8.004"
+      },
+      {
+        "Name": "Biotic Grenade",
+        "Description": "Throws a grenade that heals and increases healing on allies, while damaging and preventing healing on enemies.",
+        "Category": "Ability",
+        "MovieGUID": "000000000106.0B6",
+        "TextureGUID": "000000009B37.004"
+      },
+      {
+        "Name": "Nano Boost",
+        "Description": "Increases an ally's damage, while reducing damage taken.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000108.0B6",
+        "TextureGUID": "000000009B38.004"
+      },
+      {
+        "Name": "Zoom",
+        "Description": "Hold to zoom in.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000109.0B6",
+        "TextureGUID": null
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000099CF.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000000962C.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "0000000094A4.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012BFC.004"
+      }
+    ]
+  },
+  "00000000013E.075": {
+    "GUID": "00000000013E.075",
+    "Name": "Orisa",
+    "Description": "Built from parts of one of Numbani's short-lived OR15 defense robots, Orisa is the city's newest protector, though she still has much to learn.",
+    "Class": "Tank",
+    "Gender": "Female",
+    "Size": "Large",
+    "Color": "#012900 1",
+    "sRGBColor": "#176F0C 1",
+    "GalleryColor": {
+      "R": 0.005181517,
+      "G": 0.15896083,
+      "B": 0.001214108,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Protective Barrier",
+        "Description": "Throw a device that creates a barrier.",
+        "Category": "Ability",
+        "MovieGUID": "00000000011E.0B6",
+        "TextureGUID": "00000000D359.004"
+      },
+      {
+        "Name": "Fortify",
+        "Description": "Reduce damage taken and you cannot be stopped.",
+        "Category": "Ability",
+        "MovieGUID": "00000000011D.0B6",
+        "TextureGUID": "00000000D7D2.004"
+      },
+      {
+        "Name": "Halt!",
+        "Description": "Launch a graviton charge with %1$s then detonate it with %2$s. The sphere slows and pulls nearby enemies to it.",
+        "Category": "Ability",
+        "MovieGUID": "00000000011C.0B6",
+        "TextureGUID": "00000000D358.004"
+      },
+      {
+        "Name": "Supercharger",
+        "Description": "Deploy a device that increases damage inflicted by your allies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "00000000011B.0B6",
+        "TextureGUID": "00000000D357.004"
+      },
+      {
+        "Name": "Fusion Driver",
+        "Description": "Automatic projectile weapon. Slows Orisa while firing.",
+        "Category": "Weapon",
+        "MovieGUID": "00000000011A.0B6",
+        "TextureGUID": "00000000D296.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000000B330.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000000D6A3.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000B32F.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012BFD.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FCE.004"
+      }
+    ]
+  },
+  "000000000165.075": {
+    "GUID": "000000000165.075",
+    "Name": null,
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": null
+  },
+  "00000000016B.075": {
+    "GUID": "00000000016B.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "00000000016C.075": {
+    "GUID": "00000000016C.075",
+    "Name": "Friendly Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "00000000016D.075": {
+    "GUID": "00000000016D.075",
+    "Name": "Friendly Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "00000000016E.075": {
+    "GUID": "00000000016E.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "00000000016F.075": {
+    "GUID": "00000000016F.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "000000000170.075": {
+    "GUID": "000000000170.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "000000000171.075": {
+    "GUID": "000000000171.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "000000000172.075": {
+    "GUID": "000000000172.075",
+    "Name": "Training Bot",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000007537.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000007537.004"
+      }
+    ]
+  },
+  "000000000173.075": {
+    "GUID": "000000000173.075",
+    "Name": "Eradicator",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000E0CA.004"
+      }
+    ]
+  },
+  "000000000175.075": {
+    "GUID": "000000000175.075",
+    "Name": "Zomnic",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000AD1A.004"
+      }
+    ]
+  },
+  "000000000176.075": {
+    "GUID": "000000000176.075",
+    "Name": "Shock-Tire",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000AD2F.004"
+      }
+    ]
+  },
+  "000000000177.075": {
+    "GUID": "000000000177.075",
+    "Name": "Zombardier",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000AD19.004"
+      }
+    ]
+  },
+  "000000000178.075": {
+    "GUID": "000000000178.075",
+    "Name": "Slicer",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000E0C9.004"
+      }
+    ]
+  },
+  "000000000179.075": {
+    "GUID": "000000000179.075",
+    "Name": "Nulltrooper",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000E0C5.004"
+      }
+    ]
+  },
+  "00000000017C.075": {
+    "GUID": "00000000017C.075",
+    "Name": "Detonator",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000E0C8.004"
+      }
+    ]
+  },
+  "000000000195.075": {
+    "GUID": "000000000195.075",
+    "Name": "Brigitte",
+    "Description": "Brigitte Lindholm, squire to Reinhardt Wilhelm, is a former mechanical engineer who has decided to take up arms and fight on the front lines to protect those in need.",
+    "Class": "Support",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#2B0806 1",
+    "sRGBColor": "#71362E 1",
+    "GalleryColor": {
+      "R": 0.1682694,
+      "G": 0.033104766,
+      "B": 0.023153368,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Rally",
+        "Description": "Move faster and provide armor to nearby allies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000170.0B6",
+        "TextureGUID": "0000000144A6.004"
+      },
+      {
+        "Name": "Inspire",
+        "Description": "Striking enemies with your flail heals nearby allies.",
+        "Category": "PassiveAbility",
+        "MovieGUID": null,
+        "TextureGUID": "0000000144A8.004"
+      },
+      {
+        "Name": "Repair Pack",
+        "Description": "Heals an ally for a short duration.",
+        "Category": "Ability",
+        "MovieGUID": "00000000016E.0B6",
+        "TextureGUID": "0000000144A5.004"
+      },
+      {
+        "Name": "Whip Shot",
+        "Description": "Launch your flail forward to knock an enemy away from you.",
+        "Category": "Ability",
+        "MovieGUID": "000000000173.0B6",
+        "TextureGUID": "0000000144A4.004"
+      },
+      {
+        "Name": "Rocket Flail",
+        "Description": "Melee weapon with extended range.",
+        "Category": "Weapon",
+        "MovieGUID": "00000000016F.0B6",
+        "TextureGUID": "0000000144A7.004"
+      },
+      {
+        "Name": "Barrier Shield",
+        "Description": "Hold %1$s to deploy a frontal energy barrier.",
+        "Category": "Ability",
+        "MovieGUID": "000000000171.0B6",
+        "TextureGUID": "0000000144B1.004"
+      },
+      {
+        "Name": "Shield Bash",
+        "Description": "Available when Barrier Shield is deployed. Dash forward to knock back and stun an enemy.",
+        "Category": "Ability",
+        "MovieGUID": "000000000172.0B6",
+        "TextureGUID": "000000003339.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000157F0.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "0000000144DC.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "0000000144DD.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "0000000144DD.004"
+      }
+    ]
+  },
+  "0000000001A2.075": {
+    "GUID": "0000000001A2.075",
+    "Name": "Moira",
+    "Description": "Equal parts brilliant and controversial, Talon scientist Moira O'Deorain is on the cutting edge of genetic engineering, searching for a way to rewrite the fundamental building blocks of life.",
+    "Class": "Support",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#3712C8 1",
+    "sRGBColor": "#7F4CE4 1",
+    "GalleryColor": {
+      "R": 0.21586053,
+      "G": 0.0703601,
+      "B": 0.7835378,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Biotic Grasp",
+        "Description": "Hold to heal all allies in front of you. Consumes biotic energy.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000142.0B6",
+        "TextureGUID": "000000011D5D.004"
+      },
+      {
+        "Name": "Biotic Grasp - Alt Fire",
+        "Description": "Long range beam weapon. Damage dealt heals you and replenishes your biotic energy.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000144.0B6",
+        "TextureGUID": "000000011D5C.004"
+      },
+      {
+        "Name": "Biotic Orb",
+        "Description": "Launch a bouncing sphere that either heals nearby allies or damages nearby enemies.",
+        "Category": "Ability",
+        "MovieGUID": "000000000141.0B6",
+        "TextureGUID": "000000011DD6.004"
+      },
+      {
+        "Name": "Fade",
+        "Description": "Disappear, move faster, and become invulnerable, but you cannot shoot.",
+        "Category": "Ability",
+        "MovieGUID": "000000000145.0B6",
+        "TextureGUID": "000000011DBD.004"
+      },
+      {
+        "Name": "Coalescence",
+        "Description": "Fire a beam that heals allies and damages enemies.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000143.0B6",
+        "TextureGUID": "000000011D87.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000000F786.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000000F785.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000F78A.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000012C0A.004"
+      }
+    ]
+  },
+  "0000000001AC.075": {
+    "GUID": "0000000001AC.075",
+    "Name": "Trooper",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C09.004"
+      }
+    ]
+  },
+  "0000000001B8.075": {
+    "GUID": "0000000001B8.075",
+    "Name": "Sniper",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C0A.004"
+      }
+    ]
+  },
+  "0000000001BA.075": {
+    "GUID": "0000000001BA.075",
+    "Name": "Heavy Assault",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C06.004"
+      }
+    ]
+  },
+  "0000000001BB.075": {
+    "GUID": "0000000001BB.075",
+    "Name": "Assassin",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C05.004"
+      }
+    ]
+  },
+  "0000000001C7.075": {
+    "GUID": "0000000001C7.075",
+    "Name": "Gunship",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C07.004"
+      }
+    ]
+  },
+  "0000000001CA.075": {
+    "GUID": "0000000001CA.075",
+    "Name": "Wrecking Ball",
+    "Description": "Wrecking Ball is piloted by an intelligent, genetically engineered hamster named Hammond, who explores the world, searching for adventure.",
+    "Class": "Tank",
+    "Gender": "Male",
+    "Size": "Large",
+    "Color": "#C23101 1",
+    "sRGBColor": "#E17812 1",
+    "GalleryColor": {
+      "R": 0.7605245,
+      "G": 0.19120169,
+      "B": 0.00303527,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Quad Cannons",
+        "Description": "Automatic assault weapons.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001B9.0B6",
+        "TextureGUID": "000000017E50.004"
+      },
+      {
+        "Name": "Minefield",
+        "Description": "Deploy a massive field of proximity mines.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000001B8.0B6",
+        "TextureGUID": "000000017EFC.004"
+      },
+      {
+        "Name": "Grappling Claw",
+        "Description": "Launch a grappling claw to rapidly swing around the area. Enables high speed collisions to damage and knockback enemies.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001B7.0B6",
+        "TextureGUID": "000000017EFB.004"
+      },
+      {
+        "Name": "Roll",
+        "Description": "Transform into a ball and increase maximum movement speed.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001B6.0B6",
+        "TextureGUID": "000000017EF9.004"
+      },
+      {
+        "Name": "Piledriver",
+        "Description": "Slam into the ground below to damage and launch enemies upward.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001BA.0B6",
+        "TextureGUID": "000000017EF8.004"
+      },
+      {
+        "Name": "Adaptive Shield",
+        "Description": "Create temporary personal shields. Amount increases with more enemies nearby.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001BB.0B6",
+        "TextureGUID": "000000017F12.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "0000000183E1.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000017F24.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000018485.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "000000018486.004"
+      },
+      {
+        "Id": "0000000040D2.01C",
+        "TextureGUID": "000000018FDF.004"
+      }
+    ]
+  },
+  "0000000001CE.075": {
+    "GUID": "0000000001CE.075",
+    "Name": "Enforcer",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "000000015C08.004"
+      }
+    ]
+  },
+  "0000000001F9.075": {
+    "GUID": "0000000001F9.075",
+    "Name": "Boat",
+    "Description": null,
+    "Class": null,
+    "Gender": "Generic",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000000E0C5.004"
+      }
+    ]
+  },
+  "000000000200.075": {
+    "GUID": "000000000200.075",
+    "Name": "Ashe",
+    "Description": "Ashe is the leader of the Deadlock Gang, a group of bandits and criminals who menace the American Southwest.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#0C0C0B 1",
+    "sRGBColor": "#403E3D 1",
+    "GalleryColor": {
+      "R": 0.048171826,
+      "G": 0.045186203,
+      "B": 0.04231141,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Coach Gun",
+        "Description": "Blast enemies in front of you and knock yourself backwards.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001E5.0B6",
+        "TextureGUID": "00000001BD59.004"
+      },
+      {
+        "Name": "B.O.B.",
+        "Description": "Deploy Bob. He charges forward and knocks enemies into the air, then attacks with his arm cannons.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000001E6.0B6",
+        "TextureGUID": "00000001BD47.004"
+      },
+      {
+        "Name": "Dynamite",
+        "Description": "Throw an explosive that detonates after a short delay or immediately when shot.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001E2.0B6",
+        "TextureGUID": "00000001BD54.004"
+      },
+      {
+        "Name": "The Viper",
+        "Description": "Semi-automatic rifle.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001E3.0B6",
+        "TextureGUID": "00000001BCF3.004"
+      },
+      {
+        "Name": "Take Aim",
+        "Description": "Hold to zoom in, increasing damage and accuracy but slowing rate of fire.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001E4.0B6",
+        "TextureGUID": null
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000001BD84.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000001BD74.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000001BAB8.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "00000001BAB7.004"
+      }
+    ]
+  },
+  "000000000206.075": {
+    "GUID": "000000000206.075",
+    "Name": "Echo",
+    "Description": "Programmed and designed by Overwatch's Dr. Mina Liao, Echo is a robot with a rapidly adapting artificial intelligence.",
+    "Class": "Damage",
+    "Gender": "Female",
+    "Size": "Normal",
+    "Color": "#4093FF 1",
+    "sRGBColor": "#88C7FF 1",
+    "GalleryColor": {
+      "R": 0.2501583,
+      "G": 0.57758045,
+      "B": 1,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Sticky Bombs",
+        "Description": "Fire a volley of sticky bombs that detonate after a delay.",
+        "Category": "Ability",
+        "MovieGUID": "00000000024B.0B6",
+        "TextureGUID": "000000028FCD.004"
+      },
+      {
+        "Name": "Duplicate",
+        "Description": "Become a copy of the targeted enemy hero. They cannot swap heroes for the duration.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "00000000024A.0B6",
+        "TextureGUID": "000000028FCB.004"
+      },
+      {
+        "Name": "Tri-Shot",
+        "Description": "Fires 3 shots at once, in a triangle pattern.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000249.0B6",
+        "TextureGUID": "00000002A394.004"
+      },
+      {
+        "Name": "Flight",
+        "Description": "Fly forward quickly and then free-fly briefly.",
+        "Category": "Ability",
+        "MovieGUID": "00000000024C.0B6",
+        "TextureGUID": "000000028FCC.004"
+      },
+      {
+        "Name": "Focusing Beam",
+        "Description": "Channel a beam for a few seconds. Deals very high damage to targets under half health.",
+        "Category": "Ability",
+        "MovieGUID": "000000000248.0B6",
+        "TextureGUID": "000000028FCE.004"
+      },
+      {
+        "Name": "Glide",
+        "Description": "Hold jump to glide while falling.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "00000000024D.0B6",
+        "TextureGUID": "00000002ABE2.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "000000020E8C.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000020E8D.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000002AAA9.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "00000002AAA8.004"
+      }
+    ]
+  },
+  "00000000021D.075": {
+    "GUID": "00000000021D.075",
+    "Name": "Bob",
+    "Description": null,
+    "Class": null,
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#000000 0",
+    "sRGBColor": "#000000 0",
+    "GalleryColor": {
+      "R": 0,
+      "G": 0,
+      "B": 0,
+      "A": 0
+    },
+    "IsHero": false,
+    "SupportsAi": false,
+    "Loadouts": null,
+    "Images": [
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000001BDC2.004"
+      }
+    ]
+  },
+  "000000000221.075": {
+    "GUID": "000000000221.075",
+    "Name": "Baptiste",
+    "Description": "An elite combat medic and ex-Talon operative, Baptiste now uses his skills to help those whose lives have been impacted by war.",
+    "Class": "Support",
+    "Gender": "Male",
+    "Size": "Normal",
+    "Color": "#05608B 1",
+    "sRGBColor": "#2CA4C2 1",
+    "GalleryColor": {
+      "R": 0.021219011,
+      "G": 0.37626216,
+      "B": 0.5457245,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Regenerative Burst",
+        "Description": "Activate to heal yourself and nearby allies over time.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001FA.0B6",
+        "TextureGUID": "00000001E2D3.004"
+      },
+      {
+        "Name": "Immortality Field",
+        "Description": "Toss a device that prevents allies from dying. The device can be destroyed.",
+        "Category": "Ability",
+        "MovieGUID": "0000000001F6.0B6",
+        "TextureGUID": "00000001E2D9.004"
+      },
+      {
+        "Name": "Amplification Matrix",
+        "Description": "Project a matrix that doubles the damage and healing effects of allied projectiles.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "0000000001FF.0B6",
+        "TextureGUID": "00000001E2E2.004"
+      },
+      {
+        "Name": "Biotic Launcher",
+        "Description": "Three-round burst gun.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001F7.0B6",
+        "TextureGUID": "00000001E2A8.004"
+      },
+      {
+        "Name": "Biotic Launcher",
+        "Description": "Lob a healing projectile that heals all allies near the impact.",
+        "Category": "Weapon",
+        "MovieGUID": "0000000001F9.0B6",
+        "TextureGUID": "00000001E2AF.004"
+      },
+      {
+        "Name": "Exo Boots",
+        "Description": "Hold crouch to jump higher.",
+        "Category": "PassiveAbility",
+        "MovieGUID": "0000000001FB.0B6",
+        "TextureGUID": "00000001E304.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000001E5C9.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "00000001E59E.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000001E5BB.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "00000001E5BC.004"
+      }
+    ]
+  },
+  "00000000023B.075": {
+    "GUID": "00000000023B.075",
+    "Name": "Sigma",
+    "Description": "Brilliant astrophysicist Siebren de Kuiper gained the ability to control gravity when an experiment went terribly wrong. Now, Talon manipulates him to their own ends.",
+    "Class": "Tank",
+    "Gender": "Male",
+    "Size": "Large",
+    "Color": "#334243 1",
+    "sRGBColor": "#7B8A8B 1",
+    "GalleryColor": {
+      "R": 0.20155625,
+      "G": 0.25818288,
+      "B": 0.2622507,
+      "A": 1
+    },
+    "IsHero": true,
+    "SupportsAi": false,
+    "Loadouts": [
+      {
+        "Name": "Kinetic Grasp",
+        "Description": "Absorb projectiles in front of you and convert them into shields.",
+        "Category": "Ability",
+        "MovieGUID": "00000000020F.0B6",
+        "TextureGUID": "00000001FBDD.004"
+      },
+      {
+        "Name": "Accretion",
+        "Description": "Gather a mass of debris and throw it at an enemy to knock them down.",
+        "Category": "Ability",
+        "MovieGUID": "00000000020D.0B6",
+        "TextureGUID": "00000001FBE0.004"
+      },
+      {
+        "Name": "Gravitic Flux",
+        "Description": "Manipulate gravity to lift enemies into the air and slam them back down.",
+        "Category": "UltimateAbility",
+        "MovieGUID": "000000000211.0B6",
+        "TextureGUID": "00000001FBDE.004"
+      },
+      {
+        "Name": "Hyperspheres",
+        "Description": "Launch two charges which implode after a short duration, dealing damage in an area.",
+        "Category": "Weapon",
+        "MovieGUID": "000000000210.0B6",
+        "TextureGUID": "00000001FBDC.004"
+      },
+      {
+        "Name": "Experimental Barrier",
+        "Description": "Hold to propel a floating barrier; release to stop. Press again to recall the barrier to you.",
+        "Category": "Ability",
+        "MovieGUID": "00000000020E.0B6",
+        "TextureGUID": "00000001FBDF.004"
+      }
+    ],
+    "Images": [
+      {
+        "Id": "0000000040C7.01C",
+        "TextureGUID": "00000001FDCB.004"
+      },
+      {
+        "Id": "0000000040C8.01C",
+        "TextureGUID": "000000020CD7.004"
+      },
+      {
+        "Id": "0000000040C9.01C",
+        "TextureGUID": "00000001FDCE.004"
+      },
+      {
+        "Id": "0000000040CA.01C",
+        "TextureGUID": "00000001FDCE.004"
+      }
+    ]
+  }
+}
