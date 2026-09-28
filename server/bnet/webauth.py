@@ -49,8 +49,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.split("?", 1)[0] == LOGIN_PATH:
-            self._log(f"GET {self.path} -> login form")
-            self._send_json(FORM, cookies={
+            # Auto-complete the challenge: this is a local, offline, zero-auth
+            # server, so instead of asking the player for an email/password we
+            # return DONE immediately. A fresh client (no cached ticket) then
+            # proceeds straight to VerifyWebCredentials and logs in with no
+            # interaction. (A client with a cached ticket never hits this URL.)
+            self._log(f"GET {self.path} -> DONE (auto-login)")
+            self._send_json({"authentication_state": "DONE", "login_ticket": LOGIN_TICKET}, cookies={
                 "web.id": "US-00000000-0000-0000-0000-000000000000",
                 "JSESSIONID": "00000000-0000-0000-0000-000000000000",
             })
