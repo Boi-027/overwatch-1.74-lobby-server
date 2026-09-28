@@ -164,7 +164,7 @@ VERIFIED_CHALLENGES = {
     "Tracer's Comic Challenge": (EventDef(0x119, key=0x198), (0x4AEA, 0x4AEB, 0x4AEC)),
     "Symmetra's Restoration Challenge": (EventDef(0x11A, key=0x198), (0x4B10, 0x4B11, 0x4B08)),
 }
-TIME_PLAYED_STAT = 0x0860000000000021   # STUStat 062/21 "Время в игре", per hero, lifetime (seconds)
+TIME_PLAYED_STAT = 0x0860000000000021   # STUStat 062/21 "Time Played", per hero, lifetime (seconds)
 
 
 def default_challenge_for_events(events) -> str | None:

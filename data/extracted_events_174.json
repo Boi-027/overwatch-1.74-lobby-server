@@ -1,591 +1,591 @@
 {
-  "build": "1.74.0.0.104319",
-  "extracted": "2026-09-28",
-  "settings_asset": "00000000012C.054",
-  "settings_type": "STU_DFEC912B",
-  "method": "Read-only OWLib binary helper; include ProductHandler_Tank.m_hackedBundleLookup keys, STUHelper.GetInstance, Map.GetPlaceableData(ENTITY). See docs/EVENT_RESEARCH_2026-09-28.md.",
-  "raw_source_sha256": {
-    "raw_events.json": "0c07a6ed436c3f5ab5ede1d0ad0ff4abce5fa20a875401b63d7737a9fd9a72b5",
-    "raw_catalogs.json": "945e4e52e04fd733a511d751ccdeae77b760230f13d651772e9e128949b23f4e",
-    "raw_scenes.json": "9b505f4f0974c0ec18026b79102d061e8c464a09c6440b87e27857ae13e13fa0"
+ "build": "1.74.0.0.104319",
+ "extracted": "2026-09-28",
+ "settings_asset": "00000000012C.054",
+ "settings_type": "STU_DFEC912B",
+ "method": "Read-only OWLib binary helper; include ProductHandler_Tank.m_hackedBundleLookup keys, STUHelper.GetInstance, Map.GetPlaceableData(ENTITY). See docs/EVENT_RESEARCH_2026-09-28.md.",
+ "raw_source_sha256": {
+  "raw_events.json": "0c07a6ed436c3f5ab5ede1d0ad0ff4abce5fa20a875401b63d7737a9fd9a72b5",
+  "raw_catalogs.json": "945e4e52e04fd733a511d751ccdeae77b760230f13d651772e9e128949b23f4e",
+  "raw_scenes.json": "9b505f4f0974c0ec18026b79102d061e8c464a09c6440b87e27857ae13e13fa0"
+ },
+ "lobby_mappings": [
+  {
+   "region": "TWN",
+   "celebration": "000000000105.0C3",
+   "catalog": "00000000025C.039",
+   "maps": [
+    {
+     "guid": "000000000DAD.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
   },
-  "lobby_mappings": [
+  {
+   "region": "CHN",
+   "celebration": "000000000105.0C3",
+   "catalog": "00000000025C.039",
+   "maps": [
     {
-      "region": "TWN",
-      "celebration": "000000000105.0C3",
-      "catalog": "00000000025C.039",
-      "maps": [
-        {
-          "guid": "000000000DAD.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "CHN",
-      "celebration": "000000000105.0C3",
-      "catalog": "00000000025C.039",
-      "maps": [
-        {
-          "guid": "000000000DAD.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "KOR",
-      "celebration": "000000000105.0C3",
-      "catalog": "00000000025A.039",
-      "maps": [
-        {
-          "guid": "000000000710.09F",
-          "legacy_list_name": "Menu/Busan (Lunar)",
-          "asset_name": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": null,
-      "catalog": "0000000001B3.039",
-      "maps": [
-        {
-          "guid": "000000000664.09F",
-          "legacy_list_name": "Menu/Hanamura",
-          "asset_name": "Maps\\LobbyMaps\\Kyoto_Lobby_Final"
-        },
-        {
-          "guid": "000000000675.09F",
-          "legacy_list_name": "Menu/Gibraltar",
-          "asset_name": "Maps\\LobbyMaps\\Gibraltar_Lobby_Final"
-        },
-        {
-          "guid": "000000000677.09F",
-          "legacy_list_name": "Menu/Volskaya",
-          "asset_name": "Maps\\LobbyMaps\\Russia_Lobby_Final"
-        },
-        {
-          "guid": "000000000678.09F",
-          "legacy_list_name": "Menu/Hollywood",
-          "asset_name": "Maps\\LobbyMaps\\Hollywood_Lobby_Final"
-        },
-        {
-          "guid": "000000000794.09F",
-          "legacy_list_name": "Menu/Horizon Lunar Colony",
-          "asset_name": "Maps\\LobbyMaps\\Moon_Lobby_Final"
-        },
-        {
-          "guid": "000000000801.09F",
-          "legacy_list_name": "Menu/Junkertown",
-          "asset_name": "Maps\\LobbyMaps\\Junkertown_Lobby_Final"
-        },
-        {
-          "guid": "0000000008BE.09F",
-          "legacy_list_name": "Menu/Rialto",
-          "asset_name": "Maps\\LobbyMaps\\Venice_PvP_Lobby_Final"
-        },
-        {
-          "guid": "000000000A84.09F",
-          "legacy_list_name": "Шоссе 66",
-          "asset_name": "Maps\\LobbyMaps\\Canyon_Lobby_Final"
-        },
-        {
-          "guid": "000000000AF0.09F",
-          "legacy_list_name": "Menu/Paris",
-          "asset_name": "Maps\\LobbyMaps\\Paris_Lobby_Final"
-        },
-        {
-          "guid": "000000000B55.09F",
-          "legacy_list_name": "Menu/Havana",
-          "asset_name": "Maps\\LobbyMaps\\Havana_PvP_Lobby_Final"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": null,
-      "catalog": "000000000216.039",
-      "maps": [
-        {
-          "guid": "000000000676.09F",
-          "legacy_list_name": "Menu/Kings Row",
-          "asset_name": "Maps\\LobbyMaps\\London_Lobby_Final"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "00000000011F.0C3",
-      "catalog": "0000000002D2.039",
-      "maps": [
-        {
-          "guid": "000000000EEE.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "0000000000F7.0C3",
-      "catalog": "00000000033E.039",
-      "maps": [
-        {
-          "guid": "000000000E44.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\LobbyMaps\\Cairo_Lobby_Final_McCree"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "0000000000FA.0C3",
-      "catalog": "000000000342.039",
-      "maps": [
-        {
-          "guid": "000000000E49.09F",
-          "legacy_list_name": "Малевенто",
-          "asset_name": "Map\\Italy - Malevento - Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "0000000000FB.0C3",
-      "catalog": "0000000001B9.039",
-      "maps": [
-        {
-          "guid": "0000000006E0.09F",
-          "legacy_list_name": "Menu/Eichenwalde (Halloween)",
-          "asset_name": "Maps\\Holiday\\Halloween\\Castle_Halloween_Lobby_Final_2020"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "0000000000FF.0C3",
-      "catalog": "000000000346.039",
-      "maps": [
-        {
-          "guid": "00000000085F.09F",
-          "legacy_list_name": "Menu/Black Forest (Winter) (Day)",
-          "asset_name": "Maps\\LobbyMaps\\BlackForest_Holiday_Lobby_2021"
-        },
-        {
-          "guid": "000000000A9E.09F",
-          "legacy_list_name": "Menu/Blizzard World (Winter)",
-          "asset_name": "Maps\\LobbyMaps\\BlizzardWorld - Winter - Lobby - 2021"
-        },
-        {
-          "guid": "000000000C61.09F",
-          "legacy_list_name": "Menu/Black Forest (Winter) (Night)",
-          "asset_name": "Maps\\LobbyMaps\\BlackForest_Winter_Lobby_2021"
-        },
-        {
-          "guid": "000000000D7A.09F",
-          "legacy_list_name": "Menu/Antarctica (Winter)",
-          "asset_name": "Maps\\LobbyMaps\\Antarctica - Winter - Lobby - 2021"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000105.0C3",
-      "catalog": "0000000001CB.039",
-      "maps": [
-        {
-          "guid": "000000000710.09F",
-          "legacy_list_name": "Menu/Busan (Lunar)",
-          "asset_name": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby"
-        },
-        {
-          "guid": "000000000DAD.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000104.0C3",
-      "catalog": "000000000348.039",
-      "maps": [
-        {
-          "guid": "000000000D2C.09F",
-          "legacy_list_name": "Menu/Tracer Comic Challenge",
-          "asset_name": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": "00000000063D.013",
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 1.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "00000000010E.0C3",
-      "catalog": "00000000034A.039",
-      "maps": [
-        {
-          "guid": "000000000E83.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000112.0C3",
-      "catalog": "00000000034A.039",
-      "maps": [
-        {
-          "guid": "000000000E83.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000118.0C3",
-      "catalog": "00000000034A.039",
-      "maps": [
-        {
-          "guid": "000000000E83.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 1
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000125.0C3",
-      "catalog": "0000000002D2.039",
-      "maps": [
-        {
-          "guid": "000000000EEE.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000126.0C3",
-      "catalog": "0000000002D2.039",
-      "maps": [
-        {
-          "guid": "000000000EEE.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
-    },
-    {
-      "region": "default",
-      "celebration": "000000000128.0C3",
-      "catalog": "000000000361.039",
-      "maps": [
-        {
-          "guid": "000000000F14.09F",
-          "legacy_list_name": null,
-          "asset_name": "Maps\\Goodbye\\FrontEnd - Lobby - Goodbye"
-        }
-      ],
-      "conditions": {
-        "m_5A6D4FBD": null,
-        "m_BE382990": 0,
-        "m_C98EBA70": 6,
-        "m_7952DAFC": 0.0,
-        "m_2334A7D6": 0,
-        "m_261FA212": 0
-      }
+     "guid": "000000000DAD.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
     }
-  ],
-  "scene_assets": [
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "KOR",
+   "celebration": "000000000105.0C3",
+   "catalog": "00000000025A.039",
+   "maps": [
     {
-      "map_header": "000000000D2C.09F",
-      "asset_name": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby",
-      "spawns": [
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_hero": "000000000002.075",
-            "m_entityDef": "000000000180.003",
-            "m_skinTheme": "0000000048A9.0A6",
-            "m_animation": "000000003E04.006"
-          }
-        }
-      ]
-    },
-    {
-      "map_header": "000000000E83.09F",
-      "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby",
-      "spawns": [
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "0000000003D0.003",
-            "m_skinTheme": "0000000049CF.0A6",
-            "m_hero": "000000000000.001"
-          }
-        },
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "000000002B7D.003",
-            "m_skinTheme": "0000000049E4.0A6",
-            "m_hero": "000000000000.001"
-          }
-        },
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "00000000017E.003",
-            "m_skinTheme": "0000000049D8.0A6",
-            "m_hero": "000000000003.075"
-          }
-        },
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "00000000017F.003",
-            "m_skinTheme": "0000000049D9.0A6",
-            "m_hero": "000000000000.001"
-          }
-        },
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "00000000073E.003",
-            "m_skinTheme": "0000000049D1.0A6",
-            "m_hero": "000000000000.001"
-          }
-        },
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_entityDef": "0000000002EE.003",
-            "m_skinTheme": "0000000049A8.0A6",
-            "m_hero": "000000000000.001"
-          }
-        }
-      ]
-    },
-    {
-      "map_header": "000000000EEE.09F",
-      "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama",
-      "spawns": [
-        {
-          "entity": "000000001629.003",
-          "graph": "000000000C6E.01B",
-          "values": {
-            "m_hero": "000000000029.075",
-            "m_entityDef": "0000000002EE.003",
-            "m_skinTheme": "0000000049E1.0A6",
-            "m_animation": "000000000000.001"
-          }
-        }
-      ]
+     "guid": "000000000710.09F",
+     "legacy_list_name": "Menu/Busan (Lunar)",
+     "asset_name": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby"
     }
-  ],
-  "menu_header_inventory": {
-    "000000000664.09F": "Maps\\LobbyMaps\\Kyoto_Lobby_Final",
-    "000000000675.09F": "Maps\\LobbyMaps\\Gibraltar_Lobby_Final",
-    "000000000676.09F": "Maps\\LobbyMaps\\London_Lobby_Final",
-    "000000000677.09F": "Maps\\LobbyMaps\\Russia_Lobby_Final",
-    "000000000678.09F": "Maps\\LobbyMaps\\Hollywood_Lobby_Final",
-    "0000000006E0.09F": "Maps\\Holiday\\Halloween\\Castle_Halloween_Lobby_Final_2020",
-    "000000000700.09F": "Maps\\Holiday\\Winter\\London_Winter_Lobby",
-    "000000000710.09F": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby",
-    "000000000715.09F": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - DONOTUSE",
-    "000000000764.09F": "Maps\\LobbyMaps\\KingsRow - Archives - Lobby",
-    "000000000794.09F": "Maps\\LobbyMaps\\Moon_Lobby_Final",
-    "0000000007A0.09F": "Maps\\LobbyMaps\\SummerGames_Sydney_Lobby",
-    "000000000801.09F": "Maps\\LobbyMaps\\Junkertown_Lobby_Final",
-    "000000000817.09F": "Maps\\OWL_Lobby\\WCUP_Event_Lobby_Final",
-    "00000000085F.09F": "Maps\\LobbyMaps\\BlackForest_Holiday_Lobby_2021",
-    "000000000862.09F": "Maps\\OWL_Lobby\\OWL_HeroPanel_Lobby",
-    "000000000864.09F": "Maps\\OWL_Lobby\\OWL_Atlantic_Lobby",
-    "0000000008B4.09F": "Maps\\LobbyMaps\\Venice - Archives - Lobby",
-    "0000000008BE.09F": "Maps\\LobbyMaps\\Venice_PvP_Lobby_Final",
-    "000000000A13.09F": "Maps\\OWL_Lobby\\OWL_Grand_Finals",
-    "000000000A14.09F": "Maps\\LobbyMaps\\SoccerField_Korea_Lobby_Final",
-    "000000000A5A.09F": "Maps\\LobbyMaps\\Chateau_Halloween_Lobby_Final_2020",
-    "000000000A84.09F": "Maps\\LobbyMaps\\Canyon_Lobby_Final",
-    "000000000A9E.09F": "Maps\\LobbyMaps\\BlizzardWorld - Winter - Lobby - 2021",
-    "000000000AF0.09F": "Maps\\LobbyMaps\\Paris_Lobby_Final",
-    "000000000B2D.09F": "Maps\\OWL_Allstar_Lobby\\OWL_Allstar_Lobby_2020",
-    "000000000B55.09F": "Maps\\LobbyMaps\\Havana_PvP_Lobby_Final",
-    "000000000B56.09F": "Maps\\LobbyMaps\\Havana - Archives - Lobby",
-    "000000000BCE.09F": "Maps\\LobbyMaps\\SummerFun - Lobby - 2020",
-    "000000000BEF.09F": "Maps\\OWL_Lobby\\OWL_Lobby_2021",
-    "000000000C04.09F": "Maps\\LobbyMaps\\BrickBastion_Lobby_Final",
-    "000000000C46.09F": "Maps\\LobbyMaps\\Cairo_Lobby_Final_Mercy",
-    "000000000C61.09F": "Maps\\LobbyMaps\\BlackForest_Winter_Lobby_2021",
-    "000000000C83.09F": "Maps\\OWL_Lobby\\Overwatch_League_Lobby_Final",
-    "000000000C8F.09F": "Maps\\LobbyMaps\\Mardi_Gras_Lobby",
-    "000000000CAC.09F": "Maps\\LobbyMaps\\ECHO_Lobby_Final",
-    "000000000CCF.09F": "Maps\\LobbyMaps\\Anniversary_Lobby_Map_2020",
-    "000000000CE0.09F": "Maps\\LobbyMaps\\MvP - Lobby - Zarya",
-    "000000000CE6.09F": "Maps\\LobbyMaps\\Sigma - Conductor - Lobby",
-    "000000000CFE.09F": "Maps\\Soccer\\Soccer_Sydney\\Sydney - Lucioball - Lobby - 2020",
-    "000000000CFF.09F": "Maps\\Soccer\\Soccer_Korea\\Busan - Lucioball - Lobby - 2020",
-    "000000000D0A.09F": "Maps\\OWL_Lobby\\OWL_Playoffs_Lobby_2020",
-    "000000000D2C.09F": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby",
-    "000000000D2D.09F": "Maps\\OWL_Lobby\\OWL - Grand - Finals - Lobby - 2020",
-    "000000000D67.09F": "Environments\\Lobby\\Symmetra_Challenge_Lobby\\Symmetra - Challenge - India - Lobby",
-    "000000000D77.09F": "Maps\\Holiday\\Winter\\London_Winter_Lobby_2020",
-    "000000000D7A.09F": "Maps\\LobbyMaps\\Antarctica - Winter - Lobby - 2021",
-    "000000000D86.09F": "Maps\\LobbyMaps\\KanezakaLobby\\Japan - Kanezaka - Lobby",
-    "000000000DAD.09F": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021",
-    "000000000DBC.09F": "Maps\\LobbyMaps\\KanezakaLobby\\PachimariLobby\\Japan - Pachimari - Lobby",
-    "000000000E1F.09F": "Maps\\OWL_Lobby\\OWL_Lobby_Sombra_2022",
-    "000000000E44.09F": "Maps\\LobbyMaps\\Cairo_Lobby_Final_McCree",
-    "000000000E49.09F": "Map\\Italy - Malevento - Lobby",
-    "000000000E83.09F": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby",
-    "000000000EEE.09F": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama",
-    "000000000F14.09F": "Maps\\Goodbye\\FrontEnd - Lobby - Goodbye"
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": null,
+   "catalog": "0000000001B3.039",
+   "maps": [
+    {
+     "guid": "000000000664.09F",
+     "legacy_list_name": "Menu/Hanamura",
+     "asset_name": "Maps\\LobbyMaps\\Kyoto_Lobby_Final"
+    },
+    {
+     "guid": "000000000675.09F",
+     "legacy_list_name": "Menu/Gibraltar",
+     "asset_name": "Maps\\LobbyMaps\\Gibraltar_Lobby_Final"
+    },
+    {
+     "guid": "000000000677.09F",
+     "legacy_list_name": "Menu/Volskaya",
+     "asset_name": "Maps\\LobbyMaps\\Russia_Lobby_Final"
+    },
+    {
+     "guid": "000000000678.09F",
+     "legacy_list_name": "Menu/Hollywood",
+     "asset_name": "Maps\\LobbyMaps\\Hollywood_Lobby_Final"
+    },
+    {
+     "guid": "000000000794.09F",
+     "legacy_list_name": "Menu/Horizon Lunar Colony",
+     "asset_name": "Maps\\LobbyMaps\\Moon_Lobby_Final"
+    },
+    {
+     "guid": "000000000801.09F",
+     "legacy_list_name": "Menu/Junkertown",
+     "asset_name": "Maps\\LobbyMaps\\Junkertown_Lobby_Final"
+    },
+    {
+     "guid": "0000000008BE.09F",
+     "legacy_list_name": "Menu/Rialto",
+     "asset_name": "Maps\\LobbyMaps\\Venice_PvP_Lobby_Final"
+    },
+    {
+     "guid": "000000000A84.09F",
+     "legacy_list_name": "Route 66",
+     "asset_name": "Maps\\LobbyMaps\\Canyon_Lobby_Final"
+    },
+    {
+     "guid": "000000000AF0.09F",
+     "legacy_list_name": "Menu/Paris",
+     "asset_name": "Maps\\LobbyMaps\\Paris_Lobby_Final"
+    },
+    {
+     "guid": "000000000B55.09F",
+     "legacy_list_name": "Menu/Havana",
+     "asset_name": "Maps\\LobbyMaps\\Havana_PvP_Lobby_Final"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": null,
+   "catalog": "000000000216.039",
+   "maps": [
+    {
+     "guid": "000000000676.09F",
+     "legacy_list_name": "Menu/Kings Row",
+     "asset_name": "Maps\\LobbyMaps\\London_Lobby_Final"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "00000000011F.0C3",
+   "catalog": "0000000002D2.039",
+   "maps": [
+    {
+     "guid": "000000000EEE.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "0000000000F7.0C3",
+   "catalog": "00000000033E.039",
+   "maps": [
+    {
+     "guid": "000000000E44.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\LobbyMaps\\Cairo_Lobby_Final_McCree"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "0000000000FA.0C3",
+   "catalog": "000000000342.039",
+   "maps": [
+    {
+     "guid": "000000000E49.09F",
+     "legacy_list_name": "Malevento",
+     "asset_name": "Map\\Italy - Malevento - Lobby"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "0000000000FB.0C3",
+   "catalog": "0000000001B9.039",
+   "maps": [
+    {
+     "guid": "0000000006E0.09F",
+     "legacy_list_name": "Menu/Eichenwalde (Halloween)",
+     "asset_name": "Maps\\Holiday\\Halloween\\Castle_Halloween_Lobby_Final_2020"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "0000000000FF.0C3",
+   "catalog": "000000000346.039",
+   "maps": [
+    {
+     "guid": "00000000085F.09F",
+     "legacy_list_name": "Menu/Black Forest (Winter) (Day)",
+     "asset_name": "Maps\\LobbyMaps\\BlackForest_Holiday_Lobby_2021"
+    },
+    {
+     "guid": "000000000A9E.09F",
+     "legacy_list_name": "Menu/Blizzard World (Winter)",
+     "asset_name": "Maps\\LobbyMaps\\BlizzardWorld - Winter - Lobby - 2021"
+    },
+    {
+     "guid": "000000000C61.09F",
+     "legacy_list_name": "Menu/Black Forest (Winter) (Night)",
+     "asset_name": "Maps\\LobbyMaps\\BlackForest_Winter_Lobby_2021"
+    },
+    {
+     "guid": "000000000D7A.09F",
+     "legacy_list_name": "Menu/Antarctica (Winter)",
+     "asset_name": "Maps\\LobbyMaps\\Antarctica - Winter - Lobby - 2021"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000105.0C3",
+   "catalog": "0000000001CB.039",
+   "maps": [
+    {
+     "guid": "000000000710.09F",
+     "legacy_list_name": "Menu/Busan (Lunar)",
+     "asset_name": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby"
+    },
+    {
+     "guid": "000000000DAD.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000104.0C3",
+   "catalog": "000000000348.039",
+   "maps": [
+    {
+     "guid": "000000000D2C.09F",
+     "legacy_list_name": "Menu/Tracer Comic Challenge",
+     "asset_name": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": "00000000063D.013",
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 1.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "00000000010E.0C3",
+   "catalog": "00000000034A.039",
+   "maps": [
+    {
+     "guid": "000000000E83.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000112.0C3",
+   "catalog": "00000000034A.039",
+   "maps": [
+    {
+     "guid": "000000000E83.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000118.0C3",
+   "catalog": "00000000034A.039",
+   "maps": [
+    {
+     "guid": "000000000E83.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 1
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000125.0C3",
+   "catalog": "0000000002D2.039",
+   "maps": [
+    {
+     "guid": "000000000EEE.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000126.0C3",
+   "catalog": "0000000002D2.039",
+   "maps": [
+    {
+     "guid": "000000000EEE.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
+  },
+  {
+   "region": "default",
+   "celebration": "000000000128.0C3",
+   "catalog": "000000000361.039",
+   "maps": [
+    {
+     "guid": "000000000F14.09F",
+     "legacy_list_name": null,
+     "asset_name": "Maps\\Goodbye\\FrontEnd - Lobby - Goodbye"
+    }
+   ],
+   "conditions": {
+    "m_5A6D4FBD": null,
+    "m_BE382990": 0,
+    "m_C98EBA70": 6,
+    "m_7952DAFC": 0.0,
+    "m_2334A7D6": 0,
+    "m_261FA212": 0
+   }
   }
+ ],
+ "scene_assets": [
+  {
+   "map_header": "000000000D2C.09F",
+   "asset_name": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby",
+   "spawns": [
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_hero": "000000000002.075",
+      "m_entityDef": "000000000180.003",
+      "m_skinTheme": "0000000048A9.0A6",
+      "m_animation": "000000003E04.006"
+     }
+    }
+   ]
+  },
+  {
+   "map_header": "000000000E83.09F",
+   "asset_name": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby",
+   "spawns": [
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "0000000003D0.003",
+      "m_skinTheme": "0000000049CF.0A6",
+      "m_hero": "000000000000.001"
+     }
+    },
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "000000002B7D.003",
+      "m_skinTheme": "0000000049E4.0A6",
+      "m_hero": "000000000000.001"
+     }
+    },
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "00000000017E.003",
+      "m_skinTheme": "0000000049D8.0A6",
+      "m_hero": "000000000003.075"
+     }
+    },
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "00000000017F.003",
+      "m_skinTheme": "0000000049D9.0A6",
+      "m_hero": "000000000000.001"
+     }
+    },
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "00000000073E.003",
+      "m_skinTheme": "0000000049D1.0A6",
+      "m_hero": "000000000000.001"
+     }
+    },
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_entityDef": "0000000002EE.003",
+      "m_skinTheme": "0000000049A8.0A6",
+      "m_hero": "000000000000.001"
+     }
+    }
+   ]
+  },
+  {
+   "map_header": "000000000EEE.09F",
+   "asset_name": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama",
+   "spawns": [
+    {
+     "entity": "000000001629.003",
+     "graph": "000000000C6E.01B",
+     "values": {
+      "m_hero": "000000000029.075",
+      "m_entityDef": "0000000002EE.003",
+      "m_skinTheme": "0000000049E1.0A6",
+      "m_animation": "000000000000.001"
+     }
+    }
+   ]
+  }
+ ],
+ "menu_header_inventory": {
+  "000000000664.09F": "Maps\\LobbyMaps\\Kyoto_Lobby_Final",
+  "000000000675.09F": "Maps\\LobbyMaps\\Gibraltar_Lobby_Final",
+  "000000000676.09F": "Maps\\LobbyMaps\\London_Lobby_Final",
+  "000000000677.09F": "Maps\\LobbyMaps\\Russia_Lobby_Final",
+  "000000000678.09F": "Maps\\LobbyMaps\\Hollywood_Lobby_Final",
+  "0000000006E0.09F": "Maps\\Holiday\\Halloween\\Castle_Halloween_Lobby_Final_2020",
+  "000000000700.09F": "Maps\\Holiday\\Winter\\London_Winter_Lobby",
+  "000000000710.09F": "Maps\\Holiday\\Lunar\\Korea - Busan - Lunar - Lobby",
+  "000000000715.09F": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - DONOTUSE",
+  "000000000764.09F": "Maps\\LobbyMaps\\KingsRow - Archives - Lobby",
+  "000000000794.09F": "Maps\\LobbyMaps\\Moon_Lobby_Final",
+  "0000000007A0.09F": "Maps\\LobbyMaps\\SummerGames_Sydney_Lobby",
+  "000000000801.09F": "Maps\\LobbyMaps\\Junkertown_Lobby_Final",
+  "000000000817.09F": "Maps\\OWL_Lobby\\WCUP_Event_Lobby_Final",
+  "00000000085F.09F": "Maps\\LobbyMaps\\BlackForest_Holiday_Lobby_2021",
+  "000000000862.09F": "Maps\\OWL_Lobby\\OWL_HeroPanel_Lobby",
+  "000000000864.09F": "Maps\\OWL_Lobby\\OWL_Atlantic_Lobby",
+  "0000000008B4.09F": "Maps\\LobbyMaps\\Venice - Archives - Lobby",
+  "0000000008BE.09F": "Maps\\LobbyMaps\\Venice_PvP_Lobby_Final",
+  "000000000A13.09F": "Maps\\OWL_Lobby\\OWL_Grand_Finals",
+  "000000000A14.09F": "Maps\\LobbyMaps\\SoccerField_Korea_Lobby_Final",
+  "000000000A5A.09F": "Maps\\LobbyMaps\\Chateau_Halloween_Lobby_Final_2020",
+  "000000000A84.09F": "Maps\\LobbyMaps\\Canyon_Lobby_Final",
+  "000000000A9E.09F": "Maps\\LobbyMaps\\BlizzardWorld - Winter - Lobby - 2021",
+  "000000000AF0.09F": "Maps\\LobbyMaps\\Paris_Lobby_Final",
+  "000000000B2D.09F": "Maps\\OWL_Allstar_Lobby\\OWL_Allstar_Lobby_2020",
+  "000000000B55.09F": "Maps\\LobbyMaps\\Havana_PvP_Lobby_Final",
+  "000000000B56.09F": "Maps\\LobbyMaps\\Havana - Archives - Lobby",
+  "000000000BCE.09F": "Maps\\LobbyMaps\\SummerFun - Lobby - 2020",
+  "000000000BEF.09F": "Maps\\OWL_Lobby\\OWL_Lobby_2021",
+  "000000000C04.09F": "Maps\\LobbyMaps\\BrickBastion_Lobby_Final",
+  "000000000C46.09F": "Maps\\LobbyMaps\\Cairo_Lobby_Final_Mercy",
+  "000000000C61.09F": "Maps\\LobbyMaps\\BlackForest_Winter_Lobby_2021",
+  "000000000C83.09F": "Maps\\OWL_Lobby\\Overwatch_League_Lobby_Final",
+  "000000000C8F.09F": "Maps\\LobbyMaps\\Mardi_Gras_Lobby",
+  "000000000CAC.09F": "Maps\\LobbyMaps\\ECHO_Lobby_Final",
+  "000000000CCF.09F": "Maps\\LobbyMaps\\Anniversary_Lobby_Map_2020",
+  "000000000CE0.09F": "Maps\\LobbyMaps\\MvP - Lobby - Zarya",
+  "000000000CE6.09F": "Maps\\LobbyMaps\\Sigma - Conductor - Lobby",
+  "000000000CFE.09F": "Maps\\Soccer\\Soccer_Sydney\\Sydney - Lucioball - Lobby - 2020",
+  "000000000CFF.09F": "Maps\\Soccer\\Soccer_Korea\\Busan - Lucioball - Lobby - 2020",
+  "000000000D0A.09F": "Maps\\OWL_Lobby\\OWL_Playoffs_Lobby_2020",
+  "000000000D2C.09F": "Maps\\LobbyMaps\\Reaper - Challenge - Lobby",
+  "000000000D2D.09F": "Maps\\OWL_Lobby\\OWL - Grand - Finals - Lobby - 2020",
+  "000000000D67.09F": "Environments\\Lobby\\Symmetra_Challenge_Lobby\\Symmetra - Challenge - India - Lobby",
+  "000000000D77.09F": "Maps\\Holiday\\Winter\\London_Winter_Lobby_2020",
+  "000000000D7A.09F": "Maps\\LobbyMaps\\Antarctica - Winter - Lobby - 2021",
+  "000000000D86.09F": "Maps\\LobbyMaps\\KanezakaLobby\\Japan - Kanezaka - Lobby",
+  "000000000DAD.09F": "Maps\\Holiday\\Lunar\\China - Lunar - Lobby - 2021",
+  "000000000DBC.09F": "Maps\\LobbyMaps\\KanezakaLobby\\PachimariLobby\\Japan - Pachimari - Lobby",
+  "000000000E1F.09F": "Maps\\OWL_Lobby\\OWL_Lobby_Sombra_2022",
+  "000000000E44.09F": "Maps\\LobbyMaps\\Cairo_Lobby_Final_McCree",
+  "000000000E49.09F": "Map\\Italy - Malevento - Lobby",
+  "000000000E83.09F": "Maps\\OWL_Lobby\\BestOfOverwatch_Lobby",
+  "000000000EEE.09F": "Maps\\LobbyMaps\\OWL_Lobby_Genji_Tama",
+  "000000000F14.09F": "Maps\\Goodbye\\FrontEnd - Lobby - Goodbye"
+ }
 }

@@ -1,3909 +1,3909 @@
 {
-  "00000000005B.09F": {
-    "GUID": "00000000005B.09F",
-    "Name": "Храм Анубиса",
-    "Description": "В древнем храме Анубиса хранится нечто, обеспечивающее безопасность всего региона. А это «нечто», в свою очередь, защищает корпорация Helix Security Systems.",
-    "Description2": "В древнем храме Анубиса хранится нечто, обеспечивающее безопасность всего региона. А это «нечто», в свою очередь, защищает корпорация Helix Security Systems.",
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "00000000005B.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000067.0C5",
-        "Name": "Захват точек (тест)"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D1D.004",
-    "Image": "0000000018EF.004",
-    "FlagImage": "000000001CFA.004",
-    "CelebrationVariants": null
-  },
-  "0000000000D4.09F": {
-    "GUID": "0000000000D4.09F",
-    "Name": "Кингс Роу",
-    "Description": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Description2": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000000D4.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D21.004",
-    "Image": "0000000018F0.004",
-    "FlagImage": "000000001CFC.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Christmas",
-        "Virtual01C": "000000002168.01C",
-        "MapInfo": {
-          "GUID": "0000000006B1.09F",
-          "Name": "Кингс Роу",
-          "VariantName": "Кингс Роу (зима)"
-        }
-      }
-    ]
-  },
-  "000000000165.09F": {
-    "GUID": "000000000165.09F",
-    "Name": "Ханамура",
-    "Description": "Тихий район Ханамура, знаменитый среди туристов своими ресторанчиками, магазинами и прекрасным видом на цветущую сакуру, скрывает темную тайну, известную лишь избранным...",
-    "Description2": "Древний клан Шимада, знаменитый своими бойцами-ниндзя, издревле обитал в тихой деревушке под названием Ханамура. Надежно укрытый высокими стенами, клан, промышляющий торговлей оружием, контрабандой и наемными убийствами, постоянно накапливал силу.",
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000165.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000067.0C5",
-        "Name": "Захват точек (тест)"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D20.004",
-    "Image": "000000000F22.004",
-    "FlagImage": "000000001CFB.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Christmas",
-        "Virtual01C": "000000002168.01C",
-        "MapInfo": {
-          "GUID": "0000000006B5.09F",
-          "Name": "Ханамура",
-          "VariantName": "Ханамура (зима)"
-        }
-      }
-    ]
-  },
-  "000000000184.09F": {
-    "GUID": "000000000184.09F",
-    "Name": "Пост наблюдения: Гибралтар",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000184.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D1E.004",
-    "Image": "0000000029E1.004",
-    "FlagImage": "0000000029E0.004",
-    "CelebrationVariants": null
-  },
-  "0000000001D4.09F": {
-    "GUID": "0000000001D4.09F",
-    "Name": "Нумбани",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000001D4.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D23.004",
-    "Image": "000000004766.004",
-    "FlagImage": "000000004750.004",
-    "CelebrationVariants": [
-      {
-        "Name": "0000000026E3.01C",
-        "Virtual01C": "0000000026E3.01C",
-        "MapInfo": {
-          "GUID": "000000000751.09F",
-          "Name": "Нумбани",
-          "VariantName": null
-        }
-      }
-    ]
-  },
-  "0000000001DB.09F": {
-    "GUID": "0000000001DB.09F",
-    "Name": "КБ Вольской",
-    "Description": null,
-    "Description2": null,
-    "Subline": "СИЛЬНОЕ ПЕРЕОХЛАЖДЕНИЕ",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000001DB.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000067.0C5",
-        "Name": "Захват точек (тест)"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D24.004",
-    "Image": "000000004734.004",
-    "FlagImage": "000000004729.004",
-    "CelebrationVariants": null
-  },
-  "0000000002AF.09F": {
-    "GUID": "0000000002AF.09F",
-    "Name": "Голливуд",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000002AF.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D1F.004",
-    "Image": "0000000056A7.004",
-    "FlagImage": "000000004777.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Halloween",
-        "Virtual01C": "00000000212E.01C",
-        "MapInfo": {
-          "GUID": "0000000006AB.09F",
-          "Name": "Голливуд",
-          "VariantName": "Голливуд (Хеллоуин)"
-        }
-      }
-    ]
-  },
-  "0000000002C3.09F": {
-    "GUID": "0000000002C3.09F",
-    "Name": "Дорадо",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000002C3.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D22.004",
-    "Image": "0000000056A6.004",
-    "FlagImage": "000000004775.004",
-    "CelebrationVariants": null
-  },
-  "0000000004B7.09F": {
-    "GUID": "0000000004B7.09F",
-    "Name": "Непал",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "0000000004B7.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000005D2A.004",
-    "Image": "0000000070EC.004",
-    "FlagImage": "00000000728B.004",
-    "CelebrationVariants": null
-  },
-  "0000000005BB.09F": {
-    "GUID": "0000000005BB.09F",
-    "Name": "Шоссе 66",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000005BB.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D27.004",
-    "Image": "000000007F2E.004",
-    "FlagImage": "000000004777.004",
-    "CelebrationVariants": null
-  },
-  "000000000661.09F": {
-    "GUID": "000000000661.09F",
-    "Name": "Обучение",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "ВЫБЕРИТЕ ГЕРОЯ",
-    "StateB": "ВЫБЕРИТЕ ГЕРОЯ",
-    "VariantName": null,
-    "MapGUID": "000000000661.002",
-    "GameModes": [
-      {
-        "GUID": "000000000019.0C5",
-        "Name": "Обучение"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D1C.004",
-    "Image": "000000004F2B.004",
-    "FlagImage": "0000000029E0.004",
-    "CelebrationVariants": null
-  },
-  "000000000662.09F": {
-    "GUID": "000000000662.09F",
-    "Name": "Башня Лицзян",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000662.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000005D28.004",
-    "Image": "0000000070B8.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": [
-      {
-        "Name": "LunarNewYear",
-        "Virtual01C": "00000000237C.01C",
-        "MapInfo": {
-          "GUID": "0000000006B7.09F",
-          "Name": "Башня Лицзян",
-          "VariantName": "Башня Лицзян (Лунный Новый год)"
-        }
-      }
-    ]
-  },
-  "000000000664.09F": {
-    "GUID": "000000000664.09F",
-    "Name": "Menu/Hanamura",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000664.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "00000000066D.09F": {
-    "GUID": "00000000066D.09F",
-    "Name": "Илиос",
-    "Description": null,
-    "Description2": null,
-    "Subline": "Бездна",
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000066D.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000005D29.004",
-    "Image": "000000007A44.004",
-    "FlagImage": "000000007A40.004",
-    "CelebrationVariants": null
-  },
-  "000000000675.09F": {
-    "GUID": "000000000675.09F",
-    "Name": "Menu/Gibraltar",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000675.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000676.09F": {
-    "GUID": "000000000676.09F",
-    "Name": "Menu/Kings Row",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000676.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000677.09F": {
-    "GUID": "000000000677.09F",
-    "Name": "Menu/Volskaya",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000677.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000678.09F": {
-    "GUID": "000000000678.09F",
-    "Name": "Menu/Hollywood",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000678.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000688.09F": {
-    "GUID": "000000000688.09F",
-    "Name": "УЧЕБНЫЙ ПОЛИГОН",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "ВЫБЕРИТЕ ГЕРОЯ",
-    "StateB": "ВЫБЕРИТЕ ГЕРОЯ",
-    "VariantName": null,
-    "MapGUID": "000000000688.002",
-    "GameModes": [
-      {
-        "GUID": "000000000018.0C5",
-        "Name": "Учебный полигон"
-      },
-      {
-        "GUID": "00000000005A.0C5",
-        "Name": "Учебный полигон"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000007417.004",
-    "Image": "00000000740F.004",
-    "FlagImage": "0000000029E0.004",
-    "CelebrationVariants": null
-  },
-  "00000000068D.09F": {
-    "GUID": "00000000068D.09F",
-    "Name": "Айхенвальд",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "00000000068D.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000A214.004",
-    "Image": "00000000A215.004",
-    "FlagImage": "00000000A216.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Halloween",
-        "Virtual01C": "00000000212E.01C",
-        "MapInfo": {
-          "GUID": "0000000007F4.09F",
-          "Name": "Айхенвальд",
-          "VariantName": "Айхенвальд (Хеллоуин)"
-        }
-      }
-    ]
-  },
-  "00000000069E.09F": {
-    "GUID": "00000000069E.09F",
-    "Name": "Оазис",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000069E.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000BF72.004",
-    "Image": "00000000A76B.004",
-    "FlagImage": "00000000C326.004",
-    "CelebrationVariants": null
-  },
-  "0000000006AB.09F": {
-    "GUID": "0000000006AB.09F",
-    "Name": "Голливуд",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": "Голливуд (Хеллоуин)",
-    "MapGUID": "0000000006AB.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000AB40.004",
-    "Image": "00000000AB3F.004",
-    "FlagImage": "000000004777.004",
-    "CelebrationVariants": null
-  },
-  "0000000006B1.09F": {
-    "GUID": "0000000006B1.09F",
-    "Name": "Кингс Роу",
-    "Description": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Description2": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": "Кингс Роу (зима)",
-    "MapGUID": "0000000006B1.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000BC03.004",
-    "Image": "00000000BC02.004",
-    "FlagImage": "000000001CFC.004",
-    "CelebrationVariants": null
-  },
-  "0000000006B3.09F": {
-    "GUID": "0000000006B3.09F",
-    "Name": "«Эстадиу ди Ранс»",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "0000000006B3.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000009BE3.004",
-    "Image": "000000009BE2.004",
-    "FlagImage": "000000009DFA.004",
-    "CelebrationVariants": null
-  },
-  "0000000006B5.09F": {
-    "GUID": "0000000006B5.09F",
-    "Name": "Ханамура",
-    "Description": "Тихий район Ханамура, знаменитый среди туристов своими ресторанчиками, магазинами и прекрасным видом на цветущую сакуру, скрывает темную тайну, известную лишь избранным...",
-    "Description2": "Древний клан Шимада, знаменитый своими бойцами-ниндзя, издревле обитал в тихой деревушке под названием Ханамура. Надежно укрытый высокими стенами, клан, промышляющий торговлей оружием, контрабандой и наемными убийствами, постоянно накапливал силу.",
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": "Ханамура (зима)",
-    "MapGUID": "0000000006B5.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000BC05.004",
-    "Image": "00000000BC04.004",
-    "FlagImage": "000000001CFB.004",
-    "CelebrationVariants": null
-  },
-  "0000000006B7.09F": {
-    "GUID": "0000000006B7.09F",
-    "Name": "Башня Лицзян",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКУЙТЕ",
-    "VariantName": "Башня Лицзян (Лунный Новый год)",
-    "MapGUID": "0000000006B7.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000C8F7.004",
-    "Image": "00000000C39A.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": null
-  },
-  "0000000006C7.09F": {
-    "GUID": "0000000006C7.09F",
-    "Name": "VPP Green Room",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "0000000006C7.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "0000000006C9.09F": {
-    "GUID": "0000000006C9.09F",
-    "Name": "Месть Крысенштейна",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000006C9.002",
-    "GameModes": [
-      {
-        "GUID": "000000000003.0C5",
-        "Name": "Месть Крысенштейна"
-      },
-      {
-        "GUID": "00000000002A.0C5",
-        "Name": "Месть Крысенштейна"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "PVE",
-    "Thumbnail": "00000000AB29.004",
-    "Image": "00000000A4D3.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "0000000006D1.09F": {
-    "GUID": "0000000006D1.09F",
-    "Name": "Экостанция: Антарктика",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": null,
-    "MapGUID": "0000000006D1.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000B4FF.004",
-    "Image": "00000000A758.004",
-    "FlagImage": "0000000029E0.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Christmas",
-        "Virtual01C": "000000002168.01C",
-        "MapInfo": {
-          "GUID": "00000000070D.09F",
-          "Name": "Экостанция: Антарктика",
-          "VariantName": "Экостанция: Антарктика (зима)"
-        }
-      }
-    ]
-  },
-  "0000000006D3.09F": {
-    "GUID": "0000000006D3.09F",
-    "Name": "Лунная колония «Горизонт»",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атака",
-    "StateB": "Оборона",
-    "VariantName": null,
-    "MapGUID": "0000000006D3.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000EEB6.004",
-    "Image": "00000000B259.004",
-    "FlagImage": "00000000EEB5.004",
-    "CelebrationVariants": null
-  },
-  "0000000006E0.09F": {
-    "GUID": "0000000006E0.09F",
-    "Name": "Menu/Eichenwalde (Halloween)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "0000000006E0.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "0000000006FE.09F": {
-    "GUID": "0000000006FE.09F",
-    "Name": "Кингс Роу",
-    "Description": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Description2": "Глубоко в туннелях, проложенных под модным районом Кингс Роу, разумные роботы мечтают о дне, когда у них будут те же права, что и у людей.",
-    "Subline": "падение",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "ЗАЩИЩАЙТЕ",
-    "VariantName": null,
-    "MapGUID": "0000000006FE.002",
-    "GameModes": [
-      {
-        "GUID": "00000000000F.0C5",
-        "Name": null
-      },
-      {
-        "GUID": "00000000001A.0C5",
-        "Name": null
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "PVE",
-    "Thumbnail": "00000000E36D.004",
-    "Image": "00000000CBA2.004",
-    "FlagImage": "000000001CFC.004",
-    "CelebrationVariants": null
-  },
-  "000000000700.09F": {
-    "GUID": "000000000700.09F",
-    "Name": "Menu/Kings Row (Winter) (2019)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000700.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000705.09F": {
-    "GUID": "000000000705.09F",
-    "Name": "Некрополь",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": null,
-    "MapGUID": "000000000705.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D321.004",
-    "Image": "00000000D320.004",
-    "FlagImage": "000000001CFA.004",
-    "CelebrationVariants": null
-  },
-  "00000000070C.09F": {
-    "GUID": "00000000070C.09F",
-    "Name": "Черный лес",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": null,
-    "MapGUID": "00000000070C.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D922.004",
-    "Image": "00000000D920.004",
-    "FlagImage": "00000000A216.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Christmas",
-        "Virtual01C": "000000002168.01C",
-        "MapInfo": {
-          "GUID": "0000000007F7.09F",
-          "Name": "Черный лес",
-          "VariantName": "Черный лес (зима)"
-        }
-      }
-    ]
-  },
-  "00000000070D.09F": {
-    "GUID": "00000000070D.09F",
-    "Name": "Экостанция: Антарктика",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": "Экостанция: Антарктика (зима)",
-    "MapGUID": "00000000070D.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "000000000008.0C5",
-        "Name": "Операция «Метелица»"
-      },
-      {
-        "GUID": "000000000059.0C5",
-        "Name": "Снежная схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000BBB0.004",
-    "Image": "00000000BBAF.004",
-    "FlagImage": "0000000029E0.004",
-    "CelebrationVariants": null
-  },
-  "000000000710.09F": {
-    "GUID": "000000000710.09F",
-    "Name": "Menu/Busan (Lunar)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000710.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000711.09F": {
-    "GUID": "000000000711.09F",
-    "Name": "Сад Лицзян",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКУЙТЕ",
-    "VariantName": "Лицзян: сад (Лунный Новый год)",
-    "MapGUID": "000000000711.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000C8F8.004",
-    "Image": "00000000C39B.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": null
-  },
-  "000000000712.09F": {
-    "GUID": "000000000712.09F",
-    "Name": "Ночной рынок Лицзян",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКУЙТЕ",
-    "VariantName": "Лицзян: ночной рынок (Лунный Новый год)",
-    "MapGUID": "000000000712.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000C8F6.004",
-    "Image": "00000000C39C.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": null
-  },
-  "000000000715.09F": {
-    "GUID": "000000000715.09F",
-    "Name": "Menu/Lijiang (Lunar)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000715.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000717.09F": {
-    "GUID": "000000000717.09F",
-    "Name": "Непал: святилище",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000717.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D658.004",
-    "Image": "00000000D657.004",
-    "FlagImage": "00000000728B.004",
-    "CelebrationVariants": null
-  },
-  "00000000071A.09F": {
-    "GUID": "00000000071A.09F",
-    "Name": "Командный центр Лицзян",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКУЙТЕ",
-    "VariantName": "Лицзян: командный центр (Лунный Новый год)",
-    "MapGUID": "00000000071A.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000C8FA.004",
-    "Image": "00000000C8F9.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": null
-  },
-  "00000000071C.09F": {
-    "GUID": "00000000071C.09F",
-    "Name": "Кастильо",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": null,
-    "MapGUID": "00000000071C.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000EEB7.004",
-    "Image": "00000000EEB8.004",
-    "FlagImage": "000000004775.004",
-    "CelebrationVariants": null
-  },
-  "000000000736.09F": {
-    "GUID": "000000000736.09F",
-    "Name": "Непал: деревня",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000736.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D604.004",
-    "Image": "00000000D603.004",
-    "FlagImage": "00000000728B.004",
-    "CelebrationVariants": null
-  },
-  "000000000738.09F": {
-    "GUID": "000000000738.09F",
-    "Name": "Непал: алтарь",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000738.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D655.004",
-    "Image": "00000000D656.004",
-    "FlagImage": "00000000728B.004",
-    "CelebrationVariants": null
-  },
-  "00000000073A.09F": {
-    "GUID": "00000000073A.09F",
-    "Name": "Илиос: колодец",
-    "Description": null,
-    "Description2": null,
-    "Subline": "Бездна",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000073A.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D6C5.004",
-    "Image": "00000000D6C6.004",
-    "FlagImage": "000000007A40.004",
-    "CelebrationVariants": null
-  },
-  "00000000073D.09F": {
-    "GUID": "00000000073D.09F",
-    "Name": "Илиос: маяк",
-    "Description": null,
-    "Description2": null,
-    "Subline": "Бездна",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000073D.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D6A2.004",
-    "Image": "00000000D6A1.004",
-    "FlagImage": "000000007A40.004",
-    "CelebrationVariants": null
-  },
-  "00000000073E.09F": {
-    "GUID": "00000000073E.09F",
-    "Name": "Илиос: развалины",
-    "Description": null,
-    "Description2": null,
-    "Subline": "Бездна",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000073E.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D6D8.004",
-    "Image": "00000000D6D7.004",
-    "FlagImage": "000000007A40.004",
-    "CelebrationVariants": null
-  },
-  "000000000744.09F": {
-    "GUID": "000000000744.09F",
-    "Name": "Лицзян: командный центр",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000744.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D5BD.004",
-    "Image": "00000000D5BE.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": [
-      {
-        "Name": "LunarNewYear",
-        "Virtual01C": "00000000237C.01C",
-        "MapInfo": {
-          "GUID": "00000000071A.09F",
-          "Name": "Командный центр Лицзян",
-          "VariantName": "Лицзян: командный центр (Лунный Новый год)"
-        }
-      }
-    ]
-  },
-  "000000000745.09F": {
-    "GUID": "000000000745.09F",
-    "Name": "Лицзян: сад",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000745.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D5AD.004",
-    "Image": "00000000D5AC.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": [
-      {
-        "Name": "LunarNewYear",
-        "Virtual01C": "00000000237C.01C",
-        "MapInfo": {
-          "GUID": "000000000711.09F",
-          "Name": "Сад Лицзян",
-          "VariantName": "Лицзян: сад (Лунный Новый год)"
-        }
-      }
-    ]
-  },
-  "000000000746.09F": {
-    "GUID": "000000000746.09F",
-    "Name": "Лицзян: ночной рынок",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "000000000746.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000D575.004",
-    "Image": "00000000D574.004",
-    "FlagImage": "00000000728A.004",
-    "CelebrationVariants": [
-      {
-        "Name": "LunarNewYear",
-        "Virtual01C": "00000000237C.01C",
-        "MapInfo": {
-          "GUID": "000000000712.09F",
-          "Name": "Ночной рынок Лицзян",
-          "VariantName": "Лицзян: ночной рынок (Лунный Новый год)"
-        }
-      }
-    ]
-  },
-  "00000000074A.09F": {
-    "GUID": "00000000074A.09F",
-    "Name": "Оазис: центр города",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000074A.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000CFE0.004",
-    "Image": "00000000CFE1.004",
-    "FlagImage": "00000000C326.004",
-    "CelebrationVariants": null
-  },
-  "00000000074C.09F": {
-    "GUID": "00000000074C.09F",
-    "Name": "Оазис: сады",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000074C.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000CFE2.004",
-    "Image": "00000000CFE3.004",
-    "FlagImage": "00000000C326.004",
-    "CelebrationVariants": null
-  },
-  "00000000074D.09F": {
-    "GUID": "00000000074D.09F",
-    "Name": "Оазис: университет",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "АТАКА",
-    "VariantName": null,
-    "MapGUID": "00000000074D.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000CFE4.004",
-    "Image": "00000000CFE5.004",
-    "FlagImage": "00000000C326.004",
-    "CelebrationVariants": null
-  },
-  "000000000751.09F": {
-    "GUID": "000000000751.09F",
-    "Name": "Нумбани",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000751.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000005D23.004",
-    "Image": "000000004766.004",
-    "FlagImage": "000000004750.004",
-    "CelebrationVariants": null
-  },
-  "000000000756.09F": {
-    "GUID": "000000000756.09F",
-    "Name": "Джанкертаун",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000756.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000F302.004",
-    "Image": "00000000F300.004",
-    "FlagImage": "00000000EEB0.004",
-    "CelebrationVariants": null
-  },
-  "00000000075E.09F": {
-    "GUID": "00000000075E.09F",
-    "Name": "Blizzard World",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "00000000075E.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000012B71.004",
-    "Image": "000000012B70.004",
-    "FlagImage": "000000004777.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Christmas",
-        "Virtual01C": "000000002168.01C",
-        "MapInfo": {
-          "GUID": "000000000A5B.09F",
-          "Name": "Blizzard World",
-          "VariantName": "Blizzard World (зима)"
-        }
-      }
-    ]
-  },
-  "000000000764.09F": {
-    "GUID": "000000000764.09F",
-    "Name": "Menu/Kings Row (Archives)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000764.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "PVE",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000793.09F": {
-    "GUID": "000000000793.09F",
-    "Name": "Классическая «Арена Сидней-Харбор»",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000793.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000FB7B.004",
-    "Image": "00000000FB7A.004",
-    "FlagImage": "00000000EEB0.004",
-    "CelebrationVariants": null
-  },
-  "000000000794.09F": {
-    "GUID": "000000000794.09F",
-    "Name": "Menu/Horizon Lunar Colony",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000794.002",
-    "GameModes": null,
-    "State": "Disabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "00000000079F.09F": {
-    "GUID": "00000000079F.09F",
-    "Name": "Риальто",
-    "Description": null,
-    "Description2": null,
-    "Subline": "Вы упали",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "ЗАЩИЩАЙТЕ",
-    "VariantName": null,
-    "MapGUID": "00000000079F.002",
-    "GameModes": [
-      {
-        "GUID": "000000000025.0C5",
-        "Name": "Возмездие"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "PVE",
-    "Thumbnail": "000000013E38.004",
-    "Image": "000000013E39.004",
-    "FlagImage": "000000013ED3.004",
-    "CelebrationVariants": null
-  },
-  "0000000007A0.09F": {
-    "GUID": "0000000007A0.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "0000000007A0.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "0000000007A1.09F": {
-    "GUID": "0000000007A1.09F",
-    "Name": "Аюттайя",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": null,
-    "MapGUID": "0000000007A1.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      },
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000014501.004",
-    "Image": "000000014500.004",
-    "FlagImage": "0000000144FF.004",
-    "CelebrationVariants": null
-  },
-  "0000000007A4.09F": {
-    "GUID": "0000000007A4.09F",
-    "Name": "Шато-Гийяр",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "0000000007A4.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000000FF6B.004",
-    "Image": "00000000FF6A.004",
-    "FlagImage": "00000000FF66.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Halloween",
-        "Virtual01C": "00000000212E.01C",
-        "MapInfo": {
-          "GUID": "000000000836.09F",
-          "Name": "Шато-Гийяр",
-          "VariantName": "Шато-Гийяр (Хеллоуин)"
-        }
-      }
-    ]
-  },
-  "0000000007E2.09F": {
-    "GUID": "0000000007E2.09F",
-    "Name": "Пусан",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "0000000007E2.002",
-    "GameModes": [
-      {
-        "GUID": "000000000017.0C5",
-        "Name": "Контроль"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000017629.004",
-    "Image": "00000001762A.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "0000000007F4.09F": {
-    "GUID": "0000000007F4.09F",
-    "Name": "Айхенвальд",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": "Айхенвальд (Хеллоуин)",
-    "MapGUID": "0000000007F4.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000012790.004",
-    "Image": "00000001279E.004",
-    "FlagImage": "00000000A216.004",
-    "CelebrationVariants": null
-  },
-  "0000000007F7.09F": {
-    "GUID": "0000000007F7.09F",
-    "Name": "Черный лес",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Атакуйте",
-    "StateB": "Атака",
-    "VariantName": "Черный лес (зима)",
-    "MapGUID": "0000000007F7.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000008.0C5",
-        "Name": "Операция «Метелица»"
-      },
-      {
-        "GUID": "000000000059.0C5",
-        "Name": "Снежная схватка"
-      },
-      {
-        "GUID": "000000000046.0C5",
-        "Name": "Ледяная ликвидация"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000013652.004",
-    "Image": "000000013651.004",
-    "FlagImage": "00000000A216.004",
-    "CelebrationVariants": null
-  },
-  "0000000007FD.09F": {
-    "GUID": "0000000007FD.09F",
-    "Name": "Непал: деревня (зима)",
-    "Description": null,
-    "Description2": null,
-    "Subline": "БЕЗДНА",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "ВЫЖИВАЙТЕ",
-    "VariantName": null,
-    "MapGUID": "0000000007FD.002",
-    "GameModes": [
-      {
-        "GUID": "000000000029.0C5",
-        "Name": "Охота на йети"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000013532.004",
-    "Image": "000000013340.004",
-    "FlagImage": "00000000728B.004",
-    "CelebrationVariants": null
-  },
-  "000000000801.09F": {
-    "GUID": "000000000801.09F",
-    "Name": "Menu/Junkertown",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000801.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000817.09F": {
-    "GUID": "000000000817.09F",
-    "Name": "Menu/World Cup",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000817.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000836.09F": {
-    "GUID": "000000000836.09F",
-    "Name": "Шато-Гийяр",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": "Шато-Гийяр (Хеллоуин)",
-    "MapGUID": "000000000836.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000001BEAA.004",
-    "Image": "00000001BEA9.004",
-    "FlagImage": "00000000FF66.004",
-    "CelebrationVariants": null
-  },
-  "00000000085F.09F": {
-    "GUID": "00000000085F.09F",
-    "Name": "Menu/Black Forest (Winter) (Day)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": "Черный лес (зима)",
-    "MapGUID": "00000000085F.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000862.09F": {
-    "GUID": "000000000862.09F",
-    "Name": "Menu/OWL",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000862.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000864.09F": {
-    "GUID": "000000000864.09F",
-    "Name": "Menu/OWL",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000864.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000871.09F": {
-    "GUID": "000000000871.09F",
-    "Name": "Риальто",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКУЙТЕ",
-    "StateB": "ЗАЩИЩАЙТЕ",
-    "VariantName": null,
-    "MapGUID": "000000000871.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000013EC2.004",
-    "Image": "000000013EC3.004",
-    "FlagImage": "000000013ED3.004",
-    "CelebrationVariants": null
-  },
-  "000000000890.09F": {
-    "GUID": "000000000890.09F",
-    "Name": "Петра",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000890.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000017325.004",
-    "Image": "000000017324.004",
-    "FlagImage": "000000017329.004",
-    "CelebrationVariants": null
-  },
-  "000000000891.09F": {
-    "GUID": "000000000891.09F",
-    "Name": "Париж",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000891.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "0000000191C5.004",
-    "Image": "0000000191C4.004",
-    "FlagImage": "00000000FF66.004",
-    "CelebrationVariants": null
-  },
-  "0000000008B4.09F": {
-    "GUID": "0000000008B4.09F",
-    "Name": "Menu/Rialto (Archives)",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000008B4.002",
-    "GameModes": [
-      {
-        "GUID": "000000000025.0C5",
-        "Name": "Возмездие"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "PVE",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "0000000008BE.09F": {
-    "GUID": "0000000008BE.09F",
-    "Name": "Menu/Rialto",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "0000000008BE.002",
-    "GameModes": [
-      {
-        "GUID": "000000000025.0C5",
-        "Name": "Возмездие"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "PVE",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "00000000092A.09F": {
-    "GUID": "00000000092A.09F",
-    "Name": "Классический стадион Пусана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "00000000092A.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "000000017805.004",
-    "Image": "000000017806.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000A13.09F": {
-    "GUID": "000000000A13.09F",
-    "Name": "Menu/OWL",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000A13.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000A14.09F": {
-    "GUID": "000000000A14.09F",
-    "Name": "Пусан",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000A14.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000A44.09F": {
-    "GUID": "000000000A44.09F",
-    "Name": "Гавана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000A44.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000043.0C5",
-        "Name": "Предчувствие бури"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000001ED2B.004",
-    "Image": "00000001ED2C.004",
-    "FlagImage": "00000001F827.004",
-    "CelebrationVariants": null
-  },
-  "000000000A5A.09F": {
-    "GUID": "000000000A5A.09F",
-    "Name": "Menu/Chateau (Halloween)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": "Шато-Гийяр (Хеллоуин)",
-    "MapGUID": "000000000A5A.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000A5B.09F": {
-    "GUID": "000000000A5B.09F",
-    "Name": "Blizzard World",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": "Blizzard World (зима)",
-    "MapGUID": "000000000A5B.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000001CB60.004",
-    "Image": "00000001CB5F.004",
-    "FlagImage": "000000004777.004",
-    "CelebrationVariants": null
-  },
-  "000000000A7A.09F": {
-    "GUID": "000000000A7A.09F",
-    "Name": "Святилище Пусана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": "Святилище Пусана (Лунный Новый год)",
-    "MapGUID": "000000000A7A.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000001C93C.004",
-    "Image": "00000001C93B.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000A84.09F": {
-    "GUID": "000000000A84.09F",
-    "Name": "Шоссе 66",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000A84.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000A86.09F": {
-    "GUID": "000000000A86.09F",
-    "Name": "Центр Пусана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "АТАКА",
-    "VariantName": "Центр Пусана (Лунный Новый год)",
-    "MapGUID": "000000000A86.002",
-    "GameModes": [
-      {
-        "GUID": "000000000007.0C5",
-        "Name": "Захват флага"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000001CA76.004",
-    "Image": "00000001CA77.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000A9E.09F": {
-    "GUID": "000000000A9E.09F",
-    "Name": "Menu/Blizzard World (Winter)",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ЗАЩИТА",
-    "VariantName": null,
-    "MapGUID": "000000000A9E.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Disabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000AF0.09F": {
-    "GUID": "000000000AF0.09F",
-    "Name": "Menu/Paris",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000AF0.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000AFE.09F": {
-    "GUID": "000000000AFE.09F",
-    "Name": "Гавана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000AFE.002",
-    "GameModes": [
-      {
-        "GUID": "000000000043.0C5",
-        "Name": "Предчувствие бури"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "PVE",
-    "Thumbnail": "00000001ED2E.004",
-    "Image": "00000001ED2D.004",
-    "FlagImage": "00000001F827.004",
-    "CelebrationVariants": null
-  },
-  "000000000B2D.09F": {
-    "GUID": "000000000B2D.09F",
-    "Name": "Menu/OWL All Stars (2020)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000B2D.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000B55.09F": {
-    "GUID": "000000000B55.09F",
-    "Name": "Menu/Havana",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000B55.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000043.0C5",
-        "Name": "Предчувствие бури"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000B56.09F": {
-    "GUID": "000000000B56.09F",
-    "Name": "Menu/Havana (Archives)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000B56.002",
-    "GameModes": [
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000BCE.09F": {
-    "GUID": "000000000BCE.09F",
-    "Name": "Menu/Summer Games (2020)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000BCE.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000BEF.09F": {
-    "GUID": "000000000BEF.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000BEF.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C04.09F": {
-    "GUID": "000000000C04.09F",
-    "Name": "Menu/Eichenwalde (Alt)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000C04.002",
-    "GameModes": [
-      {
-        "GUID": "000000000016.0C5",
-        "Name": "Гибридный режим"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000000A214.004",
-    "Image": "00000000A215.004",
-    "FlagImage": "00000000A216.004",
-    "CelebrationVariants": [
-      {
-        "Name": "Halloween",
-        "Virtual01C": "00000000212E.01C",
-        "MapInfo": {
-          "GUID": "0000000007F4.09F",
-          "Name": "Айхенвальд",
-          "VariantName": "Айхенвальд (Хеллоуин)"
-        }
-      }
-    ]
-  },
-  "000000000C40.09F": {
-    "GUID": "000000000C40.09F",
-    "Name": "Мастерская: остров",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C40.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000029D31.004",
-    "Image": "000000029D29.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C44.09F": {
-    "GUID": "000000000C44.09F",
-    "Name": "Мастерская: поле",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C44.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000029D35.004",
-    "Image": "000000029D34.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C46.09F": {
-    "GUID": "000000000C46.09F",
-    "Name": "Menu/Temple of Anubis (Alt)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C46.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C48.09F": {
-    "GUID": "000000000C48.09F",
-    "Name": "Мастерская: комната",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C48.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "000000029D33.004",
-    "Image": "000000029D32.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C61.09F": {
-    "GUID": "000000000C61.09F",
-    "Name": "Menu/Black Forest (Winter) (Night)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": "Черный лес (зима)",
-    "MapGUID": "000000000C61.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C83.09F": {
-    "GUID": "000000000C83.09F",
-    "Name": "Menu/OWL",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C83.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000C8F.09F": {
-    "GUID": "000000000C8F.09F",
-    "Name": "Menu/Anniversary",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000C8F.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CAC.09F": {
-    "GUID": "000000000CAC.09F",
-    "Name": "Menu/Route 66 (Alt)",
-    "Description": null,
-    "Description2": null,
-    "Subline": "падение",
-    "StateA": "АТАКА",
-    "StateB": "ОБОРОНА",
-    "VariantName": null,
-    "MapGUID": "000000000CAC.002",
-    "GameModes": [
-      {
-        "GUID": "000000000015.0C5",
-        "Name": "Сопровождение"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CCF.09F": {
-    "GUID": "000000000CCF.09F",
-    "Name": "Menu/Anniversary",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CCF.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CD0.09F": {
-    "GUID": "000000000CD0.09F",
-    "Name": "Мастерская: поле (ночь)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CD0.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000002B294.004",
-    "Image": "00000002B295.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CD1.09F": {
-    "GUID": "000000000CD1.09F",
-    "Name": "Мастерская: остров (ночь)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CD1.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000002B292.004",
-    "Image": "00000002B293.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CD3.09F": {
-    "GUID": "000000000CD3.09F",
-    "Name": "Канедзака",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CD3.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000002CF9D.004",
-    "Image": "00000002CF9C.004",
-    "FlagImage": "000000001CFB.004",
-    "CelebrationVariants": null
-  },
-  "000000000CD7.09F": {
-    "GUID": "000000000CD7.09F",
-    "Name": "Малевенто",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CD7.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000003134D.004",
-    "Image": "00000003134E.004",
-    "FlagImage": "000000013ED3.004",
-    "CelebrationVariants": null
-  },
-  "000000000CDC.09F": {
-    "GUID": "000000000CDC.09F",
-    "Name": "Стадион Пусана",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000CDC.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000002C05B.004",
-    "Image": "00000002C05C.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000CE0.09F": {
-    "GUID": "000000000CE0.09F",
-    "Name": "Menu/Anniversary",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CE0.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000CE6.09F": {
-    "GUID": "000000000CE6.09F",
-    "Name": "Menu/Paris (Alt)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000CE6.002",
-    "GameModes": [
-      {
-        "GUID": "000000000014.0C5",
-        "Name": "Захват точек"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "0000000191C5.004",
-    "Image": "0000000191C4.004",
-    "FlagImage": "00000000FF66.004",
-    "CelebrationVariants": null
-  },
-  "000000000CEB.09F": {
-    "GUID": "000000000CEB.09F",
-    "Name": "«Арена Сидней-Харбор»",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000CEB.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000002C059.004",
-    "Image": "00000002C058.004",
-    "FlagImage": "00000000EEB0.004",
-    "CelebrationVariants": null
-  },
-  "000000000CFE.09F": {
-    "GUID": "000000000CFE.09F",
-    "Name": "Menu/Sydney (Lucioball)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000CFE.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000002C059.004",
-    "Image": "00000002C058.004",
-    "FlagImage": "00000000EEB0.004",
-    "CelebrationVariants": null
-  },
-  "000000000CFF.09F": {
-    "GUID": "000000000CFF.09F",
-    "Name": "Menu/Busan (Lucioball)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": "Сыграть в лусиобол",
-    "StateB": "Сыграть в лусиобол",
-    "VariantName": null,
-    "MapGUID": "000000000CFF.002",
-    "GameModes": [
-      {
-        "GUID": "000000000020.0C5",
-        "Name": "Лусиобол"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000002C05B.004",
-    "Image": "00000002C05C.004",
-    "FlagImage": "00000001762B.004",
-    "CelebrationVariants": null
-  },
-  "000000000D0A.09F": {
-    "GUID": "000000000D0A.09F",
-    "Name": "Menu/OWL",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D0A.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D2C.09F": {
-    "GUID": "000000000D2C.09F",
-    "Name": "Menu/Tracer Comic Challenge",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D2C.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "PVE",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D2D.09F": {
-    "GUID": "000000000D2D.09F",
-    "Name": "Menu/OWL Grand Finals (2020)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D2D.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D4C.09F": {
-    "GUID": "000000000D4C.09F",
-    "Name": "Мастерская: зеленый экран",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D4C.002",
-    "GameModes": [
-      {
-        "GUID": "000000000009.0C5",
-        "Name": "Ликвидация"
-      },
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000002D297.004",
-    "Image": "00000002D296.004",
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D67.09F": {
-    "GUID": "000000000D67.09F",
-    "Name": "Menu/Symmetra Challenge",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D67.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D77.09F": {
-    "GUID": "000000000D77.09F",
-    "Name": "Menu/Kings Row (Winter) (2020)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D77.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D7A.09F": {
-    "GUID": "000000000D7A.09F",
-    "Name": "Menu/Antarctica (Winter)",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D7A.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000D86.09F": {
-    "GUID": "000000000D86.09F",
-    "Name": "Канедзака",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000D86.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000002CF9D.004",
-    "Image": "00000002CF9C.004",
-    "FlagImage": "000000001CFB.004",
-    "CelebrationVariants": null
-  },
-  "000000000DAD.09F": {
-    "GUID": "000000000DAD.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000DAD.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000DBC.09F": {
-    "GUID": "000000000DBC.09F",
-    "Name": "Канедзака",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000DBC.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "000000000010.0C5",
-        "Name": "Разминка"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": "00000002CF9D.004",
-    "Image": "00000002CF9C.004",
-    "FlagImage": "000000001CFB.004",
-    "CelebrationVariants": null
-  },
-  "000000000E1F.09F": {
-    "GUID": "000000000E1F.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000E1F.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000E44.09F": {
-    "GUID": "000000000E44.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000E44.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000E49.09F": {
-    "GUID": "000000000E49.09F",
-    "Name": "Малевенто",
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000E49.002",
-    "GameModes": [
-      {
-        "GUID": "00000000001E.0C5",
-        "Name": "Схватка"
-      },
-      {
-        "GUID": "00000000001D.0C5",
-        "Name": "Командная схватка"
-      },
-      {
-        "GUID": "000000000070.0C5",
-        "Name": "Охота за головами"
-      }
-    ],
-    "State": "Enabled",
-    "MapType": "MirroredMap",
-    "Thumbnail": "00000003134D.004",
-    "Image": "00000003134E.004",
-    "FlagImage": "000000013ED3.004",
-    "CelebrationVariants": null
-  },
-  "000000000E83.09F": {
-    "GUID": "000000000E83.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000E83.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000EEE.09F": {
-    "GUID": "000000000EEE.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000EEE.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  },
-  "000000000F14.09F": {
-    "GUID": "000000000F14.09F",
-    "Name": null,
-    "Description": null,
-    "Description2": null,
-    "Subline": null,
-    "StateA": null,
-    "StateB": null,
-    "VariantName": null,
-    "MapGUID": "000000000F14.002",
-    "GameModes": null,
-    "State": "Enabled",
-    "MapType": "OffenseDefenseMap",
-    "Thumbnail": null,
-    "Image": null,
-    "FlagImage": null,
-    "CelebrationVariants": null
-  }
+ "00000000005B.09F": {
+  "GUID": "00000000005B.09F",
+  "Name": "Temple of Anubis",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000005B.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000067.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D1D.004",
+  "Image": "0000000018EF.004",
+  "FlagImage": "000000001CFA.004",
+  "CelebrationVariants": null
+ },
+ "0000000000D4.09F": {
+  "GUID": "0000000000D4.09F",
+  "Name": "King's Row",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000000D4.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D21.004",
+  "Image": "0000000018F0.004",
+  "FlagImage": "000000001CFC.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Christmas",
+    "Virtual01C": "000000002168.01C",
+    "MapInfo": {
+     "GUID": "0000000006B1.09F",
+     "Name": "King's Row",
+     "VariantName": "King's Row"
+    }
+   }
+  ]
+ },
+ "000000000165.09F": {
+  "GUID": "000000000165.09F",
+  "Name": "Hanamura",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000165.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000067.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D20.004",
+  "Image": "000000000F22.004",
+  "FlagImage": "000000001CFB.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Christmas",
+    "Virtual01C": "000000002168.01C",
+    "MapInfo": {
+     "GUID": "0000000006B5.09F",
+     "Name": "Hanamura",
+     "VariantName": "Hanamura"
+    }
+   }
+  ]
+ },
+ "000000000184.09F": {
+  "GUID": "000000000184.09F",
+  "Name": "Watchpoint: Gibraltar",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000184.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D1E.004",
+  "Image": "0000000029E1.004",
+  "FlagImage": "0000000029E0.004",
+  "CelebrationVariants": null
+ },
+ "0000000001D4.09F": {
+  "GUID": "0000000001D4.09F",
+  "Name": "Numbani",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000001D4.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D23.004",
+  "Image": "000000004766.004",
+  "FlagImage": "000000004750.004",
+  "CelebrationVariants": [
+   {
+    "Name": "0000000026E3.01C",
+    "Virtual01C": "0000000026E3.01C",
+    "MapInfo": {
+     "GUID": "000000000751.09F",
+     "Name": "",
+     "VariantName": null
+    }
+   }
+  ]
+ },
+ "0000000001DB.09F": {
+  "GUID": "0000000001DB.09F",
+  "Name": "Volskaya Industries",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000001DB.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000067.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D24.004",
+  "Image": "000000004734.004",
+  "FlagImage": "000000004729.004",
+  "CelebrationVariants": null
+ },
+ "0000000002AF.09F": {
+  "GUID": "0000000002AF.09F",
+  "Name": "Hollywood",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000002AF.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D1F.004",
+  "Image": "0000000056A7.004",
+  "FlagImage": "000000004777.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Halloween",
+    "Virtual01C": "00000000212E.01C",
+    "MapInfo": {
+     "GUID": "0000000006AB.09F",
+     "Name": "Hollywood",
+     "VariantName": "Hollywood"
+    }
+   }
+  ]
+ },
+ "0000000002C3.09F": {
+  "GUID": "0000000002C3.09F",
+  "Name": "Dorado",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000002C3.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D22.004",
+  "Image": "0000000056A6.004",
+  "FlagImage": "000000004775.004",
+  "CelebrationVariants": null
+ },
+ "0000000004B7.09F": {
+  "GUID": "0000000004B7.09F",
+  "Name": "Nepal",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000004B7.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000005D2A.004",
+  "Image": "0000000070EC.004",
+  "FlagImage": "00000000728B.004",
+  "CelebrationVariants": null
+ },
+ "0000000005BB.09F": {
+  "GUID": "0000000005BB.09F",
+  "Name": "Route 66",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000005BB.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D27.004",
+  "Image": "000000007F2E.004",
+  "FlagImage": "000000004777.004",
+  "CelebrationVariants": null
+ },
+ "000000000661.09F": {
+  "GUID": "000000000661.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000661.002",
+  "GameModes": [
+   {
+    "GUID": "000000000019.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D1C.004",
+  "Image": "000000004F2B.004",
+  "FlagImage": "0000000029E0.004",
+  "CelebrationVariants": null
+ },
+ "000000000662.09F": {
+  "GUID": "000000000662.09F",
+  "Name": "Lijiang Tower",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000662.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000005D28.004",
+  "Image": "0000000070B8.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": [
+   {
+    "Name": "LunarNewYear",
+    "Virtual01C": "00000000237C.01C",
+    "MapInfo": {
+     "GUID": "0000000006B7.09F",
+     "Name": "Lijiang Tower",
+     "VariantName": "Lijiang Tower"
+    }
+   }
+  ]
+ },
+ "000000000664.09F": {
+  "GUID": "000000000664.09F",
+  "Name": "Menu/Hanamura",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000664.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "00000000066D.09F": {
+  "GUID": "00000000066D.09F",
+  "Name": "Ilios",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000066D.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000005D29.004",
+  "Image": "000000007A44.004",
+  "FlagImage": "000000007A40.004",
+  "CelebrationVariants": null
+ },
+ "000000000675.09F": {
+  "GUID": "000000000675.09F",
+  "Name": "Menu/Gibraltar",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000675.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000676.09F": {
+  "GUID": "000000000676.09F",
+  "Name": "Menu/Kings Row",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000676.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000677.09F": {
+  "GUID": "000000000677.09F",
+  "Name": "Menu/Volskaya",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000677.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000678.09F": {
+  "GUID": "000000000678.09F",
+  "Name": "Menu/Hollywood",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000678.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000688.09F": {
+  "GUID": "000000000688.09F",
+  "Name": "Practice Range",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000688.002",
+  "GameModes": [
+   {
+    "GUID": "000000000018.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000005A.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000007417.004",
+  "Image": "00000000740F.004",
+  "FlagImage": "0000000029E0.004",
+  "CelebrationVariants": null
+ },
+ "00000000068D.09F": {
+  "GUID": "00000000068D.09F",
+  "Name": "Eichenwalde",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000068D.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000A214.004",
+  "Image": "00000000A215.004",
+  "FlagImage": "00000000A216.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Halloween",
+    "Virtual01C": "00000000212E.01C",
+    "MapInfo": {
+     "GUID": "0000000007F4.09F",
+     "Name": "Eichenwalde",
+     "VariantName": "Eichenwalde"
+    }
+   }
+  ]
+ },
+ "00000000069E.09F": {
+  "GUID": "00000000069E.09F",
+  "Name": "Oasis",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000069E.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000BF72.004",
+  "Image": "00000000A76B.004",
+  "FlagImage": "00000000C326.004",
+  "CelebrationVariants": null
+ },
+ "0000000006AB.09F": {
+  "GUID": "0000000006AB.09F",
+  "Name": "Hollywood",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Hollywood",
+  "MapGUID": "0000000006AB.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000AB40.004",
+  "Image": "00000000AB3F.004",
+  "FlagImage": "000000004777.004",
+  "CelebrationVariants": null
+ },
+ "0000000006B1.09F": {
+  "GUID": "0000000006B1.09F",
+  "Name": "King's Row",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "King's Row",
+  "MapGUID": "0000000006B1.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000BC03.004",
+  "Image": "00000000BC02.004",
+  "FlagImage": "000000001CFC.004",
+  "CelebrationVariants": null
+ },
+ "0000000006B3.09F": {
+  "GUID": "0000000006B3.09F",
+  "Name": "Estádio das Rãs",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000006B3.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000009BE3.004",
+  "Image": "000000009BE2.004",
+  "FlagImage": "000000009DFA.004",
+  "CelebrationVariants": null
+ },
+ "0000000006B5.09F": {
+  "GUID": "0000000006B5.09F",
+  "Name": "Hanamura",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Hanamura",
+  "MapGUID": "0000000006B5.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000BC05.004",
+  "Image": "00000000BC04.004",
+  "FlagImage": "000000001CFB.004",
+  "CelebrationVariants": null
+ },
+ "0000000006B7.09F": {
+  "GUID": "0000000006B7.09F",
+  "Name": "Lijiang Tower",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Lijiang Tower",
+  "MapGUID": "0000000006B7.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000C8F7.004",
+  "Image": "00000000C39A.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": null
+ },
+ "0000000006C7.09F": {
+  "GUID": "0000000006C7.09F",
+  "Name": "VPP Green Room",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "0000000006C7.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "0000000006C9.09F": {
+  "GUID": "0000000006C9.09F",
+  "Name": "Junkenstein's Revenge",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000006C9.002",
+  "GameModes": [
+   {
+    "GUID": "000000000003.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000002A.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "PVE",
+  "Thumbnail": "00000000AB29.004",
+  "Image": "00000000A4D3.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "0000000006D1.09F": {
+  "GUID": "0000000006D1.09F",
+  "Name": "Ecopoint: Antarctica",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000006D1.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000B4FF.004",
+  "Image": "00000000A758.004",
+  "FlagImage": "0000000029E0.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Christmas",
+    "Virtual01C": "000000002168.01C",
+    "MapInfo": {
+     "GUID": "00000000070D.09F",
+     "Name": "Ecopoint: Antarctica",
+     "VariantName": "Ecopoint: Antarctica"
+    }
+   }
+  ]
+ },
+ "0000000006D3.09F": {
+  "GUID": "0000000006D3.09F",
+  "Name": "Horizon Lunar Colony",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000006D3.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000EEB6.004",
+  "Image": "00000000B259.004",
+  "FlagImage": "00000000EEB5.004",
+  "CelebrationVariants": null
+ },
+ "0000000006E0.09F": {
+  "GUID": "0000000006E0.09F",
+  "Name": "Menu/Eichenwalde (Halloween)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "0000000006E0.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "0000000006FE.09F": {
+  "GUID": "0000000006FE.09F",
+  "Name": "",
+  "Description": "",
+  "Description2": "",
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000006FE.002",
+  "GameModes": [
+   {
+    "GUID": "00000000000F.0C5",
+    "Name": null
+   },
+   {
+    "GUID": "00000000001A.0C5",
+    "Name": null
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "PVE",
+  "Thumbnail": "00000000E36D.004",
+  "Image": "00000000CBA2.004",
+  "FlagImage": "000000001CFC.004",
+  "CelebrationVariants": null
+ },
+ "000000000700.09F": {
+  "GUID": "000000000700.09F",
+  "Name": "Menu/Kings Row (Winter) (2019)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000700.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000705.09F": {
+  "GUID": "000000000705.09F",
+  "Name": "Necropolis",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000705.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D321.004",
+  "Image": "00000000D320.004",
+  "FlagImage": "000000001CFA.004",
+  "CelebrationVariants": null
+ },
+ "00000000070C.09F": {
+  "GUID": "00000000070C.09F",
+  "Name": "Black Forest",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000070C.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D922.004",
+  "Image": "00000000D920.004",
+  "FlagImage": "00000000A216.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Christmas",
+    "Virtual01C": "000000002168.01C",
+    "MapInfo": {
+     "GUID": "0000000007F7.09F",
+     "Name": "Black Forest",
+     "VariantName": "Black Forest"
+    }
+   }
+  ]
+ },
+ "00000000070D.09F": {
+  "GUID": "00000000070D.09F",
+  "Name": "Ecopoint: Antarctica",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Ecopoint: Antarctica",
+  "MapGUID": "00000000070D.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000008.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000059.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000BBB0.004",
+  "Image": "00000000BBAF.004",
+  "FlagImage": "0000000029E0.004",
+  "CelebrationVariants": null
+ },
+ "000000000710.09F": {
+  "GUID": "000000000710.09F",
+  "Name": "Menu/Busan (Lunar)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000710.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000711.09F": {
+  "GUID": "000000000711.09F",
+  "Name": "Lijiang Garden",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Lijiang Garden",
+  "MapGUID": "000000000711.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000C8F8.004",
+  "Image": "00000000C39B.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": null
+ },
+ "000000000712.09F": {
+  "GUID": "000000000712.09F",
+  "Name": "Lijiang Night Market",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Lijiang Night Market",
+  "MapGUID": "000000000712.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000C8F6.004",
+  "Image": "00000000C39C.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": null
+ },
+ "000000000715.09F": {
+  "GUID": "000000000715.09F",
+  "Name": "Menu/Lijiang (Lunar)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000715.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000717.09F": {
+  "GUID": "000000000717.09F",
+  "Name": "Nepal Sanctum",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000717.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D658.004",
+  "Image": "00000000D657.004",
+  "FlagImage": "00000000728B.004",
+  "CelebrationVariants": null
+ },
+ "00000000071A.09F": {
+  "GUID": "00000000071A.09F",
+  "Name": "Lijiang Control Center",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Lijiang Control Center",
+  "MapGUID": "00000000071A.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000C8FA.004",
+  "Image": "00000000C8F9.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": null
+ },
+ "00000000071C.09F": {
+  "GUID": "00000000071C.09F",
+  "Name": "Castillo",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000071C.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000EEB7.004",
+  "Image": "00000000EEB8.004",
+  "FlagImage": "000000004775.004",
+  "CelebrationVariants": null
+ },
+ "000000000736.09F": {
+  "GUID": "000000000736.09F",
+  "Name": "Nepal Village",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000736.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D604.004",
+  "Image": "00000000D603.004",
+  "FlagImage": "00000000728B.004",
+  "CelebrationVariants": null
+ },
+ "000000000738.09F": {
+  "GUID": "000000000738.09F",
+  "Name": "Nepal Shrine",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000738.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D655.004",
+  "Image": "00000000D656.004",
+  "FlagImage": "00000000728B.004",
+  "CelebrationVariants": null
+ },
+ "00000000073A.09F": {
+  "GUID": "00000000073A.09F",
+  "Name": "Ilios Well",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000073A.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D6C5.004",
+  "Image": "00000000D6C6.004",
+  "FlagImage": "000000007A40.004",
+  "CelebrationVariants": null
+ },
+ "00000000073D.09F": {
+  "GUID": "00000000073D.09F",
+  "Name": "Ilios Lighthouse",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000073D.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D6A2.004",
+  "Image": "00000000D6A1.004",
+  "FlagImage": "000000007A40.004",
+  "CelebrationVariants": null
+ },
+ "00000000073E.09F": {
+  "GUID": "00000000073E.09F",
+  "Name": "Ilios Ruins",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000073E.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D6D8.004",
+  "Image": "00000000D6D7.004",
+  "FlagImage": "000000007A40.004",
+  "CelebrationVariants": null
+ },
+ "000000000744.09F": {
+  "GUID": "000000000744.09F",
+  "Name": "Lijiang Control Center",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000744.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D5BD.004",
+  "Image": "00000000D5BE.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": [
+   {
+    "Name": "LunarNewYear",
+    "Virtual01C": "00000000237C.01C",
+    "MapInfo": {
+     "GUID": "00000000071A.09F",
+     "Name": "Lijiang Control Center",
+     "VariantName": "Lijiang Control Center"
+    }
+   }
+  ]
+ },
+ "000000000745.09F": {
+  "GUID": "000000000745.09F",
+  "Name": "Lijiang Garden",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000745.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D5AD.004",
+  "Image": "00000000D5AC.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": [
+   {
+    "Name": "LunarNewYear",
+    "Virtual01C": "00000000237C.01C",
+    "MapInfo": {
+     "GUID": "000000000711.09F",
+     "Name": "Lijiang Garden",
+     "VariantName": "Lijiang Garden"
+    }
+   }
+  ]
+ },
+ "000000000746.09F": {
+  "GUID": "000000000746.09F",
+  "Name": "Lijiang Night Market",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000746.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000D575.004",
+  "Image": "00000000D574.004",
+  "FlagImage": "00000000728A.004",
+  "CelebrationVariants": [
+   {
+    "Name": "LunarNewYear",
+    "Virtual01C": "00000000237C.01C",
+    "MapInfo": {
+     "GUID": "000000000712.09F",
+     "Name": "Lijiang Night Market",
+     "VariantName": "Lijiang Night Market"
+    }
+   }
+  ]
+ },
+ "00000000074A.09F": {
+  "GUID": "00000000074A.09F",
+  "Name": "Oasis City Center",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000074A.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000CFE0.004",
+  "Image": "00000000CFE1.004",
+  "FlagImage": "00000000C326.004",
+  "CelebrationVariants": null
+ },
+ "00000000074C.09F": {
+  "GUID": "00000000074C.09F",
+  "Name": "Oasis Gardens",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000074C.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000CFE2.004",
+  "Image": "00000000CFE3.004",
+  "FlagImage": "00000000C326.004",
+  "CelebrationVariants": null
+ },
+ "00000000074D.09F": {
+  "GUID": "00000000074D.09F",
+  "Name": "Oasis University",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000074D.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000CFE4.004",
+  "Image": "00000000CFE5.004",
+  "FlagImage": "00000000C326.004",
+  "CelebrationVariants": null
+ },
+ "000000000751.09F": {
+  "GUID": "000000000751.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000751.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000005D23.004",
+  "Image": "000000004766.004",
+  "FlagImage": "000000004750.004",
+  "CelebrationVariants": null
+ },
+ "000000000756.09F": {
+  "GUID": "000000000756.09F",
+  "Name": "Junkertown",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000756.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000F302.004",
+  "Image": "00000000F300.004",
+  "FlagImage": "00000000EEB0.004",
+  "CelebrationVariants": null
+ },
+ "00000000075E.09F": {
+  "GUID": "00000000075E.09F",
+  "Name": "Blizzard World",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000075E.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000012B71.004",
+  "Image": "000000012B70.004",
+  "FlagImage": "000000004777.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Christmas",
+    "Virtual01C": "000000002168.01C",
+    "MapInfo": {
+     "GUID": "000000000A5B.09F",
+     "Name": "Blizzard World",
+     "VariantName": "Blizzard World"
+    }
+   }
+  ]
+ },
+ "000000000764.09F": {
+  "GUID": "000000000764.09F",
+  "Name": "Menu/Kings Row (Archives)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000764.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "PVE",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000793.09F": {
+  "GUID": "000000000793.09F",
+  "Name": "Sydney Harbour Arena Classic",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000793.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000FB7B.004",
+  "Image": "00000000FB7A.004",
+  "FlagImage": "00000000EEB0.004",
+  "CelebrationVariants": null
+ },
+ "000000000794.09F": {
+  "GUID": "000000000794.09F",
+  "Name": "Menu/Horizon Lunar Colony",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000794.002",
+  "GameModes": null,
+  "State": "Disabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "00000000079F.09F": {
+  "GUID": "00000000079F.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000079F.002",
+  "GameModes": [
+   {
+    "GUID": "000000000025.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "PVE",
+  "Thumbnail": "000000013E38.004",
+  "Image": "000000013E39.004",
+  "FlagImage": "000000013ED3.004",
+  "CelebrationVariants": null
+ },
+ "0000000007A0.09F": {
+  "GUID": "0000000007A0.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "0000000007A0.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "0000000007A1.09F": {
+  "GUID": "0000000007A1.09F",
+  "Name": "Ayutthaya",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000007A1.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000014501.004",
+  "Image": "000000014500.004",
+  "FlagImage": "0000000144FF.004",
+  "CelebrationVariants": null
+ },
+ "0000000007A4.09F": {
+  "GUID": "0000000007A4.09F",
+  "Name": "Château Guillard",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "0000000007A4.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000000FF6B.004",
+  "Image": "00000000FF6A.004",
+  "FlagImage": "00000000FF66.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Halloween",
+    "Virtual01C": "00000000212E.01C",
+    "MapInfo": {
+     "GUID": "000000000836.09F",
+     "Name": "Château Guillard",
+     "VariantName": "Château Guillard"
+    }
+   }
+  ]
+ },
+ "0000000007E2.09F": {
+  "GUID": "0000000007E2.09F",
+  "Name": "Busan",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "0000000007E2.002",
+  "GameModes": [
+   {
+    "GUID": "000000000017.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000017629.004",
+  "Image": "00000001762A.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "0000000007F4.09F": {
+  "GUID": "0000000007F4.09F",
+  "Name": "Eichenwalde",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Eichenwalde",
+  "MapGUID": "0000000007F4.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000012790.004",
+  "Image": "00000001279E.004",
+  "FlagImage": "00000000A216.004",
+  "CelebrationVariants": null
+ },
+ "0000000007F7.09F": {
+  "GUID": "0000000007F7.09F",
+  "Name": "Black Forest",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Black Forest",
+  "MapGUID": "0000000007F7.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000008.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000059.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000046.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000013652.004",
+  "Image": "000000013651.004",
+  "FlagImage": "00000000A216.004",
+  "CelebrationVariants": null
+ },
+ "0000000007FD.09F": {
+  "GUID": "0000000007FD.09F",
+  "Name": "Nepal Village (Winter)",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000007FD.002",
+  "GameModes": [
+   {
+    "GUID": "000000000029.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000013532.004",
+  "Image": "000000013340.004",
+  "FlagImage": "00000000728B.004",
+  "CelebrationVariants": null
+ },
+ "000000000801.09F": {
+  "GUID": "000000000801.09F",
+  "Name": "Menu/Junkertown",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000801.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000817.09F": {
+  "GUID": "000000000817.09F",
+  "Name": "Menu/World Cup",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000817.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000836.09F": {
+  "GUID": "000000000836.09F",
+  "Name": "Château Guillard",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": "Château Guillard",
+  "MapGUID": "000000000836.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000001BEAA.004",
+  "Image": "00000001BEA9.004",
+  "FlagImage": "00000000FF66.004",
+  "CelebrationVariants": null
+ },
+ "00000000085F.09F": {
+  "GUID": "00000000085F.09F",
+  "Name": "Menu/Black Forest (Winter) (Day)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": "",
+  "MapGUID": "00000000085F.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000862.09F": {
+  "GUID": "000000000862.09F",
+  "Name": "Menu/OWL",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000862.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000864.09F": {
+  "GUID": "000000000864.09F",
+  "Name": "Menu/OWL",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000864.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000871.09F": {
+  "GUID": "000000000871.09F",
+  "Name": "Rialto",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000871.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000013EC2.004",
+  "Image": "000000013EC3.004",
+  "FlagImage": "000000013ED3.004",
+  "CelebrationVariants": null
+ },
+ "000000000890.09F": {
+  "GUID": "000000000890.09F",
+  "Name": "Petra",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000890.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000017325.004",
+  "Image": "000000017324.004",
+  "FlagImage": "000000017329.004",
+  "CelebrationVariants": null
+ },
+ "000000000891.09F": {
+  "GUID": "000000000891.09F",
+  "Name": "Paris",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000891.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "0000000191C5.004",
+  "Image": "0000000191C4.004",
+  "FlagImage": "00000000FF66.004",
+  "CelebrationVariants": null
+ },
+ "0000000008B4.09F": {
+  "GUID": "0000000008B4.09F",
+  "Name": "Menu/Rialto (Archives)",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000008B4.002",
+  "GameModes": [
+   {
+    "GUID": "000000000025.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "PVE",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "0000000008BE.09F": {
+  "GUID": "0000000008BE.09F",
+  "Name": "Menu/Rialto",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "0000000008BE.002",
+  "GameModes": [
+   {
+    "GUID": "000000000025.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "PVE",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "00000000092A.09F": {
+  "GUID": "00000000092A.09F",
+  "Name": "Busan Stadium Classic",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "00000000092A.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "000000017805.004",
+  "Image": "000000017806.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000A13.09F": {
+  "GUID": "000000000A13.09F",
+  "Name": "Menu/OWL",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000A13.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000A14.09F": {
+  "GUID": "000000000A14.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000A14.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000A44.09F": {
+  "GUID": "000000000A44.09F",
+  "Name": "Havana",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000A44.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000043.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000001ED2B.004",
+  "Image": "00000001ED2C.004",
+  "FlagImage": "00000001F827.004",
+  "CelebrationVariants": null
+ },
+ "000000000A5A.09F": {
+  "GUID": "000000000A5A.09F",
+  "Name": "Menu/Chateau (Halloween)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": "",
+  "MapGUID": "000000000A5A.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000A5B.09F": {
+  "GUID": "000000000A5B.09F",
+  "Name": "Blizzard World",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Blizzard World",
+  "MapGUID": "000000000A5B.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000001CB60.004",
+  "Image": "00000001CB5F.004",
+  "FlagImage": "000000004777.004",
+  "CelebrationVariants": null
+ },
+ "000000000A7A.09F": {
+  "GUID": "000000000A7A.09F",
+  "Name": "Busan Sanctuary",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Busan Sanctuary",
+  "MapGUID": "000000000A7A.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000001C93C.004",
+  "Image": "00000001C93B.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000A84.09F": {
+  "GUID": "000000000A84.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000A84.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000A86.09F": {
+  "GUID": "000000000A86.09F",
+  "Name": "Busan Downtown",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": "Busan Downtown",
+  "MapGUID": "000000000A86.002",
+  "GameModes": [
+   {
+    "GUID": "000000000007.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000001CA76.004",
+  "Image": "00000001CA77.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000A9E.09F": {
+  "GUID": "000000000A9E.09F",
+  "Name": "Menu/Blizzard World (Winter)",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000A9E.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Disabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000AF0.09F": {
+  "GUID": "000000000AF0.09F",
+  "Name": "Menu/Paris",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000AF0.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000AFE.09F": {
+  "GUID": "000000000AFE.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000AFE.002",
+  "GameModes": [
+   {
+    "GUID": "000000000043.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "PVE",
+  "Thumbnail": "00000001ED2E.004",
+  "Image": "00000001ED2D.004",
+  "FlagImage": "00000001F827.004",
+  "CelebrationVariants": null
+ },
+ "000000000B2D.09F": {
+  "GUID": "000000000B2D.09F",
+  "Name": "Menu/OWL All Stars (2020)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000B2D.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000B55.09F": {
+  "GUID": "000000000B55.09F",
+  "Name": "Menu/Havana",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000B55.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000043.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000B56.09F": {
+  "GUID": "000000000B56.09F",
+  "Name": "Menu/Havana (Archives)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000B56.002",
+  "GameModes": [
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000BCE.09F": {
+  "GUID": "000000000BCE.09F",
+  "Name": "Menu/Summer Games (2020)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000BCE.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000BEF.09F": {
+  "GUID": "000000000BEF.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000BEF.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C04.09F": {
+  "GUID": "000000000C04.09F",
+  "Name": "Menu/Eichenwalde (Alt)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000C04.002",
+  "GameModes": [
+   {
+    "GUID": "000000000016.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000000A214.004",
+  "Image": "00000000A215.004",
+  "FlagImage": "00000000A216.004",
+  "CelebrationVariants": [
+   {
+    "Name": "Halloween",
+    "Virtual01C": "00000000212E.01C",
+    "MapInfo": {
+     "GUID": "0000000007F4.09F",
+     "Name": "Eichenwalde",
+     "VariantName": "Eichenwalde"
+    }
+   }
+  ]
+ },
+ "000000000C40.09F": {
+  "GUID": "000000000C40.09F",
+  "Name": "Workshop Island",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C40.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000029D31.004",
+  "Image": "000000029D29.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C44.09F": {
+  "GUID": "000000000C44.09F",
+  "Name": "Workshop Expanse",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C44.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000029D35.004",
+  "Image": "000000029D34.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C46.09F": {
+  "GUID": "000000000C46.09F",
+  "Name": "Menu/Temple of Anubis (Alt)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C46.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C48.09F": {
+  "GUID": "000000000C48.09F",
+  "Name": "Workshop Chamber",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C48.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "000000029D33.004",
+  "Image": "000000029D32.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C61.09F": {
+  "GUID": "000000000C61.09F",
+  "Name": "Menu/Black Forest (Winter) (Night)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": "",
+  "MapGUID": "000000000C61.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C83.09F": {
+  "GUID": "000000000C83.09F",
+  "Name": "Menu/OWL",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C83.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000C8F.09F": {
+  "GUID": "000000000C8F.09F",
+  "Name": "Menu/Anniversary",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000C8F.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CAC.09F": {
+  "GUID": "000000000CAC.09F",
+  "Name": "Menu/Route 66 (Alt)",
+  "Description": null,
+  "Description2": null,
+  "Subline": "",
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000CAC.002",
+  "GameModes": [
+   {
+    "GUID": "000000000015.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CCF.09F": {
+  "GUID": "000000000CCF.09F",
+  "Name": "Menu/Anniversary",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CCF.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CD0.09F": {
+  "GUID": "000000000CD0.09F",
+  "Name": "Workshop Expanse (Night)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CD0.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000002B294.004",
+  "Image": "00000002B295.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CD1.09F": {
+  "GUID": "000000000CD1.09F",
+  "Name": "Workshop Island (Night)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CD1.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000002B292.004",
+  "Image": "00000002B293.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CD3.09F": {
+  "GUID": "000000000CD3.09F",
+  "Name": "Kanezaka",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CD3.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000002CF9D.004",
+  "Image": "00000002CF9C.004",
+  "FlagImage": "000000001CFB.004",
+  "CelebrationVariants": null
+ },
+ "000000000CD7.09F": {
+  "GUID": "000000000CD7.09F",
+  "Name": "Malevento",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CD7.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000003134D.004",
+  "Image": "00000003134E.004",
+  "FlagImage": "000000013ED3.004",
+  "CelebrationVariants": null
+ },
+ "000000000CDC.09F": {
+  "GUID": "000000000CDC.09F",
+  "Name": "Busan Stadium",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000CDC.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000002C05B.004",
+  "Image": "00000002C05C.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000CE0.09F": {
+  "GUID": "000000000CE0.09F",
+  "Name": "Menu/Anniversary",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CE0.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000CE6.09F": {
+  "GUID": "000000000CE6.09F",
+  "Name": "Menu/Paris (Alt)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000CE6.002",
+  "GameModes": [
+   {
+    "GUID": "000000000014.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "0000000191C5.004",
+  "Image": "0000000191C4.004",
+  "FlagImage": "00000000FF66.004",
+  "CelebrationVariants": null
+ },
+ "000000000CEB.09F": {
+  "GUID": "000000000CEB.09F",
+  "Name": "Sydney Harbour Arena",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000CEB.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000002C059.004",
+  "Image": "00000002C058.004",
+  "FlagImage": "00000000EEB0.004",
+  "CelebrationVariants": null
+ },
+ "000000000CFE.09F": {
+  "GUID": "000000000CFE.09F",
+  "Name": "Menu/Sydney (Lucioball)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000CFE.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000002C059.004",
+  "Image": "00000002C058.004",
+  "FlagImage": "00000000EEB0.004",
+  "CelebrationVariants": null
+ },
+ "000000000CFF.09F": {
+  "GUID": "000000000CFF.09F",
+  "Name": "Menu/Busan (Lucioball)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": "",
+  "StateB": "",
+  "VariantName": null,
+  "MapGUID": "000000000CFF.002",
+  "GameModes": [
+   {
+    "GUID": "000000000020.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000002C05B.004",
+  "Image": "00000002C05C.004",
+  "FlagImage": "00000001762B.004",
+  "CelebrationVariants": null
+ },
+ "000000000D0A.09F": {
+  "GUID": "000000000D0A.09F",
+  "Name": "Menu/OWL",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D0A.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D2C.09F": {
+  "GUID": "000000000D2C.09F",
+  "Name": "Menu/Tracer Comic Challenge",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D2C.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "PVE",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D2D.09F": {
+  "GUID": "000000000D2D.09F",
+  "Name": "Menu/OWL Grand Finals (2020)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D2D.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D4C.09F": {
+  "GUID": "000000000D4C.09F",
+  "Name": "Workshop Green Screen",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D4C.002",
+  "GameModes": [
+   {
+    "GUID": "000000000009.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000002D297.004",
+  "Image": "00000002D296.004",
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D67.09F": {
+  "GUID": "000000000D67.09F",
+  "Name": "Menu/Symmetra Challenge",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D67.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D77.09F": {
+  "GUID": "000000000D77.09F",
+  "Name": "Menu/Kings Row (Winter) (2020)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D77.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D7A.09F": {
+  "GUID": "000000000D7A.09F",
+  "Name": "Menu/Antarctica (Winter)",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D7A.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000D86.09F": {
+  "GUID": "000000000D86.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000D86.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000002CF9D.004",
+  "Image": "00000002CF9C.004",
+  "FlagImage": "000000001CFB.004",
+  "CelebrationVariants": null
+ },
+ "000000000DAD.09F": {
+  "GUID": "000000000DAD.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000DAD.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000DBC.09F": {
+  "GUID": "000000000DBC.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000DBC.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000010.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": "00000002CF9D.004",
+  "Image": "00000002CF9C.004",
+  "FlagImage": "000000001CFB.004",
+  "CelebrationVariants": null
+ },
+ "000000000E1F.09F": {
+  "GUID": "000000000E1F.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000E1F.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000E44.09F": {
+  "GUID": "000000000E44.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000E44.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000E49.09F": {
+  "GUID": "000000000E49.09F",
+  "Name": "",
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000E49.002",
+  "GameModes": [
+   {
+    "GUID": "00000000001E.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "00000000001D.0C5",
+    "Name": ""
+   },
+   {
+    "GUID": "000000000070.0C5",
+    "Name": ""
+   }
+  ],
+  "State": "Enabled",
+  "MapType": "MirroredMap",
+  "Thumbnail": "00000003134D.004",
+  "Image": "00000003134E.004",
+  "FlagImage": "000000013ED3.004",
+  "CelebrationVariants": null
+ },
+ "000000000E83.09F": {
+  "GUID": "000000000E83.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000E83.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000EEE.09F": {
+  "GUID": "000000000EEE.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000EEE.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ },
+ "000000000F14.09F": {
+  "GUID": "000000000F14.09F",
+  "Name": null,
+  "Description": null,
+  "Description2": null,
+  "Subline": null,
+  "StateA": null,
+  "StateB": null,
+  "VariantName": null,
+  "MapGUID": "000000000F14.002",
+  "GameModes": null,
+  "State": "Enabled",
+  "MapType": "OffenseDefenseMap",
+  "Thumbnail": null,
+  "Image": null,
+  "FlagImage": null,
+  "CelebrationVariants": null
+ }
 }

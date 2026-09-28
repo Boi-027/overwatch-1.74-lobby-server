@@ -27,9 +27,9 @@ def finite_timeout(text):
     try:
         value = float(text)
     except (TypeError, ValueError):
-        raise argparse.ArgumentTypeError('Тайм-аут должен быть числом.') from None
+        raise argparse.ArgumentTypeError('Timeout must be a number.') from None
     if not math.isfinite(value) or not 0 < value <= 3600:
-        raise argparse.ArgumentTypeError('Тайм-аут: от 0 до 3600 секунд, не включая 0.')
+        raise argparse.ArgumentTypeError('Timeout: 0 to 3600 seconds, excluding 0.')
     return value
 
 
@@ -37,9 +37,9 @@ def uint64(text):
     try:
         value = int(str(text), 0)
     except (TypeError, ValueError):
-        raise argparse.ArgumentTypeError('Токен должен быть целым числом (можно 0x...).') from None
+        raise argparse.ArgumentTypeError('Token must be an integer (0x... allowed).') from None
     if not 0 <= value < (1 << 64):
-        raise argparse.ArgumentTypeError('Токен должен помещаться в беззнаковое 64-битное число.')
+        raise argparse.ArgumentTypeError('Token must fit in an unsigned 64-bit integer.')
     return value
 
 
@@ -119,22 +119,22 @@ def _restore_idle(path, schemas, conn, player, clock, sleep, emit):
             break
         except FileExistsError:
             if clock() >= deadline:
-                emit('Не удалось восстановить состояние: inject.jsonl занят чужим запросом. Нужна ручная проверка.')
+                emit('Could not restore state: inject.jsonl is busy with another request. Manual check needed.')
                 return {'restore_status': 'blocked', 'reset': reset}
             sleep(0.05)
-    emit('Опубликован возврат в исходное состояние. Ожидается чтение пакета сервером.')
+    emit('State-reset published. Waiting for the server to read the packet.')
     # Never remove this reset: it may be waiting for the server's next poll.
     while True:
         try:
             stat = path.stat()
             if (stat.st_dev, stat.st_ino) != identity or path.read_bytes() != data:
-                emit('Пакет возврата заменён другим запросом; восстановление не подтверждено.')
+                emit('The reset packet was replaced by another request; restore not confirmed.')
                 return {'restore_status': 'replaced', 'reset': reset}
         except FileNotFoundError:
-            emit('Файл возврата прочитан/удалён. Проверьте в игре, снялась ли блокировка поиска.')
+            emit('Reset file read/deleted. Check in-game whether the search lock was released.')
             return {'restore_status': 'consumed', 'reset': reset}
         if clock() >= deadline:
-            emit('Пакет возврата оставлен для сервера на 30 секунд. Восстановление пока не подтверждено.')
+            emit('Reset packet left for the server for 30 seconds. Restore not confirmed yet.')
             return {'restore_status': 'pending', 'reset': reset}
         sleep(0.05)
 
@@ -145,7 +145,7 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
     timeout = finite_timeout(timeout)
     token = uint64(token)
     if not isinstance(player, str) or not player.strip():
-        raise ValueError('Укажите непустое имя игрока.')
+        raise ValueError('Provide a non-empty player name.')
     repo = Path(repo)
     schemas = schemas or Schemas()
     packet = build_probe(schemas, token)
@@ -165,16 +165,16 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
             original = os.fstat(stream.fileno())
             stream.seek(0, os.SEEK_END)
             report['start_offset'] = stream.tell()
-            emit(f'Ожидание нового запроса игрока {player}. В игре вручную нажмите «Тренировка → Тренировочный полигон».')
-            emit('Проверяется только подтверждение состояния; подключение к игровому серверу не отправляется.')
-            emit('Состояние поиска будет сохранено по --keep-state.' if keep_state else
-                 'После пробы будет отправлен возврат в исходное состояние; очистка может занять ещё 5 секунд.')
+            emit(f'Waiting for a new request from player {player}. In-game, manually click "Training -> Practice Range".')
+            emit('Only the state confirmation is checked; no game-server connection is sent.')
+            emit('Search state will be kept with --keep-state.' if keep_state else
+                 'After the probe a state reset will be sent; cleanup may take another 5 seconds.')
             while clock() - started < timeout:
                 current = log_path.stat()
                 if ((current.st_dev, current.st_ino) != (original.st_dev, original.st_ino)
                         or current.st_size < stream.tell()):
                     report['status'] = 'log_changed'
-                    emit('Журнал заменён или обрезан. Проба остановлена; запустите её заново.')
+                    emit('The log was replaced or truncated. Probe stopped; run it again.')
                     break
                 offset = stream.tell()
                 line = stream.readline()
@@ -198,12 +198,12 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
                         published = publish_exclusive(inject_path, packet)
                     except FileExistsError:
                         report['status'] = 'inject_busy'
-                        emit('inject.jsonl уже существует. Чужой запрос сохранён; пакет не отправлен.')
+                        emit('inject.jsonl already exists. Another request was kept; packet not sent.')
                         break
                     report['status'] = 'waiting_ack'
                     report['injected'] = packet
                     report['published_after_seconds'] = clock() - started
-                    emit(f'Новый запрос получен: соединение {conn}. Опубликован пакет 53000; ожидается 52903.')
+                    emit(f'New request received: connection {conn}. Packet 53000 published; waiting for 52903.')
                 else:
                     ack = _ack(item, player, conn)
                     if ack is None:
@@ -213,19 +213,19 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
                     report['ack'] = ack
                     report['status'] = 'acknowledged' if ack else 'negative_ack'
                     exit_code = 0 if ack else 2
-                    emit(f'Подтверждение 52903: {str(ack).lower()}. Это проверка состояния, не запуска матча.')
+                    emit(f'52903 acknowledgement: {str(ack).lower()}. This is a state check, not a match start.')
                     break
             else:
                 report['status'] = 'ack_timeout' if published else 'request_timeout'
-                emit('Время ожидания истекло: ' + ('нет ответа 52903.' if published else 'нет нового запроса полигона.'))
+                emit('Timed out: ' + ('no 52903 response.' if published else 'no new practice-range request.'))
     except KeyboardInterrupt:
         report['status'] = 'interrupted'
         exit_code = 130
-        emit('Проба остановлена пользователем.')
+        emit('Probe stopped by the user.')
     except OSError as exc:
         report['status'] = 'io_error'
         report['error'] = str(exc)
-        emit(f'Ошибка файловой операции: {exc}')
+        emit(f'File operation error: {exc}')
     finally:
         try:
             report['removed_unconsumed_packet'] = _cleanup_own(inject_path, published)
@@ -239,11 +239,11 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
         except OSError as exc:
             report['cleanup_error'] = str(exc)
             report['restore_status'] = 'error'
-            emit(f'Возврат в исходное состояние не подтверждён: {exc}')
+            emit(f'State reset not confirmed: {exc}')
             exit_code = 1
         except KeyboardInterrupt:
             report['restore_status'] = 'interrupted'
-            emit('Ожидание возврата прервано. Проверьте блокировку поиска; опубликованный возврат не удалён.')
+            emit('Waiting for reset interrupted. Check the search lock; the published reset was not deleted.')
             exit_code = 130
         report['elapsed_seconds'] = clock() - started
         report['finished_utc'] = datetime.now(timezone.utc).isoformat()
@@ -255,7 +255,7 @@ def run_probe(repo, player, timeout=60, token=0, *, schemas=None,
         with destination.open('x', encoding='utf-8') as stream:
             json.dump(report, stream, ensure_ascii=False, indent=2)
             stream.write('\n')
-        emit(f'Отчёт: {destination}')
+        emit(f'Report: {destination}')
     return exit_code, report
 
 
@@ -265,19 +265,19 @@ def main(argv=None):
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, 'reconfigure'):
             stream.reconfigure(encoding='utf-8', errors='replace', line_buffering=True)
-    parser = argparse.ArgumentParser(description='Ручная проба подтверждения состояния тренировочного полигона.')
-    parser.add_argument('--player', required=True, help='Точное имя игрока из client_msgs.log')
-    parser.add_argument('--timeout', type=finite_timeout, default=60, help='Общий тайм-аут в секундах (по умолчанию 60)')
-    parser.add_argument('--token', type=uint64, default=0, help='Проверенный токен сравнения 53000, по умолчанию 0')
+    parser = argparse.ArgumentParser(description='Manual state-confirmation probe for the practice range.')
+    parser.add_argument('--player', required=True, help='Exact player name from client_msgs.log')
+    parser.add_argument('--timeout', type=finite_timeout, default=60, help='Overall timeout in seconds (default 60)')
+    parser.add_argument('--token', type=uint64, default=0, help='Verified 53000 comparison token, default 0')
     parser.add_argument('--keep-state', action='store_true',
-                        help='Не возвращать состояние 0: только для согласованной следующей пробы; может оставить поиск заблокированным')
+                        help='Do not reset state to 0: only for a coordinated next probe; may leave search locked')
     args = parser.parse_args(argv)
     if not args.player.strip():
-        parser.error('--player не может быть пустым')
+        parser.error('--player cannot be empty')
     try:
         return run_probe(REPO_ROOT, args.player, args.timeout, args.token, keep_state=args.keep_state)[0]
     except (OSError, ValueError) as exc:
-        print(f'Проба не выполнена: {exc}', file=sys.stderr)
+        print(f'Probe failed: {exc}', file=sys.stderr)
         return 1
 
 

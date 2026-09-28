@@ -474,7 +474,7 @@ class LobbySession:
                 session.send(CHAT_IN, 20400, message)
         self.log(f"[chat #{channel.get('+0x10')}] {self.account.name}: {text}")
         if social.accounts.bot in members:
-            reply = social.chat_message(channel, social.accounts.bot, f"{self.account.name}, я слышу: {text}")
+            reply = social.chat_message(channel, social.accounts.bot, f"{self.account.name}, I hear you: {text}")
             for acc in members:
                 session = self.srv.session_of(acc.account_lo)
                 if session:
@@ -511,7 +511,7 @@ class LobbySession:
             return
         self.log(f"[whisper] {self.account.name} -> {target.name}: {text}")
         if target.virtual:
-            self.send(FRIENDS, 27117, {"+0x78": target.account, "+0x88": f"{self.account.name}, я слышу: {text}"})
+            self.send(FRIENDS, 27117, {"+0x78": target.account, "+0x88": f"{self.account.name}, I hear you: {text}"})
             return
         session = self.srv.session_of(target.account_lo)
         if session:
@@ -537,7 +537,7 @@ class LobbySession:
         if target.virtual:
             social.join(target, party)
             self.notify_party(party)
-            hello = social.chat_message(party.chat_channel, target, "Привет! Я в группе.")
+            hello = social.chat_message(party.chat_channel, target, "Hi! I'm in the group.")
             self.send(CHAT_IN, 20400, hello)
             return
         session = self.srv.session_of(target.account_lo)

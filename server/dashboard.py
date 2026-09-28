@@ -47,7 +47,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 name, mime = ASSETS[parsed.path]
                 path = WEB / name
                 if not path.is_file():
-                    raise ApiError('Интерфейс ещё собирается. Обновите страницу чуть позже.', 503)
+                    raise ApiError('The interface is still building. Please refresh the page shortly.', 503)
                 self._send(path.read_bytes(), mime)
             elif parsed.path == '/api/state':
                 self._json(self.api.state(query.get('account')))
@@ -60,7 +60,7 @@ class DashboardHandler(BaseHTTPRequestHandler):
                              'name_ru': m.name_ru, 'mode': m.mode, 'is_background': m.is_background}
                             for m in MAP_REGISTRY.values()])
             else:
-                raise ApiError('Адрес не найден', 404)
+                raise ApiError('Address not found', 404)
         except ApiError as error:
             self._json({'error': str(error)}, error.status)
         except (ValueError, TypeError) as error:
@@ -70,12 +70,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
         try:
             length = int(self.headers.get('Content-Length', '0'))
             if not 0 <= length <= 65536:
-                raise ApiError('Слишком большой запрос', 413)
+                raise ApiError('Request too large', 413)
             raw = self.rfile.read(length).decode('utf-8')
             if self.headers.get_content_type() == 'application/json':
                 data = json.loads(raw)
                 if not isinstance(data, dict):
-                    raise ApiError('Ожидается JSON-объект')
+                    raise ApiError('A JSON object is expected')
             else:
                 data = {k: v[-1] for k, v in parse_qs(raw, keep_blank_values=True).items()}
             path = urlparse(self.path).path
@@ -93,14 +93,14 @@ class DashboardHandler(BaseHTTPRequestHandler):
                 self.api.lobby.reconnect_all()
                 result = {'status': 'ok'}
             else:
-                raise ApiError('Действие не найдено', 404)
+                raise ApiError('Action not found', 404)
             self._json(result)
         except ApiError as error:
             self._json({'error': str(error)}, error.status)
         except (ValueError, TypeError, UnicodeError) as error:
-            self._json({'error': 'Некорректные данные запроса: ' + str(error)}, 400)
+            self._json({'error': 'Invalid request data: ' + str(error)}, 400)
         except OSError as error:
-            self._json({'error': 'Не удалось сохранить изменения: ' + str(error)}, 500)
+            self._json({'error': 'Could not save changes: ' + str(error)}, 500)
 
 
 def start_dashboard(server, port=3725):

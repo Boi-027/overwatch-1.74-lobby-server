@@ -5,13 +5,13 @@ export async function api(path, data) {
       method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data),
     } : {cache: 'no-store'});
   } catch {
-    throw new Error('Не удалось связаться с сервером. Проверьте, запущен ли он, и повторите действие.');
+    throw new Error('Could not reach the server. Make sure it is running and try again.');
   }
   let result;
   try { result = await response.json(); }
-  catch { throw new Error('Сервер вернул ответ, который не удалось прочитать.'); }
+  catch { throw new Error('The server returned a response that could not be read.'); }
   if (!response.ok || result.status === 'error' || result.error) {
-    throw new Error(result.error || `Ошибка сервера (${response.status}).`);
+    throw new Error(result.error || `Server error (${response.status}).`);
   }
   return result;
 }

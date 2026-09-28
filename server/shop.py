@@ -51,10 +51,10 @@ class ShopService:
     def catalog(self, profile, q="", hero="", currency="", page=1, page_size=24) -> dict:
         """List priced products, including owned products with a disabled purchase flag."""
         if not all(isinstance(value, str) for value in (q, hero, currency)):
-            raise ShopError("invalid_input", "Некорректные параметры поиска.")
+            raise ShopError("invalid_input", "Invalid search parameters.")
         q, hero, currency = q.strip().casefold(), hero.strip().casefold(), currency.strip().casefold()
         if currency and currency not in CURRENCIES:
-            raise ShopError("invalid_input", "Неизвестная валюта.")
+            raise ShopError("invalid_input", "Unknown currency.")
         page = self._positive_int(page)
         page_size = min(self._positive_int(page_size), 100)
         filtered = []
@@ -80,14 +80,14 @@ class ShopService:
         guid = self._guid(guid)
         product = self._products.get(guid)
         if product is None:
-            raise ShopError("not_purchasable", "Этот предмет недоступен для покупки.")
+            raise ShopError("not_purchasable", "This item is not available for purchase.")
         with self._purchase_lock:
             if profile.unlock_all or self.content.owns(profile, guid):
-                raise ShopError("already_owned", "Этот предмет уже получен.", 409)
+                raise ShopError("already_owned", "This item has already been obtained.", 409)
             currency, price = product["currency"], product["price"]
             balance = getattr(profile, currency)
             if balance < price:
-                raise ShopError("insufficient_balance", "Недостаточно средств для покупки.", 409)
+                raise ShopError("insufficient_balance", "Insufficient funds for this purchase.", 409)
             unlocked_items = [*profile.unlocked_items, product["guid"]]
             setattr(profile, currency, balance - price)
             profile.unlocked_items = unlocked_items
@@ -96,23 +96,23 @@ class ShopService:
     @staticmethod
     def _guid(value) -> int:
         if isinstance(value, bool) or not isinstance(value, (int, str)):
-            raise ShopError("invalid_input", "Некорректный идентификатор предмета.")
+            raise ShopError("invalid_input", "Invalid item identifier.")
         try:
             guid = int(value.strip(), 0) if isinstance(value, str) else value
         except ValueError:
-            raise ShopError("invalid_input", "Некорректный идентификатор предмета.") from None
+            raise ShopError("invalid_input", "Invalid item identifier.") from None
         if not 0 < guid < 1 << 64:
-            raise ShopError("invalid_input", "Некорректный идентификатор предмета.")
+            raise ShopError("invalid_input", "Invalid item identifier.")
         return guid
 
     @staticmethod
     def _positive_int(value) -> int:
         if isinstance(value, bool) or not isinstance(value, (int, str)):
-            raise ShopError("invalid_input", "Некорректный номер страницы или размер списка.")
+            raise ShopError("invalid_input", "Invalid page number or list size.")
         try:
             number = int(value)
         except ValueError:
-            raise ShopError("invalid_input", "Некорректный номер страницы или размер списка.") from None
+            raise ShopError("invalid_input", "Invalid page number or list size.") from None
         if number < 1:
-            raise ShopError("invalid_input", "Номер страницы и размер списка должны быть положительными.")
+            raise ShopError("invalid_input", "Page number and list size must be positive.")
         return number

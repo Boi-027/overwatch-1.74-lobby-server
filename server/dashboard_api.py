@@ -14,16 +14,16 @@ except ImportError:
     from .content import EVENT_PRESETS
     from .social import account_id_for
 
-BOX_LABELS = {0: 'Обычный', 1: 'Летние игры', 2: 'Хэллоуин', 3: 'Зимняя сказка',
-              4: 'Лунный Новый год', 5: 'Архивы', 6: 'Годовщина', 7: 'Золотой',
-              9: 'Легендарная годовщина', 10: 'Таран', 12: 'Легендарный'}
-EVENT_LABELS = {'goodbye': 'Прощание с Overwatch', 'halloween': 'Хэллоуин',
-                'winter': 'Зимняя сказка', 'lunar': 'Лунный Новый год',
-                'anniversary': 'Годовщина', 'summer': 'Летние игры',
-                'archives': 'Архивы', 'owl': 'Overwatch League',
-                'cassidy': 'Новая кровь Кэссиди', 'malevento': 'Малевенто',
-                'reaper': 'Кодекс насилия', 'contenders': 'Contenders',
-                'tracer': 'Комикс Tracer', 'tracer_comic': 'Комикс Tracer'}
+BOX_LABELS = {0: 'Standard', 1: 'Summer Games', 2: 'Halloween', 3: 'Winter Wonderland',
+              4: 'Lunar New Year', 5: 'Archives', 6: 'Anniversary', 7: 'Golden',
+              9: 'Legendary Anniversary', 10: 'Ram', 12: 'Legendary'}
+EVENT_LABELS = {'goodbye': 'Farewell to Overwatch', 'halloween': 'Halloween',
+                'winter': 'Winter Wonderland', 'lunar': 'Lunar New Year',
+                'anniversary': 'Anniversary', 'summer': 'Summer Games',
+                'archives': 'Archives', 'owl': 'Overwatch League',
+                'cassidy': "Cassidy's New Blood", 'malevento': 'Malevento',
+                'reaper': 'Code of Violence', 'contenders': 'Contenders',
+                'tracer': 'Tracer Comic', 'tracer_comic': 'Tracer Comic'}
 
 
 class ApiError(ValueError):
@@ -34,13 +34,13 @@ class ApiError(ValueError):
 
 def integer(value, label, low=0, high=2**31 - 1):
     if isinstance(value, bool) or isinstance(value, float):
-        raise ApiError(f'{label}: введите целое число')
+        raise ApiError(f'{label}: enter a whole number')
     try:
         number = int(value)
     except (TypeError, ValueError, OverflowError):
-        raise ApiError(f'{label}: введите целое число') from None
+        raise ApiError(f'{label}: enter a whole number') from None
     if not low <= number <= high:
-        raise ApiError(f'{label}: допустимо от {low} до {high}')
+        raise ApiError(f'{label}: allowed range is {low} to {high}')
     return number
 
 
@@ -49,7 +49,7 @@ def boolean(value):
         return value
     if value in ('true', 'false'):
         return value == 'true'
-    raise ApiError('Ожидается значение true или false')
+    raise ApiError('Expected a value of true or false')
 
 
 def profile_snapshot(profile):
@@ -75,11 +75,11 @@ class DashboardService:
         if name is None or name == '':
             return self.lobby.dashboard_account()
         if not isinstance(name, str):
-            raise ApiError('Некорректное имя профиля')
+            raise ApiError('Invalid profile name')
         names = self.lobby.accounts.all_saved()
         canonical = next((n for n in names if n.lower() == name.strip().lower()), None)
         if canonical is None:
-            raise ApiError('Профиль не найден. Выберите сохранённого игрока.', 404)
+            raise ApiError('Profile not found. Choose a saved player.', 404)
         return self.lobby.accounts.get(canonical)
 
     def state(self, name=None):
@@ -94,8 +94,8 @@ class DashboardService:
                 EVENT_CATALOG = []
         by_id = {row['id']: row for row in EVENT_CATALOG}
         events = [by_id.get(key, {'id': key, 'label': EVENT_LABELS.get(key, key),
-                  'description': 'Оформление и сезонный контент', 'category': 'special',
-                  'scene_status': 'unverified', 'scene_note': 'Переключение сцены проверяется'})
+                  'description': 'Cosmetics and seasonal content', 'category': 'special',
+                  'scene_status': 'unverified', 'scene_note': 'Scene switching is being verified'})
                   for key in EVENT_PRESETS]
         # The user-facing picker is for actual lobby scenes. Keep research-only
         # or seasonal-content-only events in metadata, not as misleading tiles.
@@ -131,7 +131,7 @@ class DashboardService:
                    'challenge', 'challenge_wins', 'unlock_all'}
         unknown = set(data) - allowed
         if unknown:
-            raise ApiError('Неизвестное поле: ' + ', '.join(sorted(unknown)))
+            raise ApiError('Unknown field: ' + ', '.join(sorted(unknown)))
         with self.lock:
             account = self.account(data.get('account'))
             profile = deepcopy(account.profile)
@@ -139,7 +139,7 @@ class DashboardService:
                 if field in data:
                     setattr(profile, field, integer(data[field], field, 1 if field == 'level' else 0))
             if 'endorsement_level' in data:
-                profile.endorsement_level = integer(data['endorsement_level'], 'Уровень одобрения', 1, 5)
+                profile.endorsement_level = integer(data['endorsement_level'], 'Endorsement level', 1, 5)
             if 'unlock_all' in data:
                 profile.unlock_all = boolean(data['unlock_all'])
             if 'events' in data:
@@ -147,18 +147,18 @@ class DashboardService:
                 if isinstance(events, str):
                     events = [e.strip().lower() for e in events.split(',') if e.strip()]
                 if not isinstance(events, list) or len(events) > 1 or any(not isinstance(e, str) or e not in EVENT_PRESETS for e in events):
-                    raise ApiError('Выберите одно событие из списка или отключите события')
+                    raise ApiError('Select one event from the list or turn events off')
                 profile.events = list(events)
             if 'lobby_hero' in data:
                 hero = data['lobby_hero']
                 allowed_heroes = set(self.lobby.items.hero_names.values()) | {'random', 'none'}
                 if not isinstance(hero, str) or hero not in allowed_heroes:
-                    raise ApiError('Выберите героя из списка')
+                    raise ApiError('Select a hero from the list')
                 profile.lobby_hero = hero
             if 'server_date' in data:
                 value = data['server_date']
                 if not isinstance(value, str):
-                    raise ApiError('Дата должна быть в формате ГГГГ-ММ-ДД')
+                    raise ApiError('Date must be in YYYY-MM-DD format')
                 value = value.strip()
                 if value not in ('', 'now'):
                     try:
@@ -166,16 +166,16 @@ class DashboardService:
                         if parsed_date.isoformat() != value:
                             raise ValueError()
                     except ValueError:
-                        raise ApiError('Дата должна быть в формате ГГГГ-ММ-ДД') from None
+                        raise ApiError('Date must be in YYYY-MM-DD format') from None
                     # Event start is two days earlier (unsigned STU year >=2000),
                     # and CONFIG36602 holds a u32 Unix timestamp at UTC noon.
                     if not date(2000, 1, 3) <= parsed_date <= date(2106, 2, 6):
-                        raise ApiError('Дата сервера должна быть от 2000-01-03 до 2106-02-06')
+                        raise ApiError('Server date must be between 2000-01-03 and 2106-02-06')
                 profile.server_date = value
             if 'challenge' in data:
                 challenge = data['challenge']
                 if not isinstance(challenge, str) or (challenge and challenge not in self.lobby.items.challenges()):
-                    raise ApiError('Испытание не найдено')
+                    raise ApiError('Challenge not found')
                 profile.challenge = challenge
             save_profile(profile, account.path)
             account.profile = profile
@@ -183,10 +183,10 @@ class DashboardService:
             return {'status': 'ok', 'profile': profile_snapshot(profile)}
 
     def add_boxes(self, data):
-        kind = integer(data.get('type', 0), 'Тип контейнера')
-        count = integer(data.get('count', 10), 'Количество контейнеров', 1, 100)
+        kind = integer(data.get('type', 0), 'Box type')
+        count = integer(data.get('count', 10), 'Box count', 1, 100)
         if kind not in BOX_TYPE_NAMES:
-            raise ApiError('Такого типа контейнера нет в каталоге')
+            raise ApiError('No such box type in the catalog')
         with self.lock:
             account = self.account(data.get('account'))
             profile = deepcopy(account.profile)
@@ -201,21 +201,21 @@ class DashboardService:
     def shop(self, query):
         service = getattr(self.lobby, 'shop', None)
         if service is None:
-            raise ApiError('Каталог магазина ещё не подключён', 503)
+            raise ApiError('The shop catalog is not connected yet', 503)
         return service.catalog(self.account(query.get('account')).profile,
                                q=query.get('q', ''), hero=query.get('hero', ''),
                                currency=query.get('currency', ''),
-                               page=integer(query.get('page', 1), 'Страница', 1),
-                               page_size=integer(query.get('page_size', 24), 'Размер страницы', 1, 100))
+                               page=integer(query.get('page', 1), 'Page', 1),
+                               page_size=integer(query.get('page_size', 24), 'Page size', 1, 100))
 
     def purchase(self, data):
         service = getattr(self.lobby, 'shop', None)
         if service is None:
-            raise ApiError('Каталог магазина ещё не подключён', 503)
+            raise ApiError('The shop catalog is not connected yet', 503)
         try:
             guid = int(data.get('guid', ''), 0) if isinstance(data.get('guid'), str) else int(data['guid'])
         except (TypeError, ValueError, KeyError):
-            raise ApiError('Некорректный предмет') from None
+            raise ApiError('Invalid item') from None
         with self.lock:
             account = self.account(data.get('account'))
             profile = deepcopy(account.profile)

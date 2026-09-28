@@ -60,7 +60,7 @@ class InjectionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='ow-inject-')
         self.addCleanup(self.temp.cleanup)
-        self.dll = Path(self.temp.name) / 'папка с пробелами' / 'relay.dll'
+        self.dll = Path(self.temp.name) / 'folder with spaces' / 'relay.dll'
         self.dll.parent.mkdir()
         self.dll.write_bytes(b'unit fixture; never loaded by Windows')
 

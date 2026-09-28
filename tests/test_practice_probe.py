@@ -37,7 +37,7 @@ class ProbeTests(unittest.TestCase):
                 probe.main(['--help'])
             self.assertEqual(raised.exception.code, 0)
             stdout.flush()
-            self.assertIn('тренировочного полигона', output.getvalue().decode('utf-8'))
+            self.assertIn('practice range', output.getvalue().decode('utf-8'))
 
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()

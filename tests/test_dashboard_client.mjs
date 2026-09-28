@@ -26,7 +26,7 @@ test('a refused account switch remains an error for the UI', async () => {
   assert.ok(existsSync(path));
   const {selectAccount} = await import(path.href);
   const oldFetch = globalThis.fetch;
-  globalThis.fetch = async () => ({ok: false, status: 404, json: async () => ({error: 'Профиль не найден'})});
-  try { await assert.rejects(selectAccount('Missing'), /Профиль не найден/); }
+  globalThis.fetch = async () => ({ok: false, status: 404, json: async () => ({error: 'Profile not found'})});
+  try { await assert.rejects(selectAccount('Missing'), /Profile not found/); }
   finally { globalThis.fetch = oldFetch; }
 });

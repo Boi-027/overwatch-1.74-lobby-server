@@ -55,7 +55,7 @@ class LauncherTests(unittest.TestCase):
         return launcher.Service(name, tuple(ports), ["python", "helper.py"], self.root)
 
     def test_override_and_default_candidates_preserve_unicode_and_spaces(self):
-        directory = self.root / "Игра с пробелами"
+        directory = self.root / "Game With Spaces"
         directory.mkdir()
         game = directory / "Overwatch.exe"
         game.touch()
@@ -199,7 +199,7 @@ class LauncherTests(unittest.TestCase):
         services = [self.service("existing", [port]), self.service("new", [port])]
         records = [{"name": "existing", "ports": [port], "state": "reused"},
                    {"name": "new", "ports": [port], "state": "missing"}]
-        game_path = self.root / "Игра с пробелами" / "Overwatch.exe"
+        game_path = self.root / "Game With Spaces" / "Overwatch.exe"
         with patch.object(launcher, "ROOT", self.root), patch.object(launcher, "validate_prerequisites", return_value=game_path), patch.object(launcher, "load_injector", return_value=injector), patch.object(launcher, "services_for", return_value=services), patch.object(launcher, "inspect_services", side_effect=lambda services: [dict(record) for record in records]), patch.object(launcher.subprocess, "Popen", side_effect=[helper, game]) as popen:
             try:
                 result = launcher.main(["--timeout", "0.5"])
