@@ -86,6 +86,26 @@ def reject_existing_game(injector):
     raise LaunchError(f"Overwatch.exe is already running (PID {pid}). Close it before starting a new retail session.")
 
 
+def close_existing_game(injector):
+    """Close a lingering game so a fresh launch always works - e.g. one left at an
+    'Unable to Authenticate' / 'Disconnected' screen after the servers were stopped,
+    which otherwise blocks relaunching until the machine is restarted."""
+    try:
+        pid = injector.find_pid()
+    except RuntimeError as error:
+        if str(error) == "process Overwatch.exe not found":
+            return
+        raise LaunchError(f"Cannot check for a running client: {error}.") from error
+    print(f"Closing a lingering Overwatch (PID {pid}) for a clean start...")
+    subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True)
+    for _ in range(20):
+        try:
+            injector.find_pid()
+            time.sleep(0.3)
+        except RuntimeError:
+            return
+
+
 def services_for(root):
     return [
         Service("lobby", (3724, 3725), [sys.executable, "-u", str(root / "server" / "lobbyserv.py")], root),
@@ -213,14 +233,14 @@ def main(argv=None):
                 print(f"Warning: {error}")
             print("Check complete; no helpers or game were started. Reachable ports do not identify helper versions.")
             return 0
-        reject_existing_game(injector)
+        close_existing_game(injector)
         log_dir = ROOT / "logs" / f"launch-{datetime.now():%Y%m%d-%H%M%S-%f}"
         log_dir.mkdir(parents=True)
         manifest.update({"game_exe": str(game_path), "relay_dll": str(ROOT / "relay" / "owwfd_relay.dll"), "timeout_seconds": args.timeout})
         manager = ServiceManager(services, log_dir)
         manifest["services"] = manager.records
         manager.ensure(args.timeout)
-        reject_existing_game(injector)
+        close_existing_game(injector)
         command = [str(game_path), "--BNetServer=127.0.0.1:1119", "--console"]
         with (log_dir / "game.log").open("ab") as log:
             game = subprocess.Popen(command, cwd=game_path.parent, stdout=log, stderr=subprocess.STDOUT)
