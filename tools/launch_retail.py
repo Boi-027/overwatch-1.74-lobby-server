@@ -189,13 +189,17 @@ class ServiceManager:
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check-only", action="store_true", help="Check files, Python dependencies and local service ports without launching anything")
-    parser.add_argument("--game-exe", type=Path, help="Full path to Overwatch.exe")
+    parser.add_argument("--game-exe", dest="game_exe", type=Path, help="Full path to Overwatch.exe")
+    parser.add_argument("game_exe_pos", nargs="?", type=Path, metavar="GAME_EXE",
+                        help="Full path to Overwatch.exe; may be given positionally instead of with --game-exe")
     parser.add_argument("--timeout", type=timeout_seconds, default=30.0, help="Timeout in seconds for each readiness stage and verified injection (default: 30)")
     args = parser.parse_args(argv)
+    # Accept the game path either as --game-exe or as a bare positional argument.
+    game_exe = args.game_exe if args.game_exe is not None else args.game_exe_pos
     manager = game = log_dir = None
     manifest = {"started_at": datetime.now().isoformat(), "python": sys.executable, "services": [], "status": "checking"}
     try:
-        game_path = validate_prerequisites(ROOT, args.game_exe)
+        game_path = validate_prerequisites(ROOT, game_exe)
         injector = load_injector(ROOT)
         services = services_for(ROOT)
         states = inspect_services(services)

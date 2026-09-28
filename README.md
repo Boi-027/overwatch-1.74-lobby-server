@@ -41,7 +41,7 @@ The client reaches the main menu and the dashboard at **http://127.0.0.1:3725/**
 This runs the normal retail frontend (hero in the scene, shop/promo panels) by logging in through a local Battle.net emulator. It needs the TLS-strip relay DLL (see [About the relay](#about-the-relay) below):
 
 1. Get `owwfd_relay.dll` into the `relay\` folder. Either **build it once** in an **x64 Native Tools Command Prompt for Visual Studio 2022** with `relay\build.bat`, or — if you can't build it (no Visual Studio / C++ toolchain, or for any other reason) — **download the prebuilt DLL from [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases)** and drop it in `relay\`. (A successful Windows checks CI run also produces the same DLL as an artifact.)
-2. Launch everything with `run_retail.bat --game-exe "X:\path\Overwatch.exe"`.
+2. Launch everything with `run_retail.bat --game-exe "X:\path\Overwatch.exe"` (the path also works without the flag: `run_retail.bat "X:\path\Overwatch.exe"`).
 3. Open the dashboard at **http://127.0.0.1:3725/**.
 
 That is the whole flow — **`run_retail.bat` does everything automatically**: it starts the lobby and Battle.net helpers, launches the client with `--BNetServer=127.0.0.1:1119`, waits for the client to be ready, **injects the relay DLL into it, and verifies the injection**. You never run the injector by hand; `relay/inject.py` exists only for advanced/manual setups where you start the pieces yourself.
