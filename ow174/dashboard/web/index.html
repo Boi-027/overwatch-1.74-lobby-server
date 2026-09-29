@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#253443">
+  <title>Overwatch 1.74 lobby</title>
+  <script>(function(){try{var t=localStorage.getItem('ow-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t==='dark'?'#161617':'#eeeef2';}catch(e){}})();</script>
+  <link rel="stylesheet" href="/assets/dashboard.css">
+  <script type="module" src="/assets/dashboard.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigation">
+      <a href="#overview" class="brand" aria-label="Overview">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><path d="M12 14a27 27 0 0 1 40 0" fill="none" stroke="currentColor" stroke-width="7"/><path d="M8 20a27 27 0 1 0 48 0" fill="none" stroke="#f7fafc" stroke-width="7"/><path d="m31 21-3 16-14 12h11l7-8 7 8h11L36 37l-3-16Z" fill="#f7fafc"/></svg>
+        <span class="brand-word">OVERWATCH<span>Lobby</span></span>
+      </a>
+      <div class="build-label"><span class="build-dot"></span> Client <b>1.74</b></div>
+      <nav class="nav-list">
+        <a class="nav-link active" href="#overview" data-view="overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10 12 3l9 7v11h-6v-7H9v7H3Z"/></svg><span>Profile</span></a>
+        <a class="nav-link" href="#events" data-view="events"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14v16H5ZM8 2v6m8-6v6M5 11h14m-10 4h2m3 0h2m-7 3h2"/></svg><span>Events</span><span id="event-nav-dot" class="nav-indicator" hidden></span></a>
+        <a class="nav-link" href="#boxes" data-view="boxes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4v11l-9 4-9-4Zm0 0 9 4 9-4M12 11v11m-5-17 10 5"/></svg><span>Loot boxes</span><span id="box-nav-count" class="nav-count">—</span></a>
+        <a class="nav-link" href="#shop" data-view="shop"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16l-1 13H5Zm4 0V6a4 4 0 0 1 8 0v2m-8 5h0m8 0h0"/></svg><span>Shop</span></a>
+        <a class="nav-link" href="#skins" data-view="skins"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h8l4 5-4 3v10H8V11L4 8Z"/></svg><span>Unlocks</span></a>
+        <a class="nav-link" href="#sessions" data-view="sessions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v12H3Zm5 18h8m-4-6v6M7 7h0m3 0h7m-10 4h10"/></svg><span>Server</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-server"><span id="sidebar-status-dot" class="status-dot"></span><div><strong id="sidebar-status">Connecting…</strong><span id="sidebar-address">Local server</span></div></div>
+        
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="page-context"><span>Lobby</span><span class="context-divider">/</span><strong id="view-context">Profile</strong></div>
+        <div class="topbar-actions">
+          <span id="sync-status" class="sync-status" role="status"><span class="status-dot"></span> Connecting…</span>
+          <button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9l2.1 2.1m9.9 9.9 2.1 2.1m0-14.1-2.1 2.1m-9.9 9.9-2.1 2.1"/></svg><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.4A8 8 0 0 1 9.6 4 7 7 0 1 0 20 14.4Z"/></svg></button>
+          <button id="refresh-button" class="icon-button" type="button" aria-label="Refresh data" title="Refresh data"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 8a8 8 0 1 0 0 8M20 3v5h-5"/></svg></button>
+          <label class="account-control"><span>Account</span><select id="account-select" aria-label="Select account" disabled><option>Loading…</option></select></label>
+        </div>
+      </header>
+
+      <main id="main" tabindex="-1">
+        <div id="global-error" class="message error" role="alert" hidden></div>
+        <section class="view" id="view-overview" aria-labelledby="overview-title">
+          <div class="lobby-banner">
+            <div class="banner-copy"><span class="banner-kicker">Local lobby</span><h1 id="overview-title">Loading…</h1><div class="banner-meta"><span id="profile-connection" class="connection-tag">Checking…</span><span id="profile-level">Level —</span></div><p id="lobby-description"></p><a class="text-link" href="#sessions">Server <span aria-hidden="true">↗</span></a></div>
+            <div class="banner-emblem" aria-hidden="true"><svg viewBox="0 0 180 180"><circle cx="90" cy="90" r="77" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 9"/><path d="M46 42a63 63 0 0 1 88 0" fill="none" stroke="#e9aa30" stroke-width="15"/><path d="M34 57a63 63 0 1 0 112 0" fill="none" stroke="currentColor" stroke-width="15"/><path d="m87 64-7 37-31 27h25l16-19 16 19h25l-31-27-7-37Z" fill="currentColor"/></svg><span>OVERWATCH</span><small>Version 1.74</small></div>
+          </div>
+          <div class="currency-strip" aria-label="Account currencies">
+            <div class="currency-block"><span class="currency-icon credits-icon" aria-hidden="true">C</span><div><span>Credits</span><strong id="credits-balance">—</strong></div></div>
+            <div class="currency-block"><span class="currency-icon comp-icon" aria-hidden="true">◆</span><div><span>Competitive points</span><strong id="comp-balance">—</strong></div></div>
+            <div class="currency-block"><span class="currency-icon league-icon" aria-hidden="true">L</span><div><span>League tokens</span><strong id="league-balance">—</strong></div></div>
+          </div>
+          <div class="overview-grid">
+            <div class="panel profile-panel"><div class="panel-heading"><div><h2>Profile</h2></div><span id="profile-draft" class="draft-label" hidden>Not saved</span></div>
+              <form id="profile-form">
+                <div class="field-grid"><label class="field wide-field">Nickname<input name="player_name" maxlength="32" autocomplete="off" required></label><label class="field">Region<select name="region"><option value="US">United States (USD)</option><option value="EU">Europe (EUR)</option><option value="GB">United Kingdom (GBP)</option><option value="RU">Russia (RUB)</option></select><span class="field-hint">Shop currency and country.</span></label><label class="field">Level<input name="level" type="number" min="1" max="1000000" required></label><label class="field">Endorsement level<select name="endorsement_level"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label><label class="field">Credits<input name="credits" type="number" min="0" required></label><label class="field">Competitive points<input name="comp_points" type="number" min="0" required></label><label class="field">League tokens<input name="league_tokens" type="number" min="0" required></label><label class="field">Lobby hero<select name="lobby_hero"><option value="random">Random hero</option></select></label><label class="field wide-field">Server date<input name="server_date" placeholder="now or YYYY-MM-DD" autocomplete="off"><span class="field-hint">Type now, or a date like 2022-10-03.</span></label></div>
+                <label class="toggle-field"><input name="unlock_all" type="checkbox"><span class="toggle-ui" aria-hidden="true"></span><span><strong>Unlock the whole collection</strong><small>Every item counts as owned.</small></span></label>
+                <div id="profile-error" class="form-error" role="alert" hidden></div><div class="form-footer"><span id="profile-save-account" class="mutate-account">Account: —</span><button type="submit" class="button primary" disabled>Save profile</button></div>
+              </form>
+            </div>
+            <div class="overview-aside">
+              <div class="panel lobby-panel"><div class="panel-heading"><h2>In the lobby</h2><span class="small-emblem" aria-hidden="true">◈</span></div><dl class="detail-list"><div><dt>Event</dt><dd id="overview-event">—</dd></div><div><dt>Hero</dt><dd id="overview-hero">—</dd></div><div><dt>Challenge</dt><dd id="overview-challenge">—</dd></div><div><dt>Server date</dt><dd id="overview-date">—</dd></div></dl><a class="button secondary full-width" href="#events">Change event</a></div>
+              <div class="inventory-summary"><div class="summary-box-art" aria-hidden="true"><svg viewBox="0 0 80 72"><path d="m8 20 32-14 32 14-32 14Z"/><path d="m8 20 32 14v32L8 52Zm32 14 32-14v32L40 66Z"/><path d="m22 13 32 14M40 34v13m-7-4 7 4 7-4"/></svg></div><div><span>Loot boxes</span><strong id="overview-boxes">—</strong></div><a href="#boxes" class="text-link">Give boxes <span aria-hidden="true">↗</span></a><div class="summary-divider"></div><div class="collection-stat"><span>Items in collection</span><b id="overview-unlocked">—</b></div><div class="collection-stat"><span>Boxes opened</span><b id="overview-opened">—</b></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-events" aria-labelledby="events-title" hidden>
+          <div class="section-heading"><div><h1 id="events-title">Events</h1><p>Lobby look and hero challenge.</p></div><span id="events-current" class="current-pill">Loading…</span></div>
+          <div class="events-layout"><div><h2 class="subheading">Lobby event</h2><div id="event-grid" class="event-grid"></div></div><div class="panel event-detail"><div class="panel-heading"><h2 id="event-detail-title">Pick an event</h2></div><p id="event-detail-description"></p><div id="event-scene-status" class="scene-status"></div><p id="event-scene-note" class="muted"></p><div class="event-apply-footer"><div class="mutate-account" id="event-account">Account: —</div><div id="event-error" class="form-error" role="alert" hidden></div><button type="button" id="apply-event" class="button primary full-width" disabled>Apply event</button><p class="field-hint">Some scenes do not load in the 1.74 client.</p></div></div></div>
+          <div class="panel challenge-panel"><div class="panel-heading"><div><h2>Hero challenge</h2><p>Pick a challenge and set the wins.</p></div></div><form id="challenge-form"><div class="challenge-fields"><label class="field">Challenge<select name="challenge"><option value="">No challenge</option></select></label><label class="field wins-field">Wins<input name="challenge_wins" type="number" min="0" max="1000000" required></label><button class="button primary" type="submit" disabled>Save challenge</button></div><div id="challenge-rewards" class="challenge-rewards"></div><div id="challenge-error" class="form-error" role="alert" hidden></div><div class="mutate-account" id="challenge-account">Account: —</div></form></div>
+        </section>
+
+        <section class="view" id="view-boxes" aria-labelledby="boxes-title" hidden>
+          <div class="section-heading"><div><h1 id="boxes-title">Loot boxes</h1><p>Box types and how many you have.</p></div><div class="total-chip"><strong id="boxes-total">—</strong><span>in stock</span></div></div>
+          <div class="boxes-layout"><div id="box-grid" class="box-grid"></div><div class="panel box-issue-panel"><div class="panel-heading"><h2>Give boxes</h2></div><div id="selected-box-art" class="selected-box-art" aria-hidden="true"></div><h3 id="selected-box-name">Loading…</h3><p id="selected-box-inventory" class="muted">Pick a box</p><form id="box-form"><label class="field">Quantity<div class="stepper"><button id="count-minus" type="button" aria-label="Decrease quantity">−</button><input name="count" id="box-count" type="number" min="1" max="100" value="5" required aria-label="Quantity"><button id="count-plus" type="button" aria-label="Increase quantity">+</button></div></label><div class="quick-counts" aria-label="Select quantity"><button type="button" data-count="1">1</button><button type="button" data-count="5">5</button><button type="button" data-count="10">10</button><button type="button" data-count="25">25</button><button type="button" data-count="100">100</button></div><div class="mutate-account" id="box-account">Account: —</div><div id="box-error" class="form-error" role="alert" hidden></div><button type="submit" class="button primary full-width" disabled>Give boxes</button></form></div></div>
+        </section>
+
+        <section class="view" id="view-shop" aria-labelledby="shop-title" hidden>
+          <div class="section-heading"><div><h1 id="shop-title">Shop</h1><p>Items from the game catalog.</p></div><span id="shop-account" class="current-pill">Account: —</span></div>
+          <div class="shop-balance-strip"><span><i class="currency-icon credits-icon" aria-hidden="true">C</i><b id="shop-credits">—</b><span>credits</span></span><span><i class="currency-icon comp-icon" aria-hidden="true">◆</i><b id="shop-comp">—</b><span>competitive points</span></span><span><i class="currency-icon league-icon" aria-hidden="true">L</i><b id="shop-league">—</b><span>league tokens</span></span></div>
+          <form id="shop-filters" class="shop-filters" role="search"><label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><input name="q" type="search" placeholder="Item or hero name" aria-label="Search items"></label><label class="field"><span class="sr-only">Hero</span><select name="hero"><option value="">All heroes</option></select></label><label class="field"><span class="sr-only">Currency</span><select name="currency"><option value="">All currencies</option><option value="credits">Credits</option><option value="comp_points">Competitive points</option><option value="league_tokens">League tokens</option></select></label></form>
+          <div class="shop-result-heading"><span id="shop-result-count">Loading…</span><span id="shop-loading" role="status" hidden>Updating…</span></div><div id="shop-error" class="message error" role="alert" hidden></div><div id="shop-grid" class="shop-grid"></div><div id="shop-empty" class="empty-state" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><h2>No items found</h2><p>Change the search or filters.</p><button id="reset-filters" class="button secondary" type="button">Reset filters</button></div><div class="pagination"><button id="page-prev" class="button secondary" type="button" disabled>Back</button><span id="page-status">Page —</span><button id="page-next" class="button secondary" type="button" disabled>Next</button></div>
+        </section>
+
+        <section class="view" id="view-skins" aria-labelledby="skins-title" hidden>
+          <div class="section-heading"><div><h1 id="skins-title">Unlocks</h1><p>Give skins, icons and sprays, including OWL and event items you can no longer get.</p></div><span id="skins-account" class="current-pill">Account: —</span></div>
+          <form id="skins-filters" class="shop-filters" role="search"><label class="field"><span class="sr-only">Type</span><select name="kind"><option value="skins">Skins</option><option value="icons">Player icons</option><option value="sprays">Sprays</option></select></label><label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><input name="q" type="search" placeholder="Item or hero name" aria-label="Search items"></label><label class="field"><span class="sr-only">Hero</span><select name="hero"><option value="">All heroes</option></select></label><label class="toggle-field toggle-inline"><input name="owl" type="checkbox"><span class="toggle-ui" aria-hidden="true"></span><span>OWL skins only</span></label></form>
+          <div class="shop-result-heading"><span id="skins-result-count">Loading…</span><span id="skins-loading" role="status" hidden>Updating…</span></div><div id="skins-error" class="message error" role="alert" hidden></div><div id="skins-grid" class="shop-grid"></div><div id="skins-empty" class="empty-state" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><h2>Nothing found</h2><p>Change the search or filters.</p></div><div class="pagination"><button id="skins-prev" class="button secondary" type="button" disabled>Back</button><span id="skins-page-status">Page —</span><button id="skins-next" class="button secondary" type="button" disabled>Next</button></div>
+        </section>
+
+        <section class="view" id="view-sessions" aria-labelledby="sessions-title" hidden>
+          <div class="section-heading"><div><h1 id="sessions-title">Server</h1><p>Local server and game processes.</p></div><span id="sessions-status" class="current-pill">Checking…</span></div>
+          <div class="server-summary"><div><span>Address</span><strong id="server-endpoint">—</strong></div><div><span>Players connected</span><strong id="server-clients">—</strong></div><div><span>Uptime</span><strong id="server-uptime">—</strong></div></div>
+          <div id="matchmaking-note" class="message info">Loading…</div>
+          <div class="panel"><div class="panel-heading"><h2>Accounts</h2><span id="accounts-count" class="muted"></span></div><div class="table-scroll"><table><thead><tr><th scope="col">Account</th><th scope="col">Connection</th><th scope="col">Selected</th></tr></thead><tbody id="sessions-accounts"></tbody></table></div></div>
+          <div class="panel instances-panel"><div class="panel-heading"><h2>Game sessions</h2><span id="instances-count" class="muted"></span></div><div id="instances-list" class="instances-list"></div><div id="instances-empty" class="compact-empty" hidden>No sessions.</div></div>
+          <p id="last-updated" class="last-updated">No data yet</p>
+        </section>
+        <footer class="workspace-footer"><span>Overwatch 1.74 local lobby</span></footer>
+      </main>
+    </div>
+  </div>
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+  <dialog id="purchase-dialog" class="purchase-dialog" aria-labelledby="purchase-title"><form id="purchase-form"><button type="button" id="purchase-close" class="dialog-close icon-button" aria-label="Close">×</button><span class="dialog-kicker">Buy</span><h2 id="purchase-title">Confirm purchase</h2><p id="purchase-detail"></p><dl class="purchase-summary"><div><dt>Account</dt><dd id="purchase-account"></dd></div><div><dt>Price</dt><dd id="purchase-price"></dd></div><div><dt>Balance after</dt><dd id="purchase-remaining"></dd></div></dl><div id="purchase-error" class="form-error" role="alert" hidden></div><div class="dialog-actions"><button id="purchase-cancel" class="button secondary" type="button">Cancel</button><button id="purchase-confirm" class="button primary" type="submit">Buy item</button></div></form></dialog>
+  <script>(function(){var b=document.getElementById('theme-toggle');if(!b)return;b.addEventListener('click',function(){var next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;try{localStorage.setItem('ow-theme',next);}catch(e){}var m=document.querySelector('meta[name=theme-color]');if(m)m.content=next==='dark'?'#161617':'#eeeef2';b.setAttribute('aria-label',next==='dark'?'Switch to light mode':'Switch to dark mode');b.title=b.getAttribute('aria-label');});})();</script>
+</body>
+</html>

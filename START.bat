@@ -1,7 +1,12 @@
 @echo off
-REM One-click setup & launcher for the Overwatch 1.74 lobby server.
-REM Just double-click this file. It installs what it needs, downloads the
-REM relay, lets you pick your Overwatch.exe, and starts the game for you.
-title Overwatch 1.74 - Start
+rem Starts the lobby server and the game. Options: START.bat --help
+title Overwatch 1.74 lobby server
 cd /d "%~dp0"
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0setup.ps1"
+where py >nul 2>nul || (
+  echo Python is not installed. Install Python 3.10 or newer ^(64-bit^) from python.org, then start again.
+  start "" https://www.python.org/downloads/windows/
+  pause
+  exit /b 1
+)
+py -3 -B -m ow174 %*
+if errorlevel 1 pause

@@ -1,0 +1,70 @@
+"""The hero that stands in the main menu.
+
+A profile can ask for a hero by name, "random", "none", or a PvE character. PvE characters are not
+in the hero catalog, so they are sent through a retail config key that can put any loaded hero
+record in the menu (see MENU_HERO_KEY). They have no lobby idle animation and stand in a bind pose.
+"""
+
+import random
+
+from ow174.accounts.profile import Profile
+from ow174.catalog.items import HERO_BASE, ItemDB
+from ow174.content.collection import Collection
+
+MENU_HERO_KEY = 0x87053C32  # config key in message 36600 that sets the menu hero
+PVE_NPC_BASE = HERO_BASE
+PVE_NPCS = {
+    "Null Sector Eradicator": 0x173,
+    "Null Sector Slicer": 0x178,
+    "Null Sector Nulltrooper": 0x179,
+    "Null Sector Detonator": 0x17C,
+    "Talon Trooper": 0x1AC,
+    "Talon Sniper": 0x1B8,
+    "Talon Heavy Assault": 0x1BA,
+    "Talon Assassin": 0x1BB,
+    "Talon Enforcer": 0x1CE,
+    "Junkenstein Zomnic": 0x175,
+    "Junkenstein Shock-Tire": 0x176,
+    "Junkenstein Zombardier": 0x177,
+    "B.O.B.": 0x21D,
+}
+
+
+def pve_character(profile: Profile) -> int | None:
+    """GUID of the PvE character chosen as the menu hero, or None."""
+    wanted = (profile.lobby_hero or "").strip().casefold()
+    for name, index in PVE_NPCS.items():
+        if name.casefold() == wanted:
+            return PVE_NPC_BASE | index
+    return None
+
+
+class MenuHero:
+    def __init__(self, collection: Collection, items: ItemDB) -> None:
+        self._collection = collection
+        self._items = items
+        self._random_picks: dict[str, int] = {}  # player name -> hero, kept until the next login
+
+    def choose(self, profile: Profile) -> int:
+        """The hero GUID for the party card and career stats, or 0 for "none".
+
+        A PvE character is not a catalog hero, so it gets the random pick here.
+        """
+        choice = (profile.lobby_hero or "random").strip()
+        if choice.lower() == "none":
+            return 0
+        if choice.lower() != "random":
+            hero = self._hero_by_name_or_guid(choice)
+            if hero in self._collection.default_loadouts:
+                return hero
+        return self._random_picks.setdefault(profile.player_name, random.choice(self._collection.heroes))
+
+    def reroll(self, profile: Profile) -> None:
+        """Forget the random pick, so the next choose() picks again."""
+        self._random_picks.pop(profile.player_name, None)
+
+    def _hero_by_name_or_guid(self, choice: str) -> int | None:
+        hero = self._items.hero_by_name(choice)
+        if hero is None and choice.lower().startswith("0x"):
+            hero = int(choice, 16)
+        return hero

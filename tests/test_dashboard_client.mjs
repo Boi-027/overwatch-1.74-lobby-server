@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
 
 test('account selection is committed to the server before retail reconnect', async () => {
-  const path = new URL('../server/web/dashboard-api.mjs', import.meta.url);
+  const path = new URL('../ow174/dashboard/web/dashboard-api.mjs', import.meta.url);
   assert.ok(existsSync(path), 'The dashboard needs a shared account-selection API client');
   const {selectAccount} = await import(path.href);
   const oldFetch = globalThis.fetch;
@@ -22,7 +22,7 @@ test('account selection is committed to the server before retail reconnect', asy
 });
 
 test('a refused account switch remains an error for the UI', async () => {
-  const path = new URL('../server/web/dashboard-api.mjs', import.meta.url);
+  const path = new URL('../ow174/dashboard/web/dashboard-api.mjs', import.meta.url);
   assert.ok(existsSync(path));
   const {selectAccount} = await import(path.href);
   const oldFetch = globalThis.fetch;

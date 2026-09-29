@@ -1,48 +1,70 @@
+# Python
 __pycache__/
 *.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Editors and agents
+.vs/
+.vscode/
+.idea/
+.codex/
+.claude/
+.mcp.json
+
+# Player data, created on first start
+profile.json
+profile.*.json
+profiles/
+game_path.txt
+game/
+
+# Logs and research output
+logs/
+relay/log/
 *.log
+*_log.txt
+*_err.txt
+inject.jsonl
+.inject.jsonl.*
+diagnostics.txt
+backups/
+work/
+
+# Relay build output (the release DLL is downloaded by START.bat)
 *.dll
 *.obj
 *.lib
 *.exp
-.venv/
-profile.json
-profile.backup.json
-profiles/
-logs/
-relay/log/
-inject.jsonl
-game/
-backups/
-work/
-.env
-.env.*
-!.env.example
-*.zip
-*.7z
-*.dmp
+
+# Captures, dumps and disassembler databases
+data/cli_dec.bin
+data/srv_dec.bin
+data/ow_image*
 *.pcap
 *.pcapng
+*.dmp
 *.id0
 *.id1
 *.i64
 *.idb
 *.nam
 *.til
-data/cli_dec.bin
-data/srv_dec.bin
-data/ow_image*
-.vs/
-*_log.txt
-*_err.txt
+
+# Archives, secrets, temporary files
+*.zip
+*.7z
 *.tmp
-.inject.jsonl.*
-.codex/
-.claude/
-.mcp.json
-
-# one-click launcher: user-specific saved game path
-game_path.txt
-
-# diagnostics report (generated on the user machine)
-diagnostics.txt
+.env
+.env.*
+!.env.example
+Thumbs.db
+desktop.ini

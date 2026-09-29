@@ -19,10 +19,12 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "server"))
+sys.path.insert(0, str(ROOT))
 
-from crypto import Jam, HELLO_CLIENT, HELLO_SERVER, ZERO_KEY  # noqa: E402
-from jam_codec import Schemas, DecodeError, to_jsonable  # noqa: E402
+from ow174.jam.cipher import Jam  # noqa: E402
+from ow174.jam.codec import DecodeError, Schemas  # noqa: E402
+from ow174.jam.handshake import HELLO_CLIENT, HELLO_SERVER, ZERO_KEY  # noqa: E402
+from ow174.jam.values import to_jsonable  # noqa: E402
 
 
 def recvn(s, n):
@@ -69,7 +71,7 @@ class FakeClient:
         while time.time() < end:
             try:
                 data = self.s.recv(1 << 20)
-            except socket.timeout:
+            except TimeoutError:
                 continue
             if not data:
                 return
@@ -78,7 +80,7 @@ class FakeClient:
                 n = int.from_bytes(self.buf[:3], "big")
                 if len(self.buf) < 3 + n:
                     break
-                frame, self.buf = self.buf[3:3 + n], self.buf[3 + n:]
+                frame, self.buf = self.buf[3 : 3 + n], self.buf[3 + n :]
                 yield frame
 
 
@@ -97,13 +99,17 @@ def main():
     else:
         groups = list(schemas.groups)
         announce = struct.pack("<I", len(groups)) + b"".join(struct.pack("<I", crc) for crc in groups)
-    crcs = [struct.unpack_from("<I", announce, 4 + i * 4)[0] for i in range(struct.unpack_from("<I", announce)[0])]
+    crcs = [
+        struct.unpack_from("<I", announce, 4 + i * 4)[0] for i in range(struct.unpack_from("<I", announce)[0])
+    ]
     crc_at = {i + 1: c for i, c in enumerate(crcs)}
     wire_of = {c: i for i, c in crc_at.items()}
 
     c = FakeClient(args.host, args.port)
     c.send(b"\x00\x00" + announce)
-    login = schemas.decode(0x3C7E3468, 21800, captured(log, 25, 0)) if log else schemas.empty(0x3C7E3468, 21800)
+    login = (
+        schemas.decode(0x3C7E3468, 21800, captured(log, 25, 0)) if log else schemas.empty(0x3C7E3468, 21800)
+    )
     if not log:
         login["+0x78"] = "Researcher"
     if args.name:
@@ -132,13 +138,39 @@ def main():
 
     print("open box / name query / store / equip / purchase / profile:")
     c.send(bytes([wire_of[0x7F4F46CB], 1]) + schemas.encode(0x7F4F46CB, 24201, {"+0x78": {"+0x0": [1, 0]}}))
-    c.send(bytes([wire_of[0x46DC9706], 2]) + schemas.encode(0x46DC9706, 58202, {"+0x78": [{"+0x0": 0x425AE13F, "+0x8": 1 << 56}]}))
-    c.send(bytes([wire_of[0x5217E4CD], 0]) + schemas.encode(0x5217E4CD, 26500, {"+0x7C": 5, "+0x80": 1, "+0x88": "RU"}))
+    c.send(
+        bytes([wire_of[0x46DC9706], 2])
+        + schemas.encode(0x46DC9706, 58202, {"+0x78": [{"+0x0": 0x425AE13F, "+0x8": 1 << 56}]})
+    )
+    c.send(
+        bytes([wire_of[0x5217E4CD], 0])
+        + schemas.encode(0x5217E4CD, 26500, {"+0x7C": 5, "+0x80": 1, "+0x88": "RU"})
+    )
     genji, illidan, top500 = 0x02E0000000000029, 0x02500000000028EC, 0x0250000000000A90
-    c.send(bytes([wire_of[0xB68870B8], 0]) + schemas.encode(0xB68870B8, 24500, {"+0x78": genji, "+0x80": illidan, "+0x88": 0}))
-    c.send(bytes([wire_of[0xB68870B8], 0]) + schemas.encode(0xB68870B8, 24500, {"+0x78": 0, "+0x80": top500, "+0x88": 0}))
-    c.send(bytes([wire_of[0xB68870B8], 1]) + schemas.encode(0xB68870B8, 24501, {"+0x78": genji, "+0x80": illidan}))
-    c.send(bytes([wire_of[0x75D32AE2], 6]) + schemas.encode(0x75D32AE2, 22206, {"+0x78": {"+0x0": 0x425AE13F, "+0x8": 1 << 56}, "+0x88": {"+0x0": 0x425AE13F, "+0x8": 1 << 56}, "+0x98": 1}))
+    c.send(
+        bytes([wire_of[0xB68870B8], 0])
+        + schemas.encode(0xB68870B8, 24500, {"+0x78": genji, "+0x80": illidan, "+0x88": 0})
+    )
+    c.send(
+        bytes([wire_of[0xB68870B8], 0])
+        + schemas.encode(0xB68870B8, 24500, {"+0x78": 0, "+0x80": top500, "+0x88": 0})
+    )
+    c.send(
+        bytes([wire_of[0xB68870B8], 1])
+        + schemas.encode(0xB68870B8, 24501, {"+0x78": genji, "+0x80": illidan})
+    )
+    c.send(
+        bytes([wire_of[0x75D32AE2], 6])
+        + schemas.encode(
+            0x75D32AE2,
+            22206,
+            {
+                "+0x78": {"+0x0": 0x425AE13F, "+0x8": 1 << 56},
+                "+0x88": {"+0x0": 0x425AE13F, "+0x8": 1 << 56},
+                "+0x98": 1,
+            },
+        )
+    )
     ok2, bad2 = drain(3)
     print(f"reply frames: {ok2} ok, {bad2} bad")
     sys.exit(1 if bad or bad2 else 0)

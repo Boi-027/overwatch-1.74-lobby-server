@@ -1,18 +1,16 @@
 """Shop regressions using the captured catalog and extracted unlock metadata."""
 
-from dataclasses import asdict
-from pathlib import Path
 import sys
 import unittest
+from dataclasses import asdict
+from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "server"))
-from content import LobbyContent
-from items import ItemDB
-from jam_codec import Schemas
-from retail import RetailCapture
-from shop import ShopError, ShopService
-from storage import Profile
-
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from ow174.accounts.profile import Profile
+from ow174.catalog.items import ItemDB
+from ow174.catalog.templates import RetailTemplates
+from ow174.content.collection import Collection
+from ow174.services.shop import ShopError, ShopService
 
 FUSION = 0x02500000000013C3
 BLOOD = 0x02500000000003F8
@@ -24,32 +22,34 @@ class ShopTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.items = ItemDB()
-        schemas = Schemas()
-        cls.content = LobbyContent(schemas, RetailCapture(schemas), cls.items)
+        cls.collection = Collection(RetailTemplates(), cls.items)
 
     def setUp(self):
-        self.shop = ShopService(self.content, self.items)
+        self.shop = ShopService(self.collection, self.items)
         self.profile = Profile(credits=2000, comp_points=6000, league_tokens=500)
+
+    def balances(self):
+        return self.profile.credits, self.profile.comp_points, self.profile.league_tokens
 
     def test_owl_purchase_spends_tokens_and_grants_ownership(self):
         receipt = self.shop.purchase(self.profile, FUSION)
         self.assertEqual(receipt, {"guid": "0x02500000000013C3", "price": 100, "currency": "league_tokens"})
-        self.assertEqual((self.profile.credits, self.profile.comp_points, self.profile.league_tokens), (2000, 6000, 400))
-        self.assertTrue(self.content.owns(self.profile, FUSION))
+        self.assertEqual(self.balances(), (2000, 6000, 400))
+        self.assertTrue(self.collection.owns(self.profile, FUSION))
 
     def test_credit_purchase_uses_captured_price(self):
         receipt = self.shop.purchase(self.profile, "0x02500000000003F8")
         self.assertEqual(receipt["price"], 75)
         self.assertEqual(receipt["currency"], "credits")
-        self.assertEqual((self.profile.credits, self.profile.comp_points, self.profile.league_tokens), (1925, 6000, 500))
-        self.assertTrue(self.content.owns(self.profile, BLOOD))
+        self.assertEqual(self.balances(), (1925, 6000, 500))
+        self.assertTrue(self.collection.owns(self.profile, BLOOD))
 
     def test_golden_weapon_spends_competitive_points(self):
         receipt = self.shop.purchase(self.profile, GOLDEN)
         self.assertEqual(receipt["price"], 3000)
         self.assertEqual(receipt["currency"], "comp_points")
-        self.assertEqual((self.profile.credits, self.profile.comp_points, self.profile.league_tokens), (2000, 3000, 500))
-        self.assertTrue(self.content.owns(self.profile, GOLDEN))
+        self.assertEqual(self.balances(), (2000, 3000, 500))
+        self.assertTrue(self.collection.owns(self.profile, GOLDEN))
 
     def test_insufficient_tokens_cannot_spend_credits_instead(self):
         self.profile.league_tokens = 99
@@ -98,12 +98,26 @@ class ShopTests(unittest.TestCase):
                 self.assertEqual(asdict(self.profile), before)
 
     def test_catalog_filters_and_reports_real_currency_and_price(self):
-        catalog = self.shop.catalog(self.profile, q="Philadelphia Fusion", hero="reaper", currency="league_tokens")
+        catalog = self.shop.catalog(
+            self.profile, q="Philadelphia Fusion", hero="reaper", currency="league_tokens"
+        )
         item = next(item for item in catalog["items"] if item["guid"] == "0x02500000000013C3")
-        self.assertEqual(item, {"guid": "0x02500000000013C3", "name": "Philadelphia Fusion", "hero": "Reaper",
-                                "type": "Skin", "rarity": "Epic", "price": 100, "currency": "league_tokens",
-                                "owned": False, "purchasable": True})
-        self.assertEqual(self.shop.catalog(self.profile, q="Philadelphia Fusion", hero="Reaper", currency="credits")["total"], 0)
+        self.assertEqual(
+            item,
+            {
+                "guid": "0x02500000000013C3",
+                "name": "Philadelphia Fusion",
+                "hero": "Reaper",
+                "type": "Skin",
+                "rarity": "Epic",
+                "price": 100,
+                "currency": "league_tokens",
+                "owned": False,
+                "purchasable": True,
+            },
+        )
+        credits = self.shop.catalog(self.profile, q="Philadelphia Fusion", hero="Reaper", currency="credits")
+        self.assertEqual(credits["total"], 0)
         golden = self.shop.catalog(self.profile, q="GOLDEN", hero="Reaper", currency="comp_points")
         self.assertEqual(golden["total"], 1)
         self.assertEqual(golden["items"][0]["guid"], "0x02500000000003C9")
@@ -118,7 +132,8 @@ class ShopTests(unittest.TestCase):
         self.assertGreater(first["total"], 10)
         self.assertEqual(first["pages"], (first["total"] + 4) // 5)
         self.assertEqual((second["page"], second["page_size"]), (2, 5))
-        self.assertFalse({item["guid"] for item in first["items"]} & {item["guid"] for item in second["items"]})
+        first_guids = {item["guid"] for item in first["items"]}
+        self.assertFalse(first_guids & {item["guid"] for item in second["items"]})
 
     def test_owned_catalog_items_are_not_purchasable(self):
         self.profile.unlocked_items = ["0x02500000000013C3"]
@@ -127,7 +142,8 @@ class ShopTests(unittest.TestCase):
         self.assertTrue(item["owned"])
         self.assertFalse(item["purchasable"])
         self.profile.unlock_all = True
-        self.assertTrue(all(item["owned"] and not item["purchasable"] for item in self.shop.catalog(self.profile)["items"]))
+        items = self.shop.catalog(self.profile)["items"]
+        self.assertTrue(all(item["owned"] and not item["purchasable"] for item in items))
 
 
 if __name__ == "__main__":

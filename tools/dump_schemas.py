@@ -23,19 +23,50 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
-TYPE_NAMES = {0: "bool", 1: "u8", 2: "u8", 3: "i8", 4: "u16", 5: "i16", 6: "u32", 7: "i32", 8: "u64", 9: "i64",
-              10: "f32", 11: "f64", 12: "str", 13: "str", 14: "struct", 15: "blob", 16: "dyn", 17: "end"}
+TYPE_NAMES = {
+    0: "bool",
+    1: "u8",
+    2: "u8",
+    3: "i8",
+    4: "u16",
+    5: "i16",
+    6: "u32",
+    7: "i32",
+    8: "u64",
+    9: "i64",
+    10: "f32",
+    11: "f64",
+    12: "str",
+    13: "str",
+    14: "struct",
+    15: "blob",
+    16: "dyn",
+    17: "end",
+}
 
 k32 = ctypes.WinDLL("kernel32", use_last_error=True)
 psapi = ctypes.WinDLL("psapi", use_last_error=True)
 k32.OpenProcess.restype = wt.HANDLE
-k32.ReadProcessMemory.argtypes = [wt.HANDLE, ctypes.c_void_p, ctypes.c_void_p, ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
+k32.ReadProcessMemory.argtypes = [
+    wt.HANDLE,
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.POINTER(ctypes.c_size_t),
+]
 
 
 class MBI(ctypes.Structure):
-    _fields_ = [("BaseAddress", ctypes.c_void_p), ("AllocationBase", ctypes.c_void_p), ("AllocationProtect", wt.DWORD),
-                ("PartitionId", wt.WORD), ("RegionSize", ctypes.c_size_t), ("State", wt.DWORD), ("Protect", wt.DWORD),
-                ("Type", wt.DWORD)]
+    _fields_ = [
+        ("BaseAddress", ctypes.c_void_p),
+        ("AllocationBase", ctypes.c_void_p),
+        ("AllocationProtect", wt.DWORD),
+        ("PartitionId", wt.WORD),
+        ("RegionSize", ctypes.c_size_t),
+        ("State", wt.DWORD),
+        ("Protect", wt.DWORD),
+        ("Type", wt.DWORD),
+    ]
 
 
 class MODINFO(ctypes.Structure):
@@ -47,8 +78,17 @@ k32.VirtualQueryEx.restype = ctypes.c_size_t
 
 
 def read_image(process="Overwatch.exe"):
-    out = subprocess.run(["tasklist", "/FI", f"IMAGENAME eq {process}", "/FO", "CSV", "/NH"], capture_output=True, text=True).stdout
-    pid = next((int(line.split('","')[1]) for line in out.splitlines() if line.lower().startswith(f'"{process.lower()}"')), None)
+    out = subprocess.run(
+        ["tasklist", "/FI", f"IMAGENAME eq {process}", "/FO", "CSV", "/NH"], capture_output=True, text=True
+    ).stdout
+    pid = next(
+        (
+            int(line.split('","')[1])
+            for line in out.splitlines()
+            if line.lower().startswith(f'"{process.lower()}"')
+        ),
+        None,
+    )
     if pid is None:
         raise SystemExit(f"{process} is not running")
     h = k32.OpenProcess(0x0410, False, pid)
@@ -59,7 +99,9 @@ def read_image(process="Overwatch.exe"):
     base, size = mi.lpBaseOfDll, mi.SizeOfImage
     img = bytearray(size)
     addr, mbi = base, MBI()
-    while addr < base + size and k32.VirtualQueryEx(h, ctypes.c_void_p(addr), ctypes.byref(mbi), ctypes.sizeof(mbi)):
+    while addr < base + size and k32.VirtualQueryEx(
+        h, ctypes.c_void_p(addr), ctypes.byref(mbi), ctypes.sizeof(mbi)
+    ):
         region, rsize = mbi.BaseAddress or 0, mbi.RegionSize
         if mbi.State == 0x1000 and not (mbi.Protect & 0x101):
             for s in range(0, rsize, 1 << 20):
@@ -67,7 +109,7 @@ def read_image(process="Overwatch.exe"):
                 buf, got = ctypes.create_string_buffer(n), ctypes.c_size_t()
                 if k32.ReadProcessMemory(h, ctypes.c_void_p(region + s), buf, n, ctypes.byref(got)):
                     off = region - base + s
-                    img[off:off + got.value] = buf.raw[:got.value]
+                    img[off : off + got.value] = buf.raw[: got.value]
         addr = region + rsize
     return base, bytes(img)
 
@@ -131,7 +173,10 @@ def describe(fields, indent="  "):
     lines = []
     for f in fields:
         arr = "[]" if f["array"] else (f"[{f['count']}]" if f["count"] > 1 else "")
-        lines.append(f"{indent}+0x{f['off']:X} {TYPE_NAMES.get(f['type'], f['type'])}{arr} size={f['size']:#x} cnt={f['count']}")
+        lines.append(
+            f"{indent}+0x{f['off']:X} {TYPE_NAMES.get(f['type'], f['type'])}{arr} "
+            f"size={f['size']:#x} cnt={f['count']}"
+        )
         lines += describe(f.get("fields", []), indent + "    ")
     return lines
 
@@ -143,7 +188,8 @@ def main():
     base, img = read_image()
     groups = SchemaReader(base, img).messages(set(index))
     (DATA_DIR / "schemas_174.json").write_text(
-        json.dumps({f"{c:08X}": {str(m): f for m, f in sorted(g.items())} for c, g in sorted(groups.items())}))
+        json.dumps({f"{c:08X}": {str(m): f for m, f in sorted(g.items())} for c, g in sorted(groups.items())})
+    )
     with open(DATA_DIR / "schemas_174.txt", "w") as out:
         for crc in sorted(groups, key=lambda c: index[c]):
             g = groups[crc]

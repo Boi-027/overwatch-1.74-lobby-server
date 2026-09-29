@@ -11,4 +11,4 @@
 *.bat text eol=crlf
 *.pb binary
 data/*.json linguist-generated=true
-server/bnet/descriptors.pb linguist-generated=true
+ow174/bnet/descriptors.pb linguist-generated=true

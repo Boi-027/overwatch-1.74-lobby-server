@@ -1,114 +1,53 @@
-# Overwatch 1.74 — Lobby Research Server
+# Overwatch 1.74 Lobby Server
 
-[![Windows checks](https://github.com/squeeeezy/overwatch-1.74-lobby-server/actions/workflows/ci.yml/badge.svg)](https://github.com/squeeeezy/overwatch-1.74-lobby-server/actions/workflows/ci.yml)
+An offline lobby server for Overwatch 1.74 (build 104319) on Windows.
 
-A compact source distribution for local protocol research, targeting Windows x64 and client **1.74.0.0 / 104319**.
+## How to start
 
-Built on [Boi-027's Overwatch 1.74 Lobby Research](https://github.com/Boi-027/Overwatch-1-v1.74-Lobby-Research), with shared findings and tools from the wider preservation community. See [Credits](CREDITS.md).
+1. Install [Python](https://www.python.org/downloads/windows/) 3.10 or newer.
+2. Double-click `START.bat`.
+3. Choose a mode. Press Enter for the normal one (retail).
+4. The first time, pick your `Overwatch.exe`.
 
-## Quick start
+The server and the game start. Keep the black window open while you play.
 
-Clone and enter the repo, then install Python 3.14 x64 and the dependencies:
+To switch modes, close the game and the black window, then start `START.bat` again and choose another mode.
 
-```
-git clone https://github.com/squeeeezy/overwatch-1.74-lobby-server.git
-cd overwatch-1.74-lobby-server
-py -3 -m pip install -r requirements.txt
-```
+- **Retail**: the full main menu with a hero in the lobby.
+- **Tournament**: a simpler menu without the hero.
+- **Server only**: only the server. You start the game yourself.
 
-The game client is **not** included — bring your own `1.74.0.0 / 104319` `Overwatch.exe`. There are two ways to connect it, depending on how much of the menu you need.
+To manage your profile, events and loot boxes, open http://127.0.0.1:3725 in your browser.
 
-### Easiest (Windows): `START.bat`
+The game is not included. You need your own copy of build 1.74.0.0.104319.
 
-After downloading this repo, just **double-click `START.bat`**. No commands. It:
+## Without START.bat
 
-- asks once whether you want **Retail** (full menu with the lobby hero) or **Tournament** mode;
-- checks Python and installs the dependencies;
-- for the relay (retail) it lets you **download the prebuilt DLL or build it from source** (it sets up the Visual Studio environment for you), and unblocks it;
-- opens a file dialog so you **pick your `Overwatch.exe`** — it only accepts the game `.exe`, not a shortcut or a launcher, and remembers it for next time;
-- launches the game for you and starts the servers.
-
-If Python is missing it points you to the download and stops. The manual steps below are the equivalent if you prefer to run them yourself.
-
-### Route A — Tournament mode (simplest, no build)
-
-One command each, no Battle.net emulator and no relay DLL:
+Open a terminal in this folder and run:
 
 ```
-py -3 server/lobbyserv.py
-Overwatch.exe --tank_TournamentMode --lobbyServer=127.0.0.1:3724 --console
+py -m ow174
 ```
 
-The client reaches the main menu and the dashboard at **http://127.0.0.1:3725/** drives it live.
+It asks for the mode too. To skip the question, give it: `py -m ow174 --mode tournament`. `py -m ow174 --help` lists all options.
 
-**Limitations of tournament mode** — the client runs its reduced *tournament* frontend, not the full retail one, so:
+## If something goes wrong
 
-- **No cosmetic lobby hero** in the menu scene (the frontend branches on `IsTournamentMode || IsShowMode` and skips it — this is by design in the client, not a server gap).
-- A stripped-down main menu presentation (no retail shop/promo panels; menu options are limited).
-- Best for protocol/lobby research, not for showing off the full retail menu.
-- On the plus side, `--lobbyMap=<guid>` **is** honoured here, so any of the lobby maps can be forced directly.
+- Start the game only with `START.bat` or `py -m ow174`, not from a shortcut.
+- If your antivirus blocks it, add this folder and the game folder to its exceptions.
+- If the game asks for an email and password, type anything. The server does not check them.
+- Logs are in the `logs` folder. Send `logs/ow174.log` when you ask for help.
 
-### Route B — Retail route (full main menu with the lobby hero)
+## For developers
 
-This runs the normal retail frontend (hero in the scene, shop/promo panels) by logging in through a local Battle.net emulator. It needs the TLS-strip relay DLL (see [About the relay](#about-the-relay) below):
+```
+py -m pip install -r requirements.txt ruff
+py -m ruff check .
+py -B -m unittest discover -s tests
+```
 
-1. Get `owwfd_relay.dll` into the `relay\` folder. Either **build it once** in an **x64 Native Tools Command Prompt for Visual Studio 2022** with `relay\build.bat`, or — if you can't build it (no Visual Studio / C++ toolchain, or for any other reason) — **download the prebuilt DLL from [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases)** and drop it in `relay\`. (A successful Windows checks CI run also produces the same DLL as an artifact.)
-2. Launch everything with `run_retail.bat --game-exe "X:\path\Overwatch.exe"` (the path also works without the flag: `run_retail.bat "X:\path\Overwatch.exe"`).
-3. Open the dashboard at **http://127.0.0.1:3725/**.
-
-That is the whole flow — **`run_retail.bat` does everything automatically**: it starts the lobby and Battle.net helpers, launches the client with `--BNetServer=127.0.0.1:1119`, waits for the client to be ready, **injects the relay DLL into it, and verifies the injection**. You never run the injector by hand; `relay/inject.py` exists only for advanced/manual setups where you start the pieces yourself.
-
-Close any running game before launching again; existing helpers are reused, so restart them after changing Python server code. `--check-only` checks prerequisites without starting the game. Note: on the retail route `--lobbyMap` is ignored — only celebration-backed scenes switch (via the dashboard).
-
-### About the relay
-
-On client **1.74** the Battle.net connection is TLS with **public-key pinning**, and the client's code pages are protected (Arxan/ACG), so you cannot simply point it at a local server with a swapped certificate or patch the check out. The **relay** (`relay/owwfd_relay.cpp` → `owwfd_relay.dll`) works around this without defeating any protection:
-
-- It is a small DLL that `run_retail.bat` **injects into the game client at launch** (LoadLibrary via a remote thread).
-- Inside the client it finds the live TLS stream object and swaps its send/receive to a **plaintext pipe** aimed at the local Battle.net emulator (`server/bnet`, on port 21119). This is a heap **data** write — it does not modify protected code, so it stays Arxan-compatible.
-- The client then speaks the normal (now plaintext) Battle.net WebSocket to our emulator, which answers the login handshake and hands back a referral to the local lobby on `127.0.0.1:3724`.
-
-So the relay is only about getting *past the pinned TLS* on the login socket; all the actual lobby behaviour is plain server code. You build the DLL once and never touch it again — the launcher handles loading it every run. If you can't (or don't want to) build it, a prebuilt `owwfd_relay.dll` is attached to the [Releases](https://github.com/squeeeezy/overwatch-1.74-lobby-server/releases) page; just drop it in `relay\`. Tournament mode (Route A) skips all of this, which is why it needs no relay or Battle.net emulator.
-
-## Troubleshooting
-
-If the retail route fails (for example the game shows **"Unable to Authenticate"**), double-click **`DIAGNOSE.bat`** after the failed attempt. It writes `diagnostics.txt` (build/hash of your `Overwatch.exe`, listening ports, `hosts` redirects, the relay log, the Battle.net login log, and a one-line verdict) and opens it — send that file when asking for help. It only reads; it changes nothing.
-
-Common causes:
-
-- **Launching the game yourself** (a shortcut, or the Battle.net launcher). The game must be started **by** `START.bat` / `run_retail.bat` — that's what passes `--BNetServer` and injects the relay. Nothing else will authenticate.
-- **Antivirus / Windows Defender** blocking the injection. Add an exclusion for the game folder and the relay, then retry.
-- **A different `Overwatch.exe` build.** The relay targets a specific 1.74.0.0.104319 build; a different repack won't be hooked (the diagnostics report flags this and shows `swaps=0` in the relay log).
-- **A leftover `hosts` redirect** of `battle.net`/`blizzard` domains from another guide — remove those lines (this project doesn't use `hosts`).
-- **A stale session** after several attempts — close the game and every `python.exe`, then launch once via `START.bat` (it now does this cleanup for you).
-
-## Contents
-
-- `server/`: lobby, profiles, events, shop, dashboard API, local Battle.net, and per-session UDP workers.
-- `server/web/`: standalone dashboard; no npm/build step.
-- `relay/`: source and injector for the local retail connection. Build the DLL locally.
-- `tools/`: launcher, synthetic smoke client, schema extractor, and explicit practice-state probe.
-- `data/`: required protocol/catalog fixtures and compact scene metadata; see [data/README.md](data/README.md). Packet captures, memory dumps, private profiles and logs are not included.
-- `tests/`: automated regressions.
-
-First launch creates a fresh `Researcher` profile. Keep generated profiles/logs out of shared copies.
-
-## Verify
-
-`py -3 -B -m unittest discover -s tests -v`
-
-Optional JavaScript client tests (Node.js): `node --test tests/test_dashboard_client.mjs`.
-
-With a disposable lobby server running: `py -3 tools/fake_client.py --port 3724 --name SmokeTest`. The smoke client changes its test profile; use a throwaway copy.
-
-## Status
-
-Main menu, cosmetics, boxes, purchases and dashboard are implemented. Anniversary scene fixes were tested with the real client. **Actual match connection/gameplay, competitive seasons and complete native event announcements remain unfinished.** UDP workers are protocol-capture endpoints, not playable game servers. See `docs/STATE.md`.
+The code is in `ow174/`. The relay DLL source is in `relay/`.
 
 ## Credits
 
-Big thanks to **Boi-027**, the researchers in the **AyakaPS Discord community**, **Logo2K**, **Zagrion**, **Sidiusz**, **Blizless**, **overtools**, **Plasmawatch**, **Prometheus**, the community relay authors, and everyone else who contributed findings, tools or testing — including those not named in the surviving notes.
-
-See [CREDITS.md](CREDITS.md) for project links, Logo2K's research notes and attribution details.
-
-MIT-licensed source; see [LICENSE](LICENSE). Original copyright: Arlecchino (2026). Original notices and source attributions are retained.
+Based on [Boi-027's research](https://github.com/Boi-027/Overwatch-1-v1.74-Lobby-Research). Thanks to everyone listed in [CREDITS.md](CREDITS.md). MIT license.
