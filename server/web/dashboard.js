@@ -5,7 +5,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
   const number = value => new Intl.NumberFormat('en-US').format(Number(value) || 0);
-  const titles = {overview: 'Overview & profile', events: 'Events', boxes: 'Containers', shop: 'Collection & shop', skins: 'Skins', sessions: 'Server & connections'};
+  const titles = {overview: 'Overview & profile', events: 'Events', boxes: 'Loot Boxes', shop: 'Collection & shop', skins: 'Skins', sessions: 'Server & connections'};
   const currencies = {
     credits: {label: 'Credits', unit: 'credits', symbol: 'C', className: 'credits-icon'},
     comp_points: {label: 'Competitive points', unit: 'competitive points', symbol: '◆', className: 'comp-icon'},
@@ -153,7 +153,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
     connection.textContent = activeAccount?.online ? 'Connected to the server' : 'Client not connected';
     connection.className = `connection-tag${activeAccount?.online ? ' online' : ''}`;
     setText('#profile-level', `Level ${number(profile.level)}`);
-    setText('#lobby-description', activeAccount?.online ? 'Profile ready. Manage the event, collection and container stock.' : 'Set up the profile, then connect the game client to the local server.');
+    setText('#lobby-description', activeAccount?.online ? 'Profile ready. Manage the event, collection and loot box stock.' : 'Set up the profile, then connect the game client to the local server.');
     for (const [selector, field] of [['#credits-balance','credits'], ['#comp-balance','comp_points'], ['#league-balance','league_tokens'], ['#shop-credits','credits'], ['#shop-comp','comp_points'], ['#shop-league','league_tokens']]) setText(selector, number(profile[field]));
     setText('#overview-event', event?.label || (profile.events?.[0] || 'No event'));
     setText('#overview-hero', profile.lobby_hero === 'random' ? 'Random hero' : profile.lobby_hero === 'none' ? 'No hero' : hero?.name || profile.lobby_hero || '—');
@@ -207,12 +207,63 @@ import {api, selectAccount} from './dashboard-api.mjs';
       container.append(chip);
     }
   }
+  // Overwatch loot box: dark isometric box, glowing event-colored trim, OW logo on the lid.
+  // Event colour comes from --box-accent (set per box by boxAccent()).
+  const BOX_COLORS = {
+    'standard': '#3d7bd6', 'summer games': '#3fb64f', 'halloween': '#f07a1e', 'halloween terror': '#f07a1e',
+    'winter wonderland': '#49b6e6', 'lunar new year': '#e0453f', 'archives': '#18b0a6',
+    'anniversary': '#b070e0', 'golden': '#e8b13a', 'legendary': '#e8952f',
+    'legendary anniversary': '#e8952f', 'wrecking ball': '#e8952f', 'ram': '#c58a4a',
+  };
+  function boxAccent(box) {
+    const key = String(box.label || box.name || '').toLowerCase().trim();
+    return BOX_COLORS[key] || Object.entries(BOX_COLORS).find(([k]) => key.includes(k))?.[1] || '#5b82a8';
+  }
+  // Real rendered loot-box photos (server/web/assets/boxes/). Missing files fall back to the SVG.
+  const BOX_IMAGES = {
+    'standard': 'standard.png', 'summer games': 'summer.png', 'halloween': 'halloween.png', 'halloween terror': 'halloween.png',
+    'winter wonderland': 'winter.png', 'lunar new year': 'lunar.png', 'archives': 'archives.png', 'anniversary': 'anniversary.png',
+    'golden': 'golden.png', 'legendary': 'legendary.png', 'legendary anniversary': 'legendary_anniv.png',
+    'ram': 'ham.png', 'wrecking ball': 'ham.png',
+  };
+  function boxImageFile(box) {
+    const key = String(box.label || box.name || '').toLowerCase().trim();
+    return BOX_IMAGES[key] || Object.entries(BOX_IMAGES).find(([k]) => key.includes(k))?.[1] || null;
+  }
+  function fillBoxArt(wrap, box) {
+    wrap.replaceChildren();
+    wrap.style.setProperty('--box-accent', boxAccent(box));
+    const file = box && boxImageFile(box);
+    if (file) {
+      const img = document.createElement('img'); img.className = 'box-photo'; img.alt = ''; img.loading = 'lazy';
+      img.src = '/assets/boxes/' + encodeURIComponent(file);
+      img.addEventListener('error', () => { img.remove(); wrap.append(boxGraphic()); });
+      wrap.append(img);
+    } else {
+      wrap.append(boxGraphic());
+    }
+  }
   function boxGraphic() {
     const ns = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 100 90'); svg.setAttribute('aria-hidden', 'true');
-    for (const [pathData, className] of [['m10 26 40-18 40 18-40 18Z',''], ['m10 26 40 18v38L10 64Zm40 18 40-18v38L50 82Z',''], ['m27 18 40 18M50 44v17m-9-5 9 5 9-5',''], ['m43 12 14 6-7 3-14-6Z','box-accent'], ['m42 49 8 4 8-4v10l-8 4-8-4Z','box-accent']]) {
-      const path = document.createElementNS(ns, 'path'); path.setAttribute('d', pathData); if (className) path.setAttribute('class', className); svg.append(path);
-    }
+    const svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 100 98'); svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = `
+      <defs>
+        <linearGradient id="lbLid" x1="0" y1="0" x2="0.9" y2="1"><stop offset="0" stop-color="#4b535d"/><stop offset="1" stop-color="#363c45"/></linearGradient>
+        <linearGradient id="lbL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#252b32"/><stop offset="1" stop-color="#151a1f"/></linearGradient>
+        <linearGradient id="lbR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#333a42"/><stop offset="1" stop-color="#1e242a"/></linearGradient>
+        <filter id="lbGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity="0.20"/>
+      <path d="M50 54 13 33v34l37 21z" fill="url(#lbL)" stroke="#0d1114" stroke-width="1"/>
+      <path d="M50 54 87 33v34L50 88z" fill="url(#lbR)" stroke="#0d1114" stroke-width="1"/>
+      <path d="M50 12 87 33 50 54 13 33z" fill="url(#lbLid)" stroke="#0d1114" stroke-width="1"/>
+      <path class="lb-band" d="M13 41 50 62 87 41" fill="none"/>
+      <g class="lb-trim" filter="url(#lbGlow)"><path d="M13 33 50 54 87 33" fill="none"/><path d="M50 54v34" fill="none"/></g>
+      <g class="lb-logo" transform="translate(50 31.5) scale(0.30) translate(-32 -31)">
+        <path class="lb-arc" d="M12 14a27 27 0 0 1 40 0" fill="none"/>
+        <path class="lb-arc" d="M8 20a27 27 0 1 0 48 0" fill="none"/>
+        <path class="lb-fig" d="m31 21-3 16-14 12h11l7-8 7 8h11L36 37l-3-16Z"/>
+      </g>`;
     return svg;
   }
   function boxCount(type) { return state.profile.box_counts?.find(item => String(item.type ?? item.id) === String(type))?.count || 0; }
@@ -223,16 +274,17 @@ import {api, selectAccount} from './dashboard-api.mjs';
       const button = node('button', `box-card${String(selectedBox) === String(box.id) ? ' selected' : ''}`);
       button.dataset.box = String(box.id);
       button.type = 'button'; button.setAttribute('aria-pressed', String(String(selectedBox) === String(box.id)));
-      const art = node('div', 'box-art'); art.append(boxGraphic());
+      const art = node('div', 'box-art'); fillBoxArt(art, box);
       const copy = node('div', 'box-card-copy'); copy.append(node('strong', '', box.label || box.name), node('span', '', box.name || ''));
       const count = node('div', 'box-inventory'); count.append(node('span', '', 'In stock'), node('b', '', number(boxCount(box.id)))); copy.append(count);
       button.append(art, copy); button.addEventListener('click', () => { selectedBox = box.id; showError('#box-error', ''); renderBoxes(); }); container.append(button);
     }
     if (focusedBox !== null) $$('[data-box]', container).find(button => button.dataset.box === focusedBox)?.focus({preventScroll: true});
     const selected = state.catalogs.box_types.find(box => String(box.id) === String(selectedBox));
-    $('#selected-box-art').replaceChildren(boxGraphic());
+    if (selected) fillBoxArt($('#selected-box-art'), selected);
+    else $('#selected-box-art').replaceChildren(boxGraphic());
     setText('#selected-box-name', selected?.label || selected?.name || 'No available types');
-    setText('#selected-box-inventory', selected ? `In stock: ${number(boxCount(selected.id))}` : 'Container catalog is empty');
+    setText('#selected-box-inventory', selected ? `In stock: ${number(boxCount(selected.id))}` : 'Loot box catalog is empty');
     updateButtons();
   }
   function duration(value) {
@@ -506,11 +558,11 @@ import {api, selectAccount} from './dashboard-api.mjs';
     const button = $('button[type=submit]', boxForm); button.textContent = 'Issuing…';
     try {
       const result = await api('/api/add_boxes', {account: targetAccount, type, count});
-      if (result.status !== 'ok') throw new Error('The server did not confirm the container issue.');
+      if (result.status !== 'ok') throw new Error('The server did not confirm the loot box issue.');
       if (account === targetAccount) await refreshState();
-      toast(`Issued ${number(result.added)} "${selected?.label || selected?.name}" containers. Account: ${targetAccount}. Total: ${number(result.total_boxes)}.`);
+      toast(`Issued ${number(result.added)} "${selected?.label || selected?.name}" loot boxes. Account: ${targetAccount}. Total: ${number(result.total_boxes)}.`);
     } catch (error) { if (account === targetAccount) showError('#box-error', error.message); else toast(error.message, true); }
-    finally { button.textContent = 'Issue containers'; lockForm(boxForm, false); }
+    finally { button.textContent = 'Issue loot boxes'; lockForm(boxForm, false); }
   });
   filters.addEventListener('submit', event => { event.preventDefault(); clearTimeout(searchTimer); shopPage = 1; loadShop(); });
   filters.elements.q.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { shopPage = 1; loadShop(); }, 300); });
