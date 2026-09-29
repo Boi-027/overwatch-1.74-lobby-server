@@ -57,6 +57,7 @@ class Session:
         self.ident: Identity | None = None
         self.logged_in = False
         self.party_channel: dict | None = None  # the party chat channel the client has joined
+        self.watched_groups: set[tuple] = set()  # party ids picked in the group finder (52204)
         self.crc_at: dict[int, int] = {}  # wire index -> protocol group CRC, from the announcement
         self.wire_of: dict[int, int] = {}  # protocol group CRC -> wire index
         self._send_lock = threading.Lock()
@@ -101,7 +102,7 @@ class Session:
             self.log(f"[!] Skipped {msg_id}: protocol {crc:08X} not announced", logging.WARNING)
             return False
         schemas = self.server.schemas
-        self.send_raw(bytes([wire, msg_id - schemas.base(crc)]) + schemas.encode(crc, msg_id, value))
+        self.send_raw(schemas.header(crc, wire, msg_id) + schemas.encode(crc, msg_id, value))
         return True
 
     def send_raw(self, payload: bytes) -> None:
@@ -134,8 +135,12 @@ class Session:
             self.party_channel = None
         return messages
 
-    def push_state(self) -> None:
-        """Refresh the client after a dashboard edit: card, party, currencies, collection, events."""
+    def push_state(self, granted: list[int] | None = None) -> None:
+        """Refresh the client after a dashboard edit: card, party, currencies, collection, events.
+
+        `granted` are items the edit gave the player. The collection screen counts an item only
+        when it arrives as an unlock (24901), not when it is already in the owned list.
+        """
         if not self.logged_in:
             return
         content = self.server.content
@@ -144,7 +149,7 @@ class Session:
             self.save()
         messages = without_party_state(content.live_messages(self.profile, self.ident))
         messages += self.party_messages()
-        for guid in earned:
+        for guid in [*(granted or []), *earned]:
             messages.append(content.collection.unlock_granted(guid))
         sent = self.send_all(messages)
         summary = f"[>>>] Live update: {sent} messages"
@@ -158,8 +163,8 @@ class Session:
         """Serve the client until it disconnects."""
         try:
             self._receive_loop()
-        except OSError:
-            self.log("Client disconnected.")
+        except OSError as error:
+            self.log(f"Client disconnected: {error}")
         finally:
             self._cleanup()
 
@@ -225,12 +230,16 @@ class Session:
 
     def _cleanup(self) -> None:
         """Stop the client's game instance and tell the others it left."""
+        self.logged_in = False  # ends the session's presence refresh thread (login._after_menu_ready)
         server = self.server
         if server.matches is not None:
             server.matches.cancel(self.conn_id)
         if not self.account or server.social.sessions.get(self.account.account_lo) is not self:
             return
         del server.social.sessions[self.account.account_lo]
+        with server.state_lock:
+            self.profile.last_online = int(time.time())
+            self.save()
         party = server.social.leave(self.account)
         if party:
             server.notify_party(party)

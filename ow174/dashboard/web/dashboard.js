@@ -5,13 +5,13 @@ import {api, selectAccount} from './dashboard-api.mjs';
   const $ = (selector, scope = document) => scope.querySelector(selector);
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
   const number = value => new Intl.NumberFormat('en-US').format(Number(value) || 0);
-  const titles = {overview: 'Profile', events: 'Events', boxes: 'Loot boxes', shop: 'Shop', skins: 'Unlocks', sessions: 'Server'};
+  const titles = {overview: 'Profile', events: 'Events', boxes: 'Loot boxes', shop: 'Collection', sessions: 'Server'};
   const currencies = {
     credits: {label: 'Credits', unit: 'credits', symbol: 'C', className: 'credits-icon'},
     comp_points: {label: 'Competitive points', unit: 'competitive points', symbol: '◆', className: 'comp-icon'},
     league_tokens: {label: 'League tokens', unit: 'league tokens', symbol: 'L', className: 'league-icon'}
   };
-  const typeLabels = {Skin: 'Skin', Emote: 'Emote', VictoryPose: 'Victory pose', 'Victory Pose': 'Victory pose', VoiceLine: 'Voice line', 'Voice Line': 'Voice line', Spray: 'Spray', HighlightIntro: 'Highlight intro', 'Highlight Intro': 'Highlight intro', PlayerIcon: 'Player icon', 'Player Icon': 'Player icon', Weapon: 'Weapon'};
+  const typeLabels = {Skin: 'Skin', WeaponSkin: 'Weapon skin', Icon: 'Player icon', Spray: 'Spray', Emote: 'Emote', VictoryPose: 'Victory pose', VoiceLine: 'Voice line', HighlightIntro: 'Highlight intro', PortraitFrame: 'Portrait frame'};
   const rarityLabels = {Common: 'Common', Rare: 'Rare', Epic: 'Epic', Legendary: 'Legendary'};
   let state = null;
   let account = '';
@@ -26,13 +26,6 @@ import {api, selectAccount} from './dashboard-api.mjs';
   let shopItems = [];
   let shopLoading = false;
   let searchTimer;
-  let skinsRequest = 0;
-  let skinsPage = 1;
-  let skinsPages = 1;
-  let skinsItems = [];
-  let skinsLoading = false;
-  let skinsHeroesLoaded = false;
-  let skinsSearchTimer;
   let purchase = null;
   let purchaseBusy = false;
   let eventBusy = false;
@@ -44,7 +37,6 @@ import {api, selectAccount} from './dashboard-api.mjs';
   const challengeForm = $('#challenge-form');
   const boxForm = $('#box-form');
   const filters = $('#shop-filters');
-  const skinsFilters = $('#skins-filters');
 
   function node(tag, className, text) {
     const element = document.createElement(tag);
@@ -100,10 +92,52 @@ import {api, selectAccount} from './dashboard-api.mjs';
     $('button[type=submit]', profileForm).disabled = !state || !profileDirty.size || busyForms.has(profileForm);
     $('button[type=submit]', challengeForm).disabled = !state || !challengeDirty.size || busyForms.has(challengeForm);
     $('button[type=submit]', boxForm).disabled = !state || selectedBox === null || busyForms.has(boxForm);
-    const event = state?.catalogs.events.find(item => item.id === selectedEvent);
-    $('#apply-event').disabled = !state || !eventDirty || eventBusy || event?.scene_status === 'unavailable';
+    $('#apply-event').disabled = !state || !eventDirty || eventBusy;
     $('#profile-draft').hidden = !profileDirty.size;
-    $('#apply-event').textContent = eventBusy ? 'Applying…' : event?.scene_status === 'unavailable' ? 'Not available in 1.74' : 'Apply event';
+    $('#apply-event').textContent = eventBusy ? 'Applying…' : 'Apply event';
+  }
+  // Level rules: the card shows a level from 1 to 100; every 100 levels add a star (up to 5), and
+  // every 600 levels move up a tier (Bronze to Diamond). The total level is what the server keeps.
+  // Frames come from the server's table (unlock level -> frame GUID); their GUIDs are not in order.
+  const FRAME_TIERS = ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond'];
+  const MAX_LEVEL = 3000;
+  function levelParts(total) {
+    const done = Math.min(Math.max(1, total), MAX_LEVEL) - 1;
+    return {tier: Math.floor(done / 600), stars: Math.floor(done % 600 / 100), shown: done % 100 + 1};
+  }
+  function frameForLevel(total) {
+    let frame = null;
+    for (const row of state?.catalogs?.frames || []) if (row.level <= total) frame = row;
+    return frame;
+  }
+  function frameName(level) {
+    const parts = levelParts(level);
+    return `${FRAME_TIERS[parts.tier]}${parts.stars ? ' ' + '★'.repeat(parts.stars) : ''}`;
+  }
+  function renderLevelFrame() {
+    const total = Math.max(1, Number(profileForm.elements.level.value) || 1);
+    // A changed level brings back the level's frame when saved, so the preview shows that one.
+    const chosenGuid = profileDirty.has('level') ? null : state?.profile?.frame;
+    const chosen = chosenGuid && (state?.catalogs?.frames || []).find(row => row.guid === chosenGuid);
+    const frame = chosen || frameForLevel(total);
+    $('#level-frame-img').src = frame ? `/assets/previews/${frame.guid.slice(2).toUpperCase()}.webp` : '';
+    setText('#level-frame-number', String(levelParts(total).shown));
+    const name = frame ? frameName(Math.max(1, frame.level)) : '—';
+    setText('#level-frame-text', chosen ? `Total level ${total}. Frame: ${name}, chosen in Collection → Portrait frames.` : `Total level ${total}. Frame: ${name}.`);
+  }
+  function syncLevelControls() {
+    const parts = levelParts(Number(profileForm.elements.level.value) || 1);
+    $('#level-shown').value = String(parts.shown);
+    $('#level-tier').value = String(parts.tier);
+    $('#level-stars').value = String(parts.stars);
+    renderLevelFrame();
+  }
+  function setLevelFromControls() {
+    const shown = Math.min(100, Math.max(1, Number($('#level-shown').value) || 1));
+    const field = profileForm.elements.level;
+    field.value = String(Number($('#level-tier').value) * 600 + Number($('#level-stars').value) * 100 + shown);
+    field.dispatchEvent(new Event('input', {bubbles: true}));
+    renderLevelFrame();
   }
   function markDirty(event, set, profile) {
     const field = event.target;
@@ -180,7 +214,7 @@ import {api, selectAccount} from './dashboard-api.mjs';
       const button = node('button', `event-card${selectedEvent === event.id ? ' selected' : ''}`);
       button.dataset.event = event.id;
       button.type = 'button'; button.setAttribute('aria-pressed', String(selectedEvent === event.id));
-      button.append(node('strong', '', event.label), node('span', '', event.scene_status === 'unavailable' ? 'Not available in 1.74' : event.description || 'Lobby look'), node('span', 'event-category', categories[event.category] || 'Game event'));
+      button.append(node('strong', '', event.label), node('span', '', event.description || 'Lobby look'), node('span', 'event-category', categories[event.category] || 'Game event'));
       button.addEventListener('click', () => {
         selectedEvent = event.id; eventDirty = selectedEvent !== (state.profile.events?.[0] || '');
         showError('#event-error', ''); renderEvents(); updateButtons();
@@ -193,9 +227,9 @@ import {api, selectAccount} from './dashboard-api.mjs';
     setText('#event-detail-description', selected?.description || 'Pick an event from the list.');
     const status = $('#event-scene-status');
     const scene = selected?.scene_status;
-    const labels = {verified: 'Tested', unverified: 'Not tested', limited: 'Partly works', unavailable: 'Not available', supported: 'Works'};
+    const labels = {verified: 'Tested', limited: 'Partly works'};
     status.textContent = !selectedEvent ? 'Standard look' : labels[scene] || 'Not tested';
-    status.className = `scene-status ${scene === 'verified' || scene === 'supported' ? 'verified' : 'unverified'}`;
+    status.className = `scene-status ${scene === 'verified' ? 'verified' : 'unverified'}`;
     setText('#event-scene-note', selected?.scene_note || (!selectedEvent ? 'Default lobby.' : 'Check it in the game.'));
     updateButtons();
   }
@@ -245,6 +279,17 @@ import {api, selectAccount} from './dashboard-api.mjs';
     } else {
       wrap.append(boxGraphic());
     }
+  }
+  // The item's picture when the dashboard has one, else its initials.
+  function itemMonogram(item) {
+    return node('span', 'item-monogram', (item.hero || item.name || 'OW').replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).map(word => word[0]).join('').slice(0, 2));
+  }
+  function fillItemArt(art, item) {
+    if (!item.preview) { art.append(itemMonogram(item)); return; }
+    const img = document.createElement('img');
+    img.className = 'item-photo'; img.alt = ''; img.loading = 'lazy'; img.src = item.preview;
+    img.addEventListener('error', () => img.replaceWith(itemMonogram(item)));
+    art.append(img);
   }
   function boxGraphic() {
     const ns = 'http://www.w3.org/2000/svg';
@@ -296,6 +341,16 @@ import {api, selectAccount} from './dashboard-api.mjs';
     const minutes = Math.floor(seconds / 60);
     return hours ? `${hours} h ${minutes} min` : minutes ? `${minutes} min ${seconds % 60} s` : `${seconds} s`;
   }
+  // Log the game in as another account: select it for the next login, show it here, reconnect the game.
+  async function playAs(name) {
+    try {
+      await selectAccount(name);
+      await api('/api/reconnect', {});
+      const select = $('#account-select');
+      if (select.value !== name) { select.value = name; select.dispatchEvent(new Event('change')); }
+      toast(`The game logs in again as ${name}.`);
+    } catch (error) { toast(error.message, true); }
+  }
   function renderSessions() {
     const server = state.server;
     setText('#sidebar-address', `${server.host}:${server.port}`);
@@ -310,7 +365,10 @@ import {api, selectAccount} from './dashboard-api.mjs';
       const connection = node('td'); const status = node('span', `table-status${item.online ? ' online' : ''}`);
       status.append(node('span', `status-dot${item.online ? ' online' : ''}`), document.createTextNode(item.online ? 'Connected' : 'Not connected'));
       connection.append(status); row.append(connection);
-      const current = node('td'); current.append(node('span', item.name === account ? 'selected-badge' : 'muted', item.name === account ? 'Selected' : '—')); row.append(current); accounts.append(row);
+      const current = node('td'); current.append(node('span', item.selected ? 'selected-badge' : 'muted', item.selected ? 'Selected' : '—')); row.append(current);
+      const play = node('td'); const button = node('button', 'button secondary small', item.online ? 'Playing' : 'Play as');
+      button.type = 'button'; button.disabled = item.online; button.addEventListener('click', () => playAs(item.name));
+      play.append(button); row.append(play); accounts.append(row);
     }
     setText('#accounts-count', `${number((state.accounts || []).length)} accounts`);
     const instances = Array.isArray(server.game_instances) ? server.game_instances : [];
@@ -358,17 +416,17 @@ import {api, selectAccount} from './dashboard-api.mjs';
       if (request !== stateRequest || requestedAccount !== account) return;
       state = result;
       state.catalogs = {heroes: [], events: [], box_types: [], challenges: [], ...result.catalogs};
-      state.catalogs.events = state.catalogs.events.filter(event => !['limited', 'unavailable'].includes(event.scene_status));
       if (!account) account = result.accounts?.find(item => item.selected)?.name || result.profile.player_name;
       renderCatalogs(force); renderAccounts(); renderOverview();
       if (force) { profileDirty.clear(); challengeDirty.clear(); eventDirty = false; }
       fillForm(profileForm, state.profile, profileDirty, force);
+      setText('#battle-tag-hint', `BattleTag for friends: ${result.battle_tag || '—'}`);
+      syncLevelControls();
       fillForm(challengeForm, state.profile, challengeDirty, force);
       if (!eventDirty || force) selectedEvent = state.profile.events?.[0] || '';
       renderEvents(); renderBoxes(); renderChallengeRewards(); renderSessions(); updateButtons();
       showError('#global-error', ''); syncStatus(true);
       if (force || view === 'shop') await loadShop();
-      if (view === 'skins') await loadSkins();
     } catch (error) {
       if (request !== stateRequest) return;
       showError('#global-error', error.message); syncStatus(false);
@@ -380,6 +438,28 @@ import {api, selectAccount} from './dashboard-api.mjs';
     const icon = node('span', `currency-icon ${definition?.className || ''}`, definition?.symbol || '?');
     icon.setAttribute('aria-hidden', 'true'); return icon;
   }
+  // What the player can do with an item: pick a frame, buy it, unlock it for free, or take it back.
+  function itemActions(item) {
+    const footer = node('div', 'item-footer');
+    if (item.frame) { const button = frameButton(item); button.type = 'button'; footer.append(button); return footer; }
+    if (item.owned) {
+      if (item.removable) {
+        const remove = node('button', 'button secondary small', 'Remove'); remove.type = 'button';
+        remove.addEventListener('click', () => grantSkin(item, true)); footer.append(remove);
+      } else footer.append(node('span', 'item-unavailable', 'In your collection'));
+      return footer;
+    }
+    if (item.purchasable) {
+      const price = node('span', 'item-price'); price.setAttribute('aria-label', priceText(item)); price.title = currencies[item.currency]?.label || item.currency;
+      price.append(currencyIcon(item.currency), document.createTextNode(number(item.price)));
+      const buy = node('button', 'button primary small', 'Buy'); buy.type = 'button'; buy.setAttribute('aria-label', `Buy ${item.name} for ${priceText(item)}`);
+      buy.dataset.purchaseGuid = item.guid;
+      buy.addEventListener('click', () => openPurchase(item)); footer.append(price, buy);
+    }
+    const unlock = node('button', item.purchasable ? 'button secondary small' : 'button primary small', 'Unlock'); unlock.type = 'button';
+    unlock.title = 'Add it for free'; unlock.addEventListener('click', () => grantSkin(item, false)); footer.append(unlock);
+    return footer;
+  }
   function renderShop(result) {
     const focusedGuid = document.activeElement?.dataset.purchaseGuid;
     shopItems = result.items || [];
@@ -390,18 +470,10 @@ import {api, selectAccount} from './dashboard-api.mjs';
       const card = node('article', `item-card rarity-${String(item.rarity || '').toLowerCase()}`);
       const art = node('div', 'item-art');
       art.append(node('span', 'item-type', typeLabels[item.type] || item.type || 'Item'));
-      art.append(node('span', 'item-monogram', (item.hero || item.name || 'OW').replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).map(word => word[0]).join('').slice(0, 2)));
-      if (item.owned) art.append(node('span', 'owned-badge', '✓ In collection'));
-      const copy = node('div', 'item-copy'); copy.append(node('span', 'item-hero', item.hero || 'Generic item'), node('h3', '', item.name), node('span', 'item-rarity', rarityLabels[item.rarity] || item.rarity || ''));
-      const footer = node('div', 'item-footer');
-      if (item.purchasable && !item.owned) {
-        const price = node('span', 'item-price'); price.setAttribute('aria-label', priceText(item)); price.title = currencies[item.currency]?.label || item.currency;
-        price.append(currencyIcon(item.currency), document.createTextNode(number(item.price)));
-        const buy = node('button', 'button primary small', 'Buy'); buy.type = 'button'; buy.setAttribute('aria-label', `Buy ${item.name} for ${priceText(item)}`);
-        buy.dataset.purchaseGuid = item.guid;
-        buy.addEventListener('click', () => openPurchase(item)); footer.append(price, buy);
-      } else footer.append(node('span', 'item-unavailable', item.owned ? 'Item already unlocked' : 'Not available for purchase'));
-      card.append(art, copy, footer); container.append(card);
+      fillItemArt(art, item);
+      if (item.owned || item.in_use) art.append(node('span', 'owned-badge', item.frame ? '✓ In use' : '✓ In collection'));
+      const copy = node('div', 'item-copy'); copy.append(node('span', 'item-hero', item.frame ? 'Portrait frame' : item.hero || 'Generic item'), node('h3', '', item.name), node('span', 'item-rarity', rarityLabels[item.rarity] || item.rarity || ''));
+      card.append(art, copy, itemActions(item)); container.append(card);
     }
     if (focusedGuid) $$('[data-purchase-guid]', container).find(button => button.dataset.purchaseGuid === focusedGuid)?.focus({preventScroll: true});
     $('#shop-empty').hidden = shopItems.length > 0;
@@ -416,65 +488,33 @@ import {api, selectAccount} from './dashboard-api.mjs';
     if (!account || !state) return;
     const request = ++shopRequest; const requestedAccount = account;
     shopLoading = true; $('#shop-loading').hidden = false; updatePagination();
-    const params = new URLSearchParams({account, q: filters.elements.q.value.trim(), hero: filters.elements.hero.value, currency: filters.elements.currency.value, page: String(shopPage), page_size: '24'});
+    const params = new URLSearchParams({account, kind: filters.elements.kind.value, q: filters.elements.q.value.trim(), hero: filters.elements.hero.value, currency: filters.elements.currency.value, owl: filters.elements.owl.checked ? '1' : '', page: String(shopPage)});
     try {
-      const result = await api(`/api/shop?${params}`);
+      const result = await api(`/api/collection?${params}`);
       if (request !== shopRequest || requestedAccount !== account) return;
       renderShop(result); showError('#shop-error', '');
     } catch (error) { if (request === shopRequest && requestedAccount === account) showError('#shop-error', error.message); }
     finally { if (request === shopRequest) { shopLoading = false; $('#shop-loading').hidden = true; updatePagination(); } }
   }
-  function renderSkins(result) {
-    skinsItems = result.items || [];
-    skinsPage = Number(result.page) || 1;
-    const pageSize = Number(result.page_size) || 48;
-    skinsPages = Math.max(1, Math.ceil((Number(result.total) || 0) / pageSize));
-    setText('#skins-account', `Account: ${account}`);
-    setText('#skins-result-count', result.unlock_all
-      ? `Everything is unlocked (${number(result.total)} items)`
-      : `Items found: ${number(result.total)}`);
-    const heroSelect = skinsFilters.elements.hero;
-    if (!skinsHeroesLoaded && Array.isArray(result.heroes) && result.heroes.length) {
-      const chosen = heroSelect.value;
-      for (const hero of result.heroes) { const option = node('option', '', hero); option.value = hero; heroSelect.append(option); }
-      heroSelect.value = chosen; skinsHeroesLoaded = true;
+  // A chosen frame can go back to the one the level gives; the level's own frame is just in use.
+  function frameButton(item) {
+    if (item.chosen) {
+      const button = node('button', 'button secondary small', 'Use level frame');
+      button.addEventListener('click', () => setFrame(item, null));
+      return button;
     }
-    const container = $('#skins-grid'); container.replaceChildren();
-    for (const item of skinsItems) {
-      const card = node('article', `item-card rarity-${String(item.rarity || '').toLowerCase()}`);
-      const art = node('div', 'item-art');
-      art.append(node('span', 'item-type', item.owl ? 'OWL' : (typeLabels[item.type] || item.type || 'Skin')));
-      art.append(node('span', 'item-monogram', (item.hero || item.name || 'OW').replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).map(word => word[0]).join('').slice(0, 2)));
-      if (item.owned) art.append(node('span', 'owned-badge', '✓ In collection'));
-      const copy = node('div', 'item-copy');
-      copy.append(node('span', 'item-hero', item.hero || 'Generic'), node('h3', '', item.name), node('span', 'item-rarity', rarityLabels[item.rarity] || item.rarity || ''));
-      const footer = node('div', 'item-footer');
-      const button = node('button', item.owned ? 'button secondary small' : 'button primary small', item.owned ? 'Remove' : 'Grant');
-      button.type = 'button'; button.dataset.skinGuid = item.guid;
-      button.addEventListener('click', () => grantSkin(item, item.owned));
-      footer.append(button);
-      card.append(art, copy, footer); container.append(card);
-    }
-    $('#skins-empty').hidden = skinsItems.length > 0;
-    setText('#skins-page-status', `Page ${number(skinsPage)} of ${number(skinsPages)}`);
-    updateSkinsPagination();
+    const button = node('button', item.in_use ? 'button secondary small' : 'button primary small', item.in_use ? 'In use' : 'Use');
+    button.disabled = item.in_use;
+    button.addEventListener('click', () => setFrame(item, item.guid));
+    return button;
   }
-  function updateSkinsPagination() {
-    $('#skins-prev').disabled = skinsLoading || skinsPage <= 1;
-    $('#skins-next').disabled = skinsLoading || skinsPage >= skinsPages;
-  }
-  async function loadSkins() {
-    if (!account || !state) return;
-    const request = ++skinsRequest; const requestedAccount = account;
-    skinsLoading = true; $('#skins-loading').hidden = false; updateSkinsPagination();
-    const params = new URLSearchParams({account, q: skinsFilters.elements.q.value.trim(),
-      kind: skinsFilters.elements.kind.value, hero: skinsFilters.elements.hero.value, owl: skinsFilters.elements.owl.checked ? '1' : '', page: String(skinsPage)});
+  async function setFrame(item, guid) {
     try {
-      const result = await api(`/api/skins?${params}`);
-      if (request !== skinsRequest || requestedAccount !== account) return;
-      renderSkins(result); showError('#skins-error', '');
-    } catch (error) { if (request === skinsRequest && requestedAccount === account) showError('#skins-error', error.message); }
-    finally { if (request === skinsRequest) { skinsLoading = false; $('#skins-loading').hidden = true; updateSkinsPagination(); } }
+      const result = await api('/api/set_frame', {account, guid});
+      if (result.status !== 'ok') throw new Error('The change was not saved.');
+      toast(guid ? `Frame: ${item.name}` : 'Back to the level frame');
+      await refreshState();  // the profile (frame, counts) changed too
+    } catch (error) { showError('#shop-error', error.message); toast(error.message, true); }
   }
   async function grantSkin(item, revoke) {
     try {
@@ -483,8 +523,8 @@ import {api, selectAccount} from './dashboard-api.mjs';
       if (result.status !== 'ok') throw new Error('The change was not saved.');
       if (result.profile) { state.profile = result.profile; renderOverview(); }
       toast(revoke ? `Removed ${item.name}` : `Granted ${item.name}`);
-      await loadSkins();
-    } catch (error) { showError('#skins-error', error.message); toast(error.message, true); }
+      await refreshState();  // the profile (frame, counts) changed too
+    } catch (error) { showError('#shop-error', error.message); toast(error.message, true); }
   }
   function openPurchase(item) {
     if (!state) return;
@@ -508,7 +548,6 @@ import {api, selectAccount} from './dashboard-api.mjs';
     }
     setText('#view-context', titles[view]); document.title = `${titles[view]} · Overwatch 1.74`;
     if (view === 'shop') loadShop();
-    if (view === 'skins') loadSkins();
   }
   async function saveForm(event, form, dirty, errorSelector, successMessage) {
     event.preventDefault(); if (busyForms.has(form) || !dirty.size || !form.reportValidity()) return;
@@ -526,6 +565,8 @@ import {api, selectAccount} from './dashboard-api.mjs';
     finally { button.textContent = label; lockForm(form, false); }
   }
   profileForm.addEventListener('input', event => markDirty(event, profileDirty, state?.profile));
+  $('#level-shown').addEventListener('input', setLevelFromControls);
+  for (const id of ['#level-tier', '#level-stars']) $(id).addEventListener('change', setLevelFromControls);
   profileForm.addEventListener('change', event => markDirty(event, profileDirty, state?.profile));
   profileForm.addEventListener('submit', event => saveForm(event, profileForm, profileDirty, '#profile-error', 'Profile saved.'));
   challengeForm.addEventListener('input', event => markDirty(event, challengeDirty, state?.profile));
@@ -535,7 +576,6 @@ import {api, selectAccount} from './dashboard-api.mjs';
     if (!eventDirty || eventBusy || !state) return;
     const targetAccount = currentAccount(); const eventId = selectedEvent;
     const event = state.catalogs.events.find(item => item.id === eventId);
-    if (event?.scene_status === 'unavailable') return;
     eventBusy = true; updateButtons(); showError('#event-error', '');
     try {
       const result = await api('/api/update_profile', {account: targetAccount, events: eventId ? [eventId] : []});
@@ -567,19 +607,33 @@ import {api, selectAccount} from './dashboard-api.mjs';
     } catch (error) { if (account === targetAccount) showError('#box-error', error.message); else toast(error.message, true); }
     finally { button.textContent = 'Give boxes'; lockForm(boxForm, false); }
   });
+  for (const button of $$('[data-bot-action]')) button.addEventListener('click', async () => {
+    if (button.disabled) return;
+    button.disabled = true; showError('#bot-error', '');
+    try {
+      const result = await api('/api/bot_group', {account: currentAccount(), action: button.dataset.botAction});
+      toast(result.message);
+    } catch (error) { showError('#bot-error', error.message); }
+    finally { button.disabled = false; }
+  });
+  $('#open-all-boxes').addEventListener('click', async event => {
+    const button = event.currentTarget; const targetAccount = currentAccount();
+    if (button.disabled || !window.confirm('Open every box, like the move to Overwatch 2? The game shows how many on the main menu.')) return;
+    button.disabled = true; showError('#box-error', '');
+    try {
+      const result = await api('/api/open_all_boxes', {account: targetAccount});
+      if (result.status !== 'ok') throw new Error('The boxes were not opened.');
+      if (account === targetAccount) await refreshState();
+      toast(`Opened ${number(result.opened)} boxes, ${number(result.new_items)} new items.`);
+    } catch (error) { if (account === targetAccount) showError('#box-error', error.message); else toast(error.message, true); }
+    finally { button.disabled = false; }
+  });
   filters.addEventListener('submit', event => { event.preventDefault(); clearTimeout(searchTimer); shopPage = 1; loadShop(); });
   filters.elements.q.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { shopPage = 1; loadShop(); }, 300); });
-  for (const name of ['hero', 'currency']) filters.elements[name].addEventListener('change', () => { shopPage = 1; loadShop(); });
+  for (const name of ['kind', 'hero', 'currency', 'owl']) filters.elements[name].addEventListener('change', () => { shopPage = 1; loadShop(); });
   $('#reset-filters').addEventListener('click', () => { filters.reset(); shopPage = 1; loadShop(); });
   $('#page-prev').addEventListener('click', () => { if (shopPage > 1) { shopPage--; loadShop(); } });
   $('#page-next').addEventListener('click', () => { if (shopPage < shopPages) { shopPage++; loadShop(); } });
-  skinsFilters.addEventListener('submit', event => { event.preventDefault(); clearTimeout(skinsSearchTimer); skinsPage = 1; loadSkins(); });
-  skinsFilters.elements.q.addEventListener('input', () => { clearTimeout(skinsSearchTimer); skinsSearchTimer = setTimeout(() => { skinsPage = 1; loadSkins(); }, 300); });
-  skinsFilters.elements.kind.addEventListener('change', () => { skinsPage = 1; loadSkins(); });
-  skinsFilters.elements.hero.addEventListener('change', () => { skinsPage = 1; loadSkins(); });
-  skinsFilters.elements.owl.addEventListener('change', () => { skinsPage = 1; loadSkins(); });
-  $('#skins-prev').addEventListener('click', () => { if (skinsPage > 1) { skinsPage--; loadSkins(); } });
-  $('#skins-next').addEventListener('click', () => { if (skinsPage < skinsPages) { skinsPage++; loadSkins(); } });
   $('#purchase-form').addEventListener('submit', async event => {
     event.preventDefault(); if (!purchase || purchaseBusy || $('#purchase-confirm').disabled) return;
     const target = purchase; purchaseBusy = true;

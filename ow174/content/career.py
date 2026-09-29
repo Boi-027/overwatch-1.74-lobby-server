@@ -6,6 +6,7 @@ from ow174.content.collection import Collection
 from ow174.content.identity import Identity
 from ow174.content.menu_hero import MenuHero
 from ow174.content.player import PlayerMessages, endorsement
+from ow174.content.ranked import Ranked
 from ow174.jam.groups import LOBBY, MODE_RULES, PROFILES
 
 TIME_PLAYED_STAT = 0x0860000000000021  # the lifetime "Time Played" stat of a hero, in seconds
@@ -20,11 +21,13 @@ class CareerMessages:
         collection: Collection,
         menu_hero: MenuHero,
         player: PlayerMessages,
+        ranked: Ranked,
     ) -> None:
         self._templates = templates
         self._collection = collection
         self._menu_hero = menu_hero
         self._player = player
+        self._ranked = ranked
 
     def stats(self, profile: Profile) -> list[dict]:
         """Time played per hero, as one stat category. The menu hero is the most played."""
@@ -49,16 +52,19 @@ class CareerMessages:
         value["+0xA8"] = self.stats(profile)
         return value
 
-    def profile(self, profile: Profile, identity: Identity, target: dict) -> list[tuple]:
+    def profile(
+        self, profile: Profile, identity: Identity, target: dict, request_id: dict | None = None
+    ) -> list[tuple]:
         """The answer to a career profile request (22206).
 
         Only our own player has a full profile (20807) and summary (39002). Anyone else gets a
-        profile status (39001).
+        profile status (39001). 20807 repeats the request's own id (22206 +0x78): with another id the
+        client leaves the screen empty (ProCore research).
         """
         if target.get("+0x0") != identity.account_lo:
             return [(PROFILES, 39001, {"+0x78": target, "+0x88": 1})]
         full_profile = {
-            "+0x78": identity.account,
+            "+0x78": request_id or identity.account,
             # False: the profile is inline at +0x90. True would mean compressed in the +0x218 blob.
             "+0x88": False,
             "+0x90": self._profile_body(profile, identity),
@@ -70,7 +76,7 @@ class CareerMessages:
         return {
             "+0x0": self._collection.progression(profile)["+0x78"],
             "+0x80": self._collection.hero_catalog(profile)["+0x80"],
-            "+0x98": {"+0x0": []},
+            "+0x98": {"+0x0": self._ranked.cards(profile)},  # the same card ratings as 36300
             "+0xB0": self.stats(profile),
             "+0xC8": self.stats(profile),
             "+0xE0": endorsement(profile.endorsement_level),

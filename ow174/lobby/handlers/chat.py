@@ -20,7 +20,7 @@ def chat(session: Session, value: dict) -> None:
     _deliver(session.server, members, message)
     session.log(f"[chat #{channel.get('+0x10')}] {session.account.name}: {text}")
     bot = social.accounts.bot
-    if bot in members:
+    if bot in members and session.profile.bot_chat:
         reply_text = BOT_REPLY.format(name=session.account.name, text=text)
         _deliver(session.server, members, social.chat_message(channel, bot, reply_text))
 
@@ -51,8 +51,9 @@ def whisper(session: Session, value: dict) -> None:
         return
     session.log(f"[whisper] {session.account.name} -> {target.name}: {text}")
     if target.virtual:
-        reply = BOT_REPLY.format(name=session.account.name, text=text)
-        session.send(FRIENDS, 27117, {"+0x78": target.account, "+0x88": reply})
+        if session.profile.bot_chat:
+            reply = BOT_REPLY.format(name=session.account.name, text=text)
+            session.send(FRIENDS, 27117, {"+0x78": target.account, "+0x88": reply})
         return
     recipient = session.server.session_of(target.account_lo)
     if recipient:

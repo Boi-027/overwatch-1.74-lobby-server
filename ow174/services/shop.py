@@ -1,8 +1,9 @@
 """The cosmetic shop shared by the game lobby and the dashboard.
 
 Prices come from the retail catalog's +0x14 field (+0x10 is an unlock level, not a price). OWL items
-cost league tokens, golden weapons cost competitive points, everything else costs credits. The
-caller saves the profile and notifies the client.
+cost league tokens, golden weapons cost competitive points, everything else costs credits. An
+Overwatch League team skin comes with its home or away partner. The caller saves the profile and
+notifies the client.
 """
 
 from threading import RLock
@@ -10,10 +11,6 @@ from threading import RLock
 from ow174.accounts.profile import Profile
 from ow174.catalog.items import ItemDB, Unlock
 from ow174.content.collection import Collection
-
-CURRENCIES = ("credits", "league_tokens", "comp_points")
-MAX_PAGE_SIZE = 100
-SEARCHED_FIELDS = ("name", "hero", "type", "rarity", "guid")
 
 
 class ShopError(ValueError):
@@ -31,16 +28,6 @@ def _currency_for(unlock: Unlock) -> str:
     if unlock.type == "WeaponSkin":
         return "comp_points"
     return "credits"
-
-
-def _sort_key(pair: tuple[int, dict]) -> tuple:
-    guid, product = pair
-    return (product["hero"].casefold(), product["type"].casefold(), product["name"].casefold(), guid)
-
-
-def _matches_search(product: dict, search: str) -> bool:
-    searchable = " ".join(product[key] for key in SEARCHED_FIELDS).casefold()
-    return search in searchable
 
 
 class ShopService:
@@ -63,46 +50,14 @@ class ShopService:
                 "price": price,
                 "currency": _currency_for(unlock),
             }
-        self._ordered = sorted(self._products.items(), key=_sort_key)
 
-    def catalog(self, profile: Profile, q="", hero="", currency="", page=1, page_size=24) -> dict:
-        """List priced products. Owned products are included but marked as not purchasable."""
-        for text in (q, hero, currency):
-            if not isinstance(text, str):
-                raise ShopError("invalid_input", "Invalid search parameters.")
-        search = q.strip().casefold()
-        hero = hero.strip().casefold()
-        currency = currency.strip().casefold()
-        if currency and currency not in CURRENCIES:
-            raise ShopError("invalid_input", "Unknown currency.")
-        page = self._positive_int(page)
-        page_size = min(self._positive_int(page_size), MAX_PAGE_SIZE)
-
-        found = []
-        for guid, product in self._ordered:
-            if hero and product["hero"].casefold() != hero:
-                continue
-            if currency and product["currency"] != currency:
-                continue
-            if search and not _matches_search(product, search):
-                continue
-            found.append((guid, product))
-
-        start = (page - 1) * page_size
-        page_items = []
-        for guid, product in found[start : start + page_size]:
-            owned = bool(profile.unlock_all or self.collection.owns(profile, guid))
-            page_items.append({**product, "owned": owned, "purchasable": not owned})
-        return {
-            "items": page_items,
-            "total": len(found),
-            "page": page,
-            "page_size": page_size,
-            "pages": (len(found) + page_size - 1) // page_size,
-        }
+    def product(self, guid: int) -> dict | None:
+        """The shop's offer for an item ({guid, name, hero, type, rarity, price, currency}), if any."""
+        return self._products.get(guid)
 
     def purchase(self, profile: Profile, guid) -> dict:
-        """Check the product, charge its price, and add it to the profile's unlocks."""
+        """Check the product, charge its price, and add it to the profile's unlocks. "also" in the
+        receipt lists what came with it: the other skin of a team skin pair."""
         guid = self._guid(guid)
         product = self._products.get(guid)
         if product is None:
@@ -116,8 +71,25 @@ class ShopService:
             if balance < price:
                 raise ShopError("insufficient_balance", "Not enough funds.", 409)
             setattr(profile, currency, balance - price)
-            profile.unlocked_items = [*profile.unlocked_items, product["guid"]]
-        return {"guid": product["guid"], "price": price, "currency": currency}
+            pair = self.items.team_skin_pair(guid)
+            also = [] if pair is None or self.collection.owns(profile, pair) else [f"0x{pair:016X}"]
+            profile.unlocked_items = [*profile.unlocked_items, product["guid"], *also]
+        return {"guid": product["guid"], "price": price, "currency": currency, "also": also}
+
+    def add_missing_pairs(self, profile: Profile) -> list[int]:
+        """Give the partners of owned team skins bought before the pairs came with them."""
+        if profile.unlock_all:
+            return []
+        with self._purchase_lock:
+            owned = self.collection.owned_set(profile)
+            added = []
+            for guid in sorted(profile.unlocked_guids()):
+                pair = self.items.team_skin_pair(guid)
+                if pair is not None and pair not in owned:
+                    owned.add(pair)
+                    added.append(pair)
+            profile.unlocked_items = [*profile.unlocked_items, *(f"0x{guid:016X}" for guid in added)]
+        return added
 
     @staticmethod
     def _guid(value) -> int:
@@ -135,15 +107,3 @@ class ShopService:
         if not 0 < guid < 1 << 64:
             raise ShopError("invalid_input", "Invalid item identifier.")
         return guid
-
-    @staticmethod
-    def _positive_int(value) -> int:
-        if isinstance(value, bool) or not isinstance(value, (int, str)):
-            raise ShopError("invalid_input", "Invalid page number or list size.")
-        try:
-            number = int(value)
-        except ValueError:
-            raise ShopError("invalid_input", "Invalid page number or list size.") from None
-        if number < 1:
-            raise ShopError("invalid_input", "Page number and list size must be positive.")
-        return number

@@ -8,21 +8,22 @@ Year 2022 record:
     +0x30/+0x38  content key name and id; the key bytes themselves are sent in message 20504
     +0x0 map swaps, +0x58 login rewards, +0xB0 event loot box type
 
+The "What's new" screen lists the contents of the event loot box in +0x58 as the event's "New
+trophies". The boxes are the ones STULootBoxCelebrationOverride (054/0x18) gives each celebration type.
+
 Content keys come from data/resource_keys_174.json.
 """
 
 import json
 from dataclasses import dataclass
 
-from ow174.catalog.items import UNLOCK_BASE
+from ow174.catalog.items import SKIN_THEME_BASE, UNLOCK_BASE
 from ow174.paths import DATA_DIR
 
 CELEBRATION_BASE = 0x0430000000000000
 RESOURCE_KEY_BASE = 0x0F10000000000000
 CELEBRATION_TYPE_BASE = 0x0D80000000000000
 MAP_BASE = 0x0800000000000000
-# Skin themes, such as the skins the main menu scenes put on their heroes.
-SKIN_THEME_BASE = 0x0A50000000000000
 
 
 @dataclass(frozen=True)
@@ -37,14 +38,19 @@ class EventDef:
 EVENT_PRESETS = {
     "goodbye": EventDef(0x128, key=0x1A3),  # 1.74 farewell lobby
     "lunar": EventDef(0x105, key=0x188, kind=0x237C, box=4, rewards=(0x0D5A, 0x4F50)),  # 2022
-    "halloween": EventDef(0xFB, key=0x181, kind=0x212E, box=2),  # Halloween Terror 2021
-    "winter": EventDef(0xFF, key=0x185, kind=0x2168, box=3),  # Winter Wonderland 2021
-    "anniversary": EventDef(0x118, key=0x198, box=6),  # Anniversary Remix vol 3
-    "anniversary_remix_1": EventDef(0x10E, key=0x196, box=6),  # same E83 catalog, earlier selector
-    "anniversary_remix_2": EventDef(0x112, key=0x197, box=6),
-    "summer": EventDef(0xEB, key=0x178, box=1),  # Summer Games 2021
-    "archives": EventDef(0xA8, key=0x169, box=5),  # Archives 2021
-    "reaper": EventDef(0x104, key=0x189),  # Reaper's Code of Violence
+    "halloween": EventDef(0xFB, key=0x181, kind=0x212E, box=2, rewards=(0x0C23,)),  # Halloween Terror 2021
+    "winter": EventDef(0xFF, key=0x185, kind=0x2168, box=3, rewards=(0x0D0B,)),  # Winter Wonderland 2021
+    "anniversary": EventDef(0x118, key=0x198, kind=0x2428, box=6, rewards=(0x0EC3,)),  # Remix vol 3
+    # the same E83 catalog, earlier selectors
+    "anniversary_remix_1": EventDef(0x10E, key=0x196, kind=0x2428, box=6, rewards=(0x0EC3,)),
+    "anniversary_remix_2": EventDef(0x112, key=0x197, kind=0x2428, box=6, rewards=(0x0EC3,)),
+    # Summer Games and Archives have no main menu scene in 1.74, but their type still picks the event
+    # loot box.
+    "summer": EventDef(0xEB, key=0x178, kind=0x212F, box=1, rewards=(0x0B2F,)),  # Summer Games 2021
+    "archives": EventDef(0xA8, key=0x169, kind=0x2427, box=5, rewards=(0x0EC2,)),  # Archives 2021
+    # Reaper's Code of Violence has no loot box. Its rewards (the Dusk skin, icon and spray) show the
+    # "What's new" banner; the Reaper challenge lists them as trophies.
+    "reaper": EventDef(0x104, key=0x189, rewards=(0x4DC7, 0x4EF3, 0x4FCF)),
     "cassidy": EventDef(0xF7, key=0x17F),  # Cassidy's New Blood
     "malevento": EventDef(0xFA),
     "owl": EventDef(0x125),
@@ -109,11 +115,12 @@ CHALLENGE_KEY = 0x188
 CHALLENGE_WINS_STAT = 0x086000000000073F
 CHALLENGE_TIER_WINS = 9
 
-# Challenges whose banner the client's Play menu shows (celebrations 0x119 and 0x11A, Anniversary
-# Remix 3), with their rewards: participation icon, spray and skin, in that order.
+# Challenges whose banner the client's Play menu shows (celebrations 0x119 and 0x11A of Anniversary
+# Remix 3, 0x104 for Reaper's), with their rewards: participation icon, spray and skin, in that order.
 VERIFIED_CHALLENGES = {
     "Tracer's Comic Challenge": (EventDef(0x119, key=0x198), (0x4AEA, 0x4AEB, 0x4AEC)),
     "Symmetra's Restoration Challenge": (EventDef(0x11A, key=0x198), (0x4B10, 0x4B11, 0x4B08)),
+    "Reaper's Code of Violence Challenge": (EventDef(0x104, key=0x189), (0x4EF3, 0x4FCF, 0x4DC7)),
 }
 
 
@@ -167,8 +174,8 @@ EVENT_INFO = [
         "Halloween Terror",
         "Festive Eichenwalde and themed loot boxes.",
         "seasonal",
-        "unverified",
-        "The scene exists in the client; switching needs to be verified in game.",
+        "verified",
+        "Worked in game.",
     ),
     EventInfo(
         "winter",
@@ -257,14 +264,5 @@ EVENT_INFO = [
         "esports",
         "limited",
         "Rewards are available, but no separate scene is assigned to this event in the client.",
-    ),
-    EventInfo(
-        "tracer_comic",
-        "Tracer: Comic",
-        "Historical Tracer scene with a comic panel.",
-        "special",
-        "unavailable",
-        "In version 1.74 the former scene is replaced by the Reaper scene. "
-        "The original cannot be enabled through the event settings.",
     ),
 ]

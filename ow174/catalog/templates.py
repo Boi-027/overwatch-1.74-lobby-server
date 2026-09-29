@@ -2,7 +2,8 @@
 
 The lobby replays them (catalogs, config, store, arcade, presence) after swapping the recorded
 account id and player name for the local player's. The templates were decoded with the 1.74 schemas;
-groups whose layout changed between the builds are not included.
+groups whose layout changed between the builds are not included, except the ranked state (36300),
+converted by hand (see content/ranked.py).
 """
 
 import json

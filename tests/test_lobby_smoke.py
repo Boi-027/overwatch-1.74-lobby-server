@@ -37,7 +37,6 @@ def wait_for_port(port: int, process: subprocess.Popen, seconds: float = 20) -> 
 class LobbySmokeTest(unittest.TestCase):
     def test_client_session_decodes_every_reply(self):
         name = "Smoke" + uuid.uuid4().hex[:8]
-        profile = ROOT / "profiles" / f"{name}.json"
         with tempfile.TemporaryDirectory() as tmp:
             port = free_port()
             server = subprocess.Popen(
@@ -51,6 +50,8 @@ class LobbySmokeTest(unittest.TestCase):
                     "0",
                     "--save",
                     str(Path(tmp) / "template.json"),
+                    "--data-dir",
+                    tmp,
                 ],
                 cwd=ROOT,
                 stdout=subprocess.PIPE,
@@ -76,7 +77,6 @@ class LobbySmokeTest(unittest.TestCase):
                 except subprocess.TimeoutExpired:
                     server.kill()
                     server_log = server.communicate()[0]
-                profile.unlink(missing_ok=True)
         self.assertEqual(run.returncode, 0, run.stdout[-1500:] + run.stderr[-500:])
         login = re.search(r"login frames: (\d+) ok, (\d+) bad", run.stdout)
         replies = re.search(r"reply frames: (\d+) ok, (\d+) bad", run.stdout)

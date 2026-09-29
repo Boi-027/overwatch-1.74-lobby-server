@@ -14,10 +14,20 @@ DEFAULT_ICON = 0x02500000000002F7
 UNLOCKS_RESET_MARKER = "unlocks_reset_v2"
 
 
+def battle_tag(nickname: str, account_lo: int) -> str:
+    """The player's BattleTag: the nickname and 4 digits from the account id ("Jeff#6691").
+
+    The client shows the part before '#' as the name and the whole tag in the social screens, and
+    players type it to add a friend. The digits never change.
+    """
+    return f"{nickname.strip()}#{1000 + account_lo % 9000}"
+
+
 @dataclass
 class Profile:
     player_name: str = "Researcher"
     region: str = "US"  # shop currency and country, see catalog/regions.py
+    game_region: str = "americas"  # the game servers: americas, europe or asia
     level: int = 100
     credits: int = 50000
     comp_points: int = 6000
@@ -28,14 +38,25 @@ class Profile:
     loot_boxes: list = field(default_factory=list)  # [{"id", "type", "name"}]
     unlocked_items: list = field(default_factory=list)  # GUIDs as hex text, e.g. "0x0250..."
     unlock_all: bool = False
+    bot_chat: bool = False  # the bot answers in chat, whispers and party
+    friends: list = field(default_factory=list)  # login names of accepted friends
+    friend_requests: list = field(default_factory=list)  # login names that asked to be friends
+    last_online: int = 0  # unix time of the last login or logout; friends see "offline (2 h)"
     lobby_hero: str = "random"  # the menu hero: "random", "none", a hero name or a PvE character
     events: list = field(default_factory=lambda: ["goodbye"])  # active events, see catalog/events.py
     server_date: str = ""  # the clock sent to the client, e.g. "2022-10-03"; empty means now
     challenge: str = ""  # title of the active hero challenge
     challenge_wins: int = 0
     endorsement_level: int = 1
+    ratings: dict = field(default_factory=dict)  # competitive rating per queue, see content/ranked.py
+    season: int = 32  # the running competitive season, 1-32
+    matches: dict = field(default_factory=dict)  # competitive matches played this season, per queue
+    sms_protect: bool = True  # Battle.net SMS Protect, which Top 500 needs
+    seasons_seen: list = field(default_factory=list)  # competitive cards whose season intro was shown
+    priority_passes: dict = field(default_factory=dict)  # role queue pool -> passes, see content/passes.py
     loadouts: dict = field(default_factory=dict)  # hero GUID hex -> {slot key: unlock hex or list}
     settings: dict = field(default_factory=dict)  # settings the client saves (22200-22204)
+    ux_states: dict = field(default_factory=dict)  # interface states from 22207, "index" -> value
     stats: dict = field(
         default_factory=lambda: {
             "boxes_opened": 0,

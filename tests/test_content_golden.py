@@ -73,7 +73,9 @@ def build_all(content: Content, profile: Profile) -> dict:
     return {
         "login": summarize(c.login_messages(profile, IDENT)),
         "live": summarize(c.live_messages(profile, IDENT)),
-        "menu_config": summarize([(0, 0, c.retail.menu_config(profile, IDENT))]),
+        "menu_config": summarize(
+            [(0, 0, c.retail.menu_config(profile, IDENT, c.menu_hero.menu_guid(profile)))]
+        ),
         "career": summarize(c.career.profile(profile, IDENT, TARGET)),
         "career_other": summarize(c.career.profile(profile, IDENT, {"+0x0": 5, "+0x8": 1})),
         "notifications": summarize(c.celebrations.notifications(profile)),

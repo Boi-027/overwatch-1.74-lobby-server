@@ -10,6 +10,7 @@ class BoxType:
     event: int = 0  # event pool the box draws from: 0 base items, 1-6 the seasonal events
     legendary: bool = False  # always contains a legendary item
     starter: int = 0  # how many a new profile starts with
+    hero: str = ""  # a hero's box: its items are that hero's own (credits can drop too)
 
 
 BOX_TYPES = {
@@ -22,7 +23,7 @@ BOX_TYPES = {
     6: BoxType("Anniversary", "Anniversary", event=6, starter=10),
     7: BoxType("Golden", "Golden", legendary=True, starter=10),
     9: BoxType("Legendary Anniversary", "Legendary Anniversary", event=6, legendary=True, starter=10),
-    10: BoxType("Wrecking Ball", "Ram"),
+    10: BoxType("Wrecking Ball", "Ram", hero="Wrecking Ball"),
     12: BoxType("Legendary", "Legendary", legendary=True, starter=10),
 }
 

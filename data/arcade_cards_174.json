@@ -1,0 +1,3208 @@
+{
+ "0x1": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000030",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000003",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1C": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002F",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1D": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000004",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1E": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000002",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1F": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000002",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x22": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x23": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000001",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x24": {
+  "identifier": "0x0D800000000026F3",
+  "display": "0x01B0000000000011",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x25": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000001",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x27": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000002",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x28": {
+  "identifier": "0x0D800000000026F4",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x29": {
+  "identifier": "0x0D800000000026F3",
+  "display": "0x01B0000000000011",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2A": {
+  "identifier": "0x0D800000000026F3",
+  "display": "0x01B0000000000011",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2B": {
+  "identifier": "0x0D800000000026F3",
+  "display": "0x01B0000000000011",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2C": {
+  "identifier": "0x0D800000000026F4",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2D": {
+  "identifier": "0x0D800000000026F4",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2E": {
+  "identifier": "0x0D800000000026F4",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x2F": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000002",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x30": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000004",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x32": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x33": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000045",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x34": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000007",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x35": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000005",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x37": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000006",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x39": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000002",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x3A": {
+  "identifier": "0x0D8000000000308E",
+  "display": "0x01B000000000000C",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x3B": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x3C": {
+  "identifier": "0x0D80000000002BB4",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x3D": {
+  "identifier": "0x0D80000000002BB4",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x3E": {
+  "identifier": "0x0D80000000002BB4",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x43": {
+  "identifier": "0x0D80000000002C7B",
+  "display": "0x01B000000000000B",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x44": {
+  "identifier": "0x0D80000000002C7B",
+  "display": "0x01B000000000000B",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x45": {
+  "identifier": "0x0D80000000002C7B",
+  "display": "0x01B000000000000B",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x46": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   false,
+   false,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x47": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x49": {
+  "identifier": "0x0D80000000002C7B",
+  "display": "0x01B000000000000B",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x4A": {
+  "identifier": "0x0D80000000002BB4",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x4B": {
+  "identifier": "0x0D80000000003222",
+  "display": "0x01B000000000000D",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x4C": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000003",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x58": {
+  "identifier": "0x0D8000000000308E",
+  "display": "0x01B000000000000C",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x59": {
+  "identifier": "0x0D8000000000308E",
+  "display": "0x01B000000000000C",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x5A": {
+  "identifier": "0x0D8000000000308E",
+  "display": "0x01B000000000000C",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x5B": {
+  "identifier": "0x0D80000000003222",
+  "display": "0x01B000000000000D",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x5D": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x5E": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x64": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000001",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x65": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000E",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x66": {
+  "identifier": "0x0D80000000003534",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x67": {
+  "identifier": "0x0D80000000003534",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x68": {
+  "identifier": "0x0D80000000003534",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x69": {
+  "identifier": "0x0D80000000003534",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x6C": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000010",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x6D": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x6E": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x70": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x71": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x72": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x78": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000013",
+  "rewards": [],
+  "flags": [
+   true,
+   true,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x7A": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x7F": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002F",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x80": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000015",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x82": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002F",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x83": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x84": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x86": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000016",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x87": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x88": {
+  "identifier": "0x0D800000000042E2",
+  "display": "0x01B000000000001F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x89": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000017",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8A": {
+  "identifier": "0x0D8000000000442E",
+  "display": "0x01B0000000000018",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8B": {
+  "identifier": "0x0D8000000000442E",
+  "display": "0x01B0000000000018",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8C": {
+  "identifier": "0x0D8000000000442E",
+  "display": "0x01B0000000000018",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8D": {
+  "identifier": "0x0D8000000000442E",
+  "display": "0x01B0000000000018",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8E": {
+  "identifier": "0x0D800000000045B9",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x8F": {
+  "identifier": "0x0D800000000045B9",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x90": {
+  "identifier": "0x0D800000000045B9",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x91": {
+  "identifier": "0x0D800000000045B9",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x92": {
+  "identifier": "0x0",
+  "display": "0x01B000000000001A",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x94": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000001",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x98": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA1": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA2": {
+  "identifier": "0x0",
+  "display": "0x01B000000000001D",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA4": {
+  "identifier": "0x0",
+  "display": "0x01B000000000001E",
+  "rewards": [],
+  "flags": [
+   true,
+   true,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA6": {
+  "identifier": "0x0D800000000054C3",
+  "display": "0x01B0000000000020",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA7": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xA9": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xAD": {
+  "identifier": "0x0D800000000054C2",
+  "display": "0x01B0000000000021",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xAE": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xC1": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xC2": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0xC3": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0xC4": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0xCC": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000023",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xDD": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xDE": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xDF": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE0": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE1": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE2": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE3": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE4": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE5": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE6": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE7": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE8": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xE9": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xEA": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xEB": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xEC": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xED": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843C"
+ },
+ "0xEE": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000024",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0"
+ },
+ "0xEF": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000027",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0xFC": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000025",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x100": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000026",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x105": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x107": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x108": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   false,
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x10C": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000001",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x10D": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000029",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x111": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x112": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x116": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x119": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x11B": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x11D": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x11E": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x11F": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x120": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x121": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x122": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000034",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0"
+ },
+ "0x126": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002B",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x127": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x12B": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000034",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0"
+ },
+ "0x12E": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002C",
+  "rewards": [],
+  "flags": [
+   true,
+   true,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x130": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002D",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x132": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000035",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x133": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002F",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x137": {
+  "identifier": "0x0",
+  "display": "0x01B000000000002E",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x141": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000032",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x143": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000033",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x14B": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000034",
+  "rewards": [],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0"
+ },
+ "0x150": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000036",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x151": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000037",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x155": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000038",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x15C": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x16B": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x16C": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x16D": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x16E": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x16F": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x170": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000A",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x172": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000039",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x196": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003B",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x197": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003C",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x198": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003D",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x199": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003E",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x19A": {
+  "identifier": "0x0",
+  "display": "0x01B000000000003F",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x19B": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000040",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x19C": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000041",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x19D": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x19E": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x19F": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1A0": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1A1": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1A2": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1A3": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1A5": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000042",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1A6": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000043",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1A9": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000012",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1AA": {
+  "identifier": "0x0",
+  "display": "0x01B000000000000F",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1AB": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000019",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1AC": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000044",
+  "rewards": [],
+  "flags": [
+   true,
+   true,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1AD": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000046",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1AE": {
+  "identifier": "0x0D80000000002F58",
+  "display": "0x01B0000000000008",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   true,
+   false,
+   false,
+   false,
+   true,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B0": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000007",
+  "rewards": [
+   "0x02500000000003E1"
+  ],
+  "flags": [
+   false,
+   false,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B1": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000047",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B2": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000048",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B3": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1B4": {
+  "identifier": "0x0",
+  "display": "0x01B000000000004B",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B5": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1B6": {
+  "identifier": "0x0",
+  "display": "0x01B000000000004D",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B7": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1B8": {
+  "identifier": "0x0",
+  "display": "0x01B000000000004E",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1B9": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1BA": {
+  "identifier": "0x0",
+  "display": "0x01B000000000004F",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1BB": {
+  "identifier": "0x0",
+  "display": "0x0",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": true,
+  "passes": "0x0D8000000000843D"
+ },
+ "0x1BC": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000050",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1C2": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000049",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1C3": {
+  "identifier": "0x0",
+  "display": "0x01B000000000004A",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1C7": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000052",
+  "rewards": [],
+  "flags": [
+   true,
+   false,
+   false,
+   false,
+   false,
+   false,
+   true
+  ],
+  "roles": false,
+  "passes": "0x0"
+ },
+ "0x1CB": {
+  "identifier": "0x0",
+  "display": "0x01B0000000000053",
+  "rewards": [],
+  "flags": [
+   true,
+   true,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "roles": false,
+  "passes": "0x0"
+ }
+}

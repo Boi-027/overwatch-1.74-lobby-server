@@ -11,11 +11,14 @@ from ow174.lobby.session import Session, without_party_state
 
 routes = Router()
 
-# Some client systems only exist once the main menu is up. The client drops 55500 (account
-# features, which gate chat) on the first login after the game starts, and it writes 20802 (player
-# settings) into the settings system without checking that it exists. So both are sent a few
-# seconds after login.
-MENU_READY_DELAYS = ((3, True), (7, False))  # (seconds after login, also send the settings)
+# Some messages go again a few seconds after login, once the main menu is up. The client drops
+# 55500 (account features, which gate chat) on the first login after the game starts, and offline
+# friends shown during login get an empty "offline ()" time until their presence comes again. Only
+# their presence goes again: a whole friends list made the client announce online friends again.
+MENU_READY_DELAYS = (3, 7)  # seconds to wait before each resend
+# The client writes "offline (4 minutes)" once, when a friend's presence arrives (0x7FF7894EBF30
+# counts from its own clock), so the text only moves when the presence is sent again.
+OFFLINE_REFRESH_SECONDS = 60
 
 
 @routes.on(OUT_CONNECT, 21800)
@@ -28,13 +31,16 @@ def login(session: Session, value: dict) -> None:
     session.log(f"[<<<] Login as '{account.name}' (account 0x{account.account_lo:X})")
 
     earned = server.content.celebrations.claim_rewards(session.profile)
-    if earned:
+    paired = server.shop.add_missing_pairs(session.profile)
+    if earned or paired:
         session.save()
-    messages = _login_messages(session, earned)
+    messages = _login_messages(session, earned + paired)
     sent = session.send_all(messages)
     session.logged_in = True
     for guid in earned:
         session.log(f"[>>>] Challenge reward: {server.items.describe(guid)}")
+    for guid in paired:
+        session.log(f"[>>>] Partner of a bought team skin: {server.items.describe(guid)}")
     _log_login_summary(session, sent, len(messages))
 
     for other in list(server.social.sessions.values()):
@@ -48,6 +54,8 @@ def _take_over_account(session: Session, account: Account) -> None:
     server = session.server
     session.account = account
     session.ident = Identity.create(account.account_lo, session.channel.seq)
+    account.profile.last_online = int(time.time())
+    account.save()
     server.selected = account
     previous = server.social.sessions.get(account.account_lo)
     if previous is not None and previous is not session:
@@ -56,14 +64,15 @@ def _take_over_account(session: Session, account: Account) -> None:
     server.social.sessions[account.account_lo] = session
 
 
-def _login_messages(session: Session, earned: list[int]) -> list[tuple]:
+def _login_messages(session: Session, granted: list[int]) -> list[tuple]:
     server = session.server
     content = server.content
     messages = without_party_state(content.login_messages(session.profile, session.ident))
     messages += session.party_messages()
+    messages.append((LOBBY, 20802, content.player.settings(session.profile)))
     messages.append((FRIENDS, 27100, server.social.friends_state(session.account)))
     messages.append((CHAT_IN, 20402, {"+0x78": server.social.general}))
-    for guid in earned:
+    for guid in granted:
         messages.append(content.collection.unlock_granted(guid))
     return messages
 
@@ -82,14 +91,26 @@ def _log_login_summary(session: Session, sent: int, total: int) -> None:
 
 
 def _after_menu_ready(session: Session) -> None:
-    for delay, with_settings in MENU_READY_DELAYS:
+    for delay in MENU_READY_DELAYS:
         time.sleep(delay)
         if not session.logged_in:
             return
         try:
-            player = session.server.content.player
-            session.send(PERMISSIONS, 55500, player.features())
-            if with_settings:
-                session.send(LOBBY, 20802, player.settings(session.profile))
+            session.send(PERMISSIONS, 55500, session.server.content.player.features())
+            _send_offline_presence(session)
         except OSError:
             return
+    while True:
+        time.sleep(OFFLINE_REFRESH_SECONDS)
+        if not session.logged_in:
+            return
+        try:
+            _send_offline_presence(session)
+        except OSError:
+            return
+
+
+def _send_offline_presence(session: Session) -> None:
+    offline = session.server.social.offline_presence(session.account)
+    if offline:
+        session.send(FRIENDS, 27113, {"+0x78": offline})

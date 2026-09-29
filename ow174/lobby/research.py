@@ -13,6 +13,7 @@ and may carry "conn" or "player" to pick the client, and "expires_at" (Unix time
 import json
 import logging
 import math
+import struct
 import threading
 import time
 from pathlib import Path
@@ -85,7 +86,7 @@ def send_experiment(server: "LobbyServer", item: dict) -> int:
         wire = session.wire_of.get(crc)
         if wire is None:
             continue
-        session.send_raw(bytes([wire, msg_id - server.schemas.base(crc)]) + body)
+        session.send_raw(server.schemas.header(crc, wire, msg_id) + body)
         session.log(f"[inject] {crc:08X}/{msg_id} {len(body)}B")
         sent += 1
     return sent
@@ -109,5 +110,5 @@ def _send_line(server: "LobbyServer", line: str) -> None:
     try:
         if not send_experiment(server, json.loads(line)):
             log.info("[inject] No connected client matches this line or knows its protocol")
-    except (ValueError, KeyError, TypeError, OSError) as error:
+    except (ValueError, KeyError, TypeError, OSError, struct.error) as error:
         log.warning("[inject] Bad line %s: %s", line[:120], error)

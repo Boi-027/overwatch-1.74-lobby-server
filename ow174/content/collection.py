@@ -29,12 +29,16 @@ BORDER_BASE_GUID = 0x0250000000000918
 NO_UNLOCK_LEVEL = 65535  # account entries with this level are not level rewards
 
 
+def frame_parts(level: int) -> tuple[int, int, int]:
+    """How a portrait frame looks at an unlock level: its tier (0-4), stars (0-5) and border step
+    (0-9). Levels past the last tier keep it."""
+    levels_done = max(1, level) - 1
+    return min(4, levels_done // 600), levels_done % 600 // 100, levels_done % 100 // 10
+
+
 def _computed_border(level: int) -> int:
     """The border GUID for a level, used only when the catalog has no border for it."""
-    levels_done = max(1, level) - 1
-    tier = min(4, levels_done // 600)
-    stars = min(5, (levels_done % 600) // 100)
-    step = min(9, (levels_done % 100) // 10)
+    tier, stars, step = frame_parts(level)
     return BORDER_BASE_GUID + tier * 60 + stars * 10 + step
 
 
@@ -76,8 +80,10 @@ class Collection:
     def __init__(self, templates: RetailTemplates, items: ItemDB) -> None:
         self.items = items
         self._read_hero_catalog(templates.first(HERO_CATALOG, 24900))
+        self._add_newer_hero_items()
         self._read_account_record(templates.first(PROGRESSION_IN, 24300))
-        self._border_levels = self._portrait_borders()
+        # [(unlock level, frame GUID)], lowest first. The GUIDs are not in level order.
+        self.border_levels = self._portrait_borders()
 
     def _read_hero_catalog(self, catalog: dict) -> None:
         self.hero_template = catalog
@@ -96,6 +102,34 @@ class Collection:
             for entry in hero_store["+0x0"]:
                 self.hero_of[entry["+0x0"]] = hero_store["+0x18"]
                 self.store_entries[entry["+0x0"]] = entry
+
+    def _add_newer_hero_items(self) -> None:
+        """Add items that came out after the 1.68 capture (Reaper's Luchador, Genji's Happi) to their
+        hero's catalog.
+
+        The hero gallery only shows items from the hero's store list, and the client only counts an
+        item as owned when it belongs to a hero. They get the entry of a retail item that is not
+        sold, like the Contenders skins: no price, and event -1 so they never drop from loot boxes.
+        The entry of a default item (+0x10 0, +0x17 true) would leave them out of the hero's count.
+        """
+        stores = {store["+0x18"]: store["+0x0"] for store in self.hero_template["+0x98"]}
+        for unlock in self.items.unlocks.values():
+            if not unlock.hero or unlock.guid in self.hero_of:
+                continue
+            hero = self.items.hero_by_name(unlock.hero)
+            if hero not in stores:
+                continue
+            entry = {
+                "+0x0": unlock.guid,
+                "+0x8": 0,
+                "+0x10": NO_UNLOCK_LEVEL,
+                "+0x14": 0,  # no price
+                "+0x16": -1,  # never in boxes
+                "+0x17": False,
+            }
+            stores[hero].append(entry)
+            self.hero_of[unlock.guid] = hero
+            self.store_entries[unlock.guid] = entry
 
     def _read_account_record(self, progression: dict) -> None:
         self.progression_template = progression
@@ -151,6 +185,13 @@ class Collection:
             return True
         return guid in self.owned_account(profile)
 
+    def owned_set(self, profile: Profile) -> set[int]:
+        """Everything the player owns, for checking many items at once (owns() rebuilds its lists)."""
+        owned = set(self.owned_account(profile))
+        for hero in set(self.hero_of.values()):
+            owned.update(self.owned_for_hero(profile, hero))
+        return owned
+
     # --- appearance ----------------------------------------------------------------------------
 
     def portrait_frame(self, profile: Profile) -> int:
@@ -161,7 +202,7 @@ class Collection:
         if profile.frame_guid:
             return profile.frame_guid
         best = None
-        for unlock_level, guid in self._border_levels:
+        for unlock_level, guid in self.border_levels:
             if unlock_level <= profile.level:
                 best = guid
         if best:
@@ -237,3 +278,11 @@ class Collection:
     def unlock_granted(self, guid: int) -> tuple:
         """24901 {hero, unlock, new}: adds the unlock to the owned list and shows it as new."""
         return (HERO_CATALOG, 24901, {"+0x78": self.hero_of.get(guid, 0), "+0x80": guid, "+0x88": True})
+
+    def unlock_bought(self, guid: int) -> tuple:
+        """24306 {unlock, hero}: adds a bought unlock to the owned list, as retail answered a purchase.
+
+        The unlock goes first: with the hero first the client charged the player and left the item
+        locked (ProCore research).
+        """
+        return (PROGRESSION_IN, 24306, {"+0x78": guid, "+0x80": self.hero_of.get(guid, 0)})

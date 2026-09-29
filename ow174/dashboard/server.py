@@ -23,8 +23,10 @@ STATIC_FILES = {
     "/assets/dashboard-api.mjs": ("dashboard-api.mjs", "text/javascript"),
     "/assets/dashboard.js": ("dashboard.js", "text/javascript"),
 }
-# Loot box pictures, e.g. /assets/boxes/golden.png. The strict pattern keeps requests inside that folder.
-BOX_PICTURE = re.compile(r"/assets/boxes/([a-z0-9_]+\.png)")
+# Pictures: loot boxes (/assets/boxes/golden.png) and item previews (/assets/previews/<GUID>.webp).
+# The strict pattern keeps requests inside those folders.
+PICTURE = re.compile(r"/assets/(boxes/[a-z0-9_]+\.png|previews/[0-9A-F]{16}\.webp)")
+PICTURE_TYPES = {".png": "image/png", ".webp": "image/webp"}
 
 
 def last_values(query_string: str, keep_blank_values: bool = False) -> dict:
@@ -48,23 +50,20 @@ class DashboardHandler(BaseHTTPRequestHandler):
         try:
             if url.path in STATIC_FILES:
                 self._send_static_file(url.path)
-            elif picture := BOX_PICTURE.fullmatch(url.path):
-                self._send_box_picture(picture.group(1))
+            elif picture := PICTURE.fullmatch(url.path):
+                self._send_picture(picture.group(1))
             elif url.path == "/api/state":
                 self._send_json(self.service.state(query.get("account")))
             elif url.path == "/api/status":
                 self._send_json(self.service.state(query.get("account"))["profile"])
-            elif url.path == "/api/shop":
-                self._send_json(self.service.shop(query))
-            elif url.path == "/api/skins":
-                self._send_json(self.service.skins(query))
+            elif url.path == "/api/collection":
+                self._send_json(self.service.collection(query))
             else:
                 raise ApiError("Address not found", 404)
         except ApiError as error:
             self._send_json({"error": str(error)}, error.status)
         except (ValueError, TypeError) as error:
-            # The shop raises its own ValueError subclass, which also carries a status.
-            self._send_json({"error": str(error)}, getattr(error, "status", 400))
+            self._send_json({"error": str(error)}, 400)
 
     def do_POST(self) -> None:
         try:
@@ -82,12 +81,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return self.service.update_profile(data)
         if path == "/api/add_boxes":
             return self.service.add_boxes(data)
+        if path == "/api/open_all_boxes":
+            return self.service.open_all_boxes(data)
+        if path == "/api/bot_group":
+            return self.service.bot_group(data)
         if path == "/api/purchase":
             return self.service.purchase(data)
         if path == "/api/grant_skin":
             return self.service.grant_skin(data)
         if path == "/api/select_account":
             return self.service.select_account(data)
+        if path == "/api/set_frame":
+            return self.service.set_frame(data)
         if path == "/api/reconnect":
             return self.service.reconnect()
         raise ApiError("Action not found", 404)
@@ -112,11 +117,11 @@ class DashboardHandler(BaseHTTPRequestHandler):
             raise ApiError("The page files are not ready yet. Reload in a moment.", 503)
         self._send(path.read_bytes(), mime)
 
-    def _send_box_picture(self, file_name: str) -> None:
-        path = WEB_DIR / "assets" / "boxes" / file_name
+    def _send_picture(self, relative_path: str) -> None:
+        path = WEB_DIR / "assets" / relative_path
         if not path.is_file():
             raise ApiError("Address not found", 404)
-        self._send(path.read_bytes(), "image/png")
+        self._send(path.read_bytes(), PICTURE_TYPES[path.suffix])
 
     def _send_json(self, value, status: int = 200) -> None:
         body = json.dumps(value, ensure_ascii=False).encode("utf-8")

@@ -19,7 +19,12 @@ from ow174.catalog.items import ItemDB  # noqa: E402
 from ow174.catalog.templates import RetailTemplates  # noqa: E402
 from ow174.content.collection import Collection  # noqa: E402
 from ow174.dashboard.server import start_dashboard  # noqa: E402
+from ow174.paths import WEB_DIR  # noqa: E402
 from ow174.services.shop import ShopService  # noqa: E402
+
+WEB_PREVIEWS = WEB_DIR / "assets" / "previews"
+# The real (unlock level, frame GUID) table; frame GUIDs are not in level order.
+BORDERS = Collection(RetailTemplates(), ItemDB()).border_levels
 
 
 class Lobby:
@@ -32,10 +37,25 @@ class Lobby:
         self.sessions = set()
         self.settings = SimpleNamespace(host="127.0.0.1", port=3724)
         self.items = SimpleNamespace(hero_names={1: "Tracer"}, challenges=lambda: {})
-        self.content = SimpleNamespace(collection=SimpleNamespace(default_loadouts={1: {}}))
+        self.content = SimpleNamespace(
+            collection=SimpleNamespace(
+                default_loadouts={1: {}},
+                border_levels=BORDERS,
+                portrait_frame=lambda profile: profile.frame_guid or BORDERS[0][1],
+            )
+        )
         self.social = SimpleNamespace(sessions={})
+        self.loot = SimpleNamespace(open_all=self.open_all)
         self.pushed = []
+        self.granted = []
+        self.settings_pushed = []
         self.state_lock = threading.RLock()
+
+    @staticmethod
+    def open_all(profile):
+        opened = len(profile.loot_boxes)
+        profile.loot_boxes = []
+        return opened, [0x0250000000000001] if opened else []
 
     def dashboard_account(self):
         return self.selected
@@ -43,8 +63,12 @@ class Lobby:
     def select_account(self, name):
         self.selected = self.accounts.get(name)
 
-    def push_profile(self, account=None):
+    def push_profile(self, account=None, granted=None):
         self.pushed.append(account or self.selected)
+        self.granted.append(granted or [])
+
+    def push_settings(self, account):
+        self.settings_pushed.append(account)
 
     def reconnect_all(self):
         raise AssertionError("No test should disconnect the game")
@@ -88,12 +112,32 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["server"]["connected_clients"], 0)
         self.assertEqual(data["profile"]["player_name"], "Alpha")
 
+    def test_selected_marks_the_game_account_not_the_page_account(self):
+        # Viewing Beta in the dashboard must not move the "Selected" mark off the game's account.
+        _, data = self.request("/api/state?account=Beta")
+        selected = [row["name"] for row in data["accounts"] if row["selected"]]
+        self.assertEqual(selected, ["Alpha"])
+
     def test_json_update_targets_explicit_account_not_global_selection(self):
         status, _ = self.request("/api/update_profile", {"account": "Beta", "credits": 77})
         self.assertEqual(status, 200)
         self.assertEqual(self.lobby.accounts.get("Beta").profile.credits, 77)
         self.assertEqual(self.lobby.selected.profile.credits, 1000)
         self.assertEqual(self.lobby.pushed[-1].name, "Beta")
+
+    def test_competitive_ratings_are_saved_per_queue(self):
+        status, data = self.request("/api/update_profile", {"account": "Alpha", "rating_tank": 4100})
+        self.assertEqual(status, 200)
+        self.assertEqual(self.lobby.selected.profile.ratings, {"tank": 4100})
+        self.assertEqual((data["profile"]["rating_tank"], data["profile"]["rating_open"]), (4100, 2333))
+        status, _ = self.request("/api/update_profile", {"account": "Alpha", "rating_open": 9000})
+        self.assertEqual(status, 400)
+        change = {"account": "Alpha", "matches_tank": 3, "sms_protect": False, "season": "25"}
+        status, data = self.request("/api/update_profile", change)
+        self.assertEqual(status, 200)
+        profile = self.lobby.selected.profile
+        self.assertEqual((profile.matches, profile.sms_protect, profile.season), ({"tank": 3}, False, 25))
+        self.assertEqual(data["profile"]["matches_open"], 25)
 
     def test_invalid_profile_change_is_atomic_and_reported(self):
         before = self.lobby.selected.path.read_bytes()
@@ -136,6 +180,20 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(len({b["id"] for b in boxes}), len(boxes))
         self.assertEqual({b["type"] for b in boxes}, set(BOX_TYPES))
 
+    def test_opening_all_boxes_shows_the_overwatch_2_notice(self):
+        status, _ = self.request("/api/open_all_boxes", {"account": "Alpha"})
+        self.assertEqual(status, 400)  # no boxes
+        self.request("/api/add_boxes", {"account": "Alpha", "type": 0, "count": 3})
+        status, data = self.request("/api/open_all_boxes", {"account": "Alpha"})
+        self.assertEqual(status, 200)
+        self.assertEqual((data["opened"], data["new_items"]), (3, 1))
+        profile = self.lobby.selected.profile
+        self.assertEqual(profile.loot_boxes, [])
+        # The count goes to the client in 20802, which shows the notice on the main menu.
+        self.assertIn({"+0x0": 3, "+0x8": 0x00E0B03A}, profile.settings["+0x130"])
+        self.assertEqual(self.lobby.settings_pushed, [self.lobby.selected])
+        self.assertEqual(self.lobby.granted[-1], [0x0250000000000001])
+
     def test_invalid_box_type_or_quantity_cannot_mutate_inventory(self):
         for body in ({"type": 999, "count": 1}, {"type": 0, "count": -1}, {"type": 0, "count": 101}):
             status, _ = self.request("/api/add_boxes", dict(account="Alpha", **body))
@@ -152,11 +210,51 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(state["profile"]["player_name"], "Alpha")
 
-    def test_shop_purchase_http_returns_and_persists_token_balance(self):
+    def use_real_catalog(self):
         items = ItemDB()
-        self.lobby.shop = ShopService(Collection(RetailTemplates(), items), items)
+        collection = Collection(RetailTemplates(), items)
+        self.lobby.items = items
+        self.lobby.content = SimpleNamespace(collection=collection)
+        self.lobby.shop = ShopService(collection, items)
+
+    def collection(self, query):
+        status, data = self.request(f"/api/collection?account=Alpha&{query}")
+        self.assertEqual(status, 200)
+        return data
+
+    def test_collection_items_can_be_unlocked_for_free_and_removed(self):
+        self.use_real_catalog()
+        (spray,) = [
+            i for i in self.collection("kind=sprays&hero=Genji&q=Bushi")["items"] if i["name"] == "Bushi"
+        ]
+        self.assertFalse(spray["owned"])
+        self.request("/api/grant_skin", {"account": "Alpha", "guid": spray["guid"]})
+        # The game counts the new item only when it arrives as an unlock.
+        self.assertEqual(self.lobby.granted[-1], [int(spray["guid"], 16)])
+        self.request("/api/grant_skin", {"account": "Alpha", "guid": spray["guid"]})
+        self.assertEqual(self.lobby.granted[-1], [])
+        (spray,) = [
+            i for i in self.collection("kind=sprays&hero=Genji&q=Bushi")["items"] if i["name"] == "Bushi"
+        ]
+        self.assertTrue(spray["owned"])
+        self.assertTrue(spray["removable"])
+        self.assertFalse(spray["purchasable"])
+
+    def test_collection_filters_by_type_and_owl(self):
+        self.use_real_catalog()
+        emotes = self.collection("kind=emotes")
+        self.assertTrue(emotes["items"])
+        self.assertEqual({i["type"] for i in emotes["items"]}, {"Emote"})
+        owl = self.collection("kind=skins&owl=1")
+        self.assertTrue(owl["items"])
+        self.assertTrue(all(i["owl"] for i in owl["items"]))
+        status, _ = self.request("/api/collection?account=Alpha&kind=nope")
+        self.assertEqual(status, 400)
+
+    def test_shop_purchase_http_returns_and_persists_token_balance(self):
+        self.use_real_catalog()
         status, catalog = self.request(
-            "/api/shop?account=Alpha&hero=Reaper&currency=league_tokens&q=Philadelphia"
+            "/api/collection?account=Alpha&hero=Reaper&currency=league_tokens&q=Philadelphia"
         )
         self.assertEqual(status, 200)
         self.assertTrue(any(i["guid"] == "0x02500000000013C3" for i in catalog["items"]))
@@ -183,7 +281,62 @@ class DashboardTests(unittest.TestCase):
             status, _ = self.request(path)
             self.assertEqual(status, 404, path)
 
-    def test_static_dashboard_assets_and_scene_picker_contains_only_available_scenes(self):
+    def frames(self, page=1):
+        status, data = self.request(f"/api/collection?account=Alpha&kind=frames&page={page}")
+        self.assertEqual(status, 200)
+        return data
+
+    def test_all_portrait_frames_are_listed_with_their_level(self):
+        data = self.frames()
+        self.assertEqual(data["total"], len(BORDERS))
+        first = data["items"][0]
+        self.assertEqual(first["guid"], f"0x{BORDERS[0][1]:016X}")
+        self.assertIn("level 1+", first["name"])
+        self.assertTrue(first["in_use"])
+        self.assertIn("level 2991+", self.frames(page=data["pages"])["items"][-1]["name"])
+
+    def test_frame_names_follow_the_unlock_level_not_the_guid(self):
+        pages = range(1, self.frames()["pages"] + 1)
+        names = {item["guid"]: item["name"] for page in pages for item in self.frames(page)["items"]}
+        platinum = next(guid for level, guid in BORDERS if level == 1811)
+        self.assertTrue(names[f"0x{platinum:016X}"].startswith("Platinum ·"))
+        self.assertTrue(
+            names[f"0x{next(g for lv, g in BORDERS if lv == 1791):016X}"].startswith("Gold ★★★★★")
+        )
+
+    def test_a_frame_can_be_chosen_and_reset_to_the_level_frame(self):
+        gold_guid = next(guid for level, guid in BORDERS if level == 1441)
+        gold = f"0x{gold_guid:016X}"
+        status, _ = self.request("/api/set_frame", {"account": "Alpha", "guid": gold})
+        self.assertEqual(status, 200)
+        self.assertEqual(self.lobby.accounts.get("Alpha").profile.frame_guid, gold_guid)
+        pages = range(1, self.frames()["pages"] + 1)
+        chosen = [item for page in pages for item in self.frames(page)["items"] if item["chosen"]]
+        self.assertEqual([item["guid"] for item in chosen], [gold])
+        self.request("/api/set_frame", {"account": "Alpha", "guid": None})
+        self.assertEqual(self.lobby.accounts.get("Alpha").profile.frame_guid, 0)
+
+    def test_a_new_level_brings_back_the_level_frame(self):
+        gold = next(guid for level, guid in BORDERS if level == 1441)
+        self.request("/api/set_frame", {"account": "Alpha", "guid": f"0x{gold:016X}"})
+        self.request("/api/update_profile", {"account": "Alpha", "credits": 5})
+        self.assertEqual(self.lobby.accounts.get("Alpha").profile.frame_guid, gold)
+        self.request("/api/update_profile", {"account": "Alpha", "level": 2243})
+        self.assertEqual(self.lobby.accounts.get("Alpha").profile.frame_guid, 0)
+
+    def test_only_portrait_frames_can_be_chosen(self):
+        status, _ = self.request("/api/set_frame", {"account": "Alpha", "guid": "0x0250000000000001"})
+        self.assertEqual(status, 400)
+
+    def test_item_previews_are_served_as_webp(self):
+        picture = next(WEB_PREVIEWS.glob("*.webp"))
+        with urllib.request.urlopen(f"{self.url}/assets/previews/{picture.name}", timeout=3) as response:
+            self.assertEqual(response.headers["Content-Type"], "image/webp")
+            self.assertEqual(response.read(4), b"RIFF")
+        status, _ = self.request("/assets/previews/0000000000000000.webp")
+        self.assertEqual(status, 404)
+
+    def test_static_dashboard_assets_and_the_event_picker(self):
         for path in ("/", "/assets/dashboard.css", "/assets/dashboard.js", "/assets/dashboard-api.mjs"):
             status, data = self.request(path)
             self.assertEqual(status, 200, path)
@@ -191,7 +344,9 @@ class DashboardTests(unittest.TestCase):
         status, data = self.request("/api/state")
         ids = {e["id"] for e in data["catalogs"]["events"]}
         self.assertTrue({"anniversary", "anniversary_remix_1", "anniversary_remix_2"} <= ids)
-        self.assertFalse(ids & {"summer", "archives", "contenders", "tracer_comic"})
+        # Events without a menu scene still bring their loot box and trophies; Tracer's has none.
+        self.assertTrue({"summer", "archives", "contenders"} <= ids)
+        self.assertNotIn("tracer_comic", ids)
         status, _ = self.request("/api/update_profile", {"account": "Alpha", "events": ["tracer_comic"]})
         self.assertEqual(status, 400)
 

@@ -6,8 +6,9 @@ are rewritten.
 """
 
 import struct
+import time
 
-from ow174.accounts.profile import Profile
+from ow174.accounts.profile import Profile, battle_tag
 from ow174.catalog.templates import RETAIL_ACCOUNT, RetailTemplates, personalize
 from ow174.content.identity import Identity
 from ow174.jam.groups import FRIENDS
@@ -20,6 +21,16 @@ RETAIL_FULL_NAME = b"ExampleUser"  # anonymized template marker, replaced with t
 # player and never equal the account id.
 APP_ACCOUNT_BITS = 0x0A0A0000
 PRO_ACCOUNT_BITS = 0x0B0B0000
+
+# A presence field key is {program "BN", group, field, unique id}. Field 1 of group 2 (a game
+# account) says whether it is online; its value is a Variant bool (field 2).
+GAME_ACCOUNT_ONLINE = bytes.fromhex("08ce8401100218012000")
+OFFLINE = b"\x10\x00"
+
+# Last online and session times are Variant int values (field 3) in microseconds since 1970.
+INT_VALUE_TAG = b"\x18"
+MICROSECONDS = 1_000_000
+YEAR_2001 = 978_307_200 * MICROSECONDS  # anything later is a time, not a counter
 
 MESSAGE_VALUE_TAG = b"\x3a"  # protobuf tag of Variant.message_value: field 7, length-delimited
 VARINT = 0
@@ -107,6 +118,19 @@ def _replace_pb_string(blob: bytes, old: bytes, new: bytes) -> bytes:
     return blob[: start - 1] + bytes([len(new)]) + new + blob[start + len(old) :]
 
 
+def _with_time(value: bytes, microseconds: int) -> bytes:
+    """A Variant int value that holds a time, set to another time. Any other value stays."""
+    if not value.startswith(INT_VALUE_TAG):
+        return value
+    try:
+        number, end = _read_varint(value, 1)
+    except IndexError:
+        return value
+    if end != len(value) or number < YEAR_2001:
+        return value
+    return INT_VALUE_TAG + _encode_varint(microseconds)
+
+
 def rewrite_ids(blob: bytes, swap: dict[int, int]) -> bytes:
     """Replace account ids inside a presence protobuf value.
 
@@ -123,8 +147,14 @@ class Presence:
     def __init__(self, templates: RetailTemplates) -> None:
         self._templates = templates
 
-    def records(self, profile: Profile, account_lo: int) -> list[dict]:
-        """Presence of one account: the account record and its App and Overwatch game accounts."""
+    def records(self, profile: Profile, account_lo: int, online: bool = True, created: int = 0) -> list[dict]:
+        """Presence of one account: the account record and its App and Overwatch game accounts.
+
+        Their times (last online, session start) are the account's last login or logout, so an
+        offline friend shows as "offline (2 h)" instead of the capture's date. An account that never
+        logged in counts from when its profile was made.
+        """
+        seen = (profile.last_online or created or int(time.time())) * MICROSECONDS
         swap = {
             RETAIL_ACCOUNT: account_lo,
             RETAIL_APP_ACCOUNT: account_lo ^ APP_ACCOUNT_BITS,
@@ -139,7 +169,12 @@ class Presence:
             if len(record["+0x20"]) <= 3 or recorded_id in seen_ids:
                 continue
             seen_ids.add(recorded_id)
-            records.append(self._personalized(record, profile, account_lo, swap))
+            record = self._personalized(record, profile, account_lo, swap)
+            for field in record["+0x20"]:
+                field["+0x30"] = _with_time(field["+0x30"], seen)
+                if not online and field["+0x8"] == GAME_ACCOUNT_ONLINE:
+                    field["+0x30"] = OFFLINE
+            records.append(record)
         return records
 
     def own(self, profile: Profile, identity: Identity) -> list[tuple]:
@@ -148,7 +183,8 @@ class Presence:
 
     @staticmethod
     def _personalized(record: dict, profile: Profile, account_lo: int, swap: dict[int, int]) -> dict:
-        record = personalize(record, profile.player_name, account_lo)
+        # The recorded BattleTag becomes ours; the full-name field (below) takes the nickname.
+        record = personalize(record, battle_tag(profile.player_name, account_lo), account_lo)
         record_id = record["+0x0"]["+0x0"]
         record["+0x0"]["+0x0"] = swap.get(record_id, record_id)
         player_name = profile.player_name.encode("utf-8")

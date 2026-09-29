@@ -4,6 +4,7 @@ import calendar
 import time
 
 NOON = 12 * 3600
+DAY = 24 * 3600
 
 
 def server_time(profile) -> float:
@@ -12,6 +13,13 @@ def server_time(profile) -> float:
     if date and date.lower() != "now":
         return calendar.timegm(time.strptime(date[:10], "%Y-%m-%d")) + NOON
     return time.time()
+
+
+def from_stu_datetime(value: int) -> int:
+    """The Unix time of a packed game date (the inverse of stu_datetime)."""
+    year, month, day, hour = value >> 36, (value >> 32) & 0xF, (value >> 27) & 0x1F, (value >> 22) & 0x1F
+    minute, second = (value >> 16) & 0x3F, (value >> 10) & 0x3F
+    return calendar.timegm((2000 + year, month, day, hour, minute, second, 0, 0, 0))
 
 
 def stu_datetime(seconds: float) -> int:

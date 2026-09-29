@@ -40,6 +40,15 @@ REGIONS = {
 }
 DEFAULT_REGION = "US"
 
+# Game regions, the servers a player plays on. The lobby sends the number in 20500 (retail sent 2 to a
+# Russian account) and the Top 500 boards are kept per game region.
+GAME_REGIONS = {"americas": 1, "europe": 2, "asia": 3}
+DEFAULT_GAME_REGION = "americas"
+
+
+def game_region_number(name: str) -> int:
+    return GAME_REGIONS.get(name, GAME_REGIONS[DEFAULT_GAME_REGION])
+
 
 def region_of(code: str) -> Region:
     return REGIONS.get(code, REGIONS[DEFAULT_REGION])

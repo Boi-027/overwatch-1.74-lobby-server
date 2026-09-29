@@ -12,7 +12,7 @@ from ow174.catalog.templates import RetailTemplates
 from ow174.content.collection import Collection
 from ow174.services.shop import ShopError, ShopService
 
-FUSION = 0x02500000000013C3
+FUSION = 0x02500000000013C3  # Reaper's Philadelphia Fusion skin
 BLOOD = 0x02500000000003F8
 GOLDEN = 0x02500000000003C9
 ORIGINS = 0x0250000000000405
@@ -33,9 +33,38 @@ class ShopTests(unittest.TestCase):
 
     def test_owl_purchase_spends_tokens_and_grants_ownership(self):
         receipt = self.shop.purchase(self.profile, FUSION)
-        self.assertEqual(receipt, {"guid": "0x02500000000013C3", "price": 100, "currency": "league_tokens"})
+        away = self.items.team_skin_pair(FUSION)
+        expected = {"guid": "0x02500000000013C3", "price": 100, "currency": "league_tokens"}
+        self.assertEqual(receipt, {**expected, "also": [f"0x{away:016X}"]})
         self.assertEqual(self.balances(), (2000, 6000, 400))
         self.assertTrue(self.collection.owns(self.profile, FUSION))
+
+    def test_a_team_skin_comes_with_its_home_or_away_partner(self):
+        away = self.items.team_skin_pair(FUSION)
+        self.assertEqual(self.items.get(away).name, "Philadelphia Fusion Away")
+        self.assertEqual(self.items.team_skin_pair(away), FUSION)
+        self.shop.purchase(self.profile, away)
+        self.assertTrue(self.collection.owns(self.profile, FUSION))
+        with self.assertRaises(ShopError):
+            self.shop.purchase(self.profile, FUSION)
+        self.assertEqual(self.profile.league_tokens, 400)
+
+    def test_every_team_skin_has_a_partner_of_the_same_hero(self):
+        unlocks = self.items.unlocks.values()
+        team_skins = [u for u in unlocks if u.available_in.startswith("Unlocking includes both")]
+        self.assertEqual(len(team_skins), 1528)
+        for unlock in team_skins:
+            pair = self.items.get(self.items.team_skin_pair(unlock.guid))
+            self.assertEqual((pair.hero, pair.esports_team), (unlock.hero, unlock.esports_team), unlock.name)
+        gray = next(u for u in team_skins if u.hero == "D.Va" and u.name == "Overwatch League Gray")
+        self.assertEqual(self.items.get(self.items.team_skin_pair(gray.guid)).name, "Overwatch League White")
+
+    def test_older_purchases_get_their_partners(self):
+        self.profile.unlocked_items = ["0x02500000000013C3", "0x02500000000003F8"]
+        away = self.items.team_skin_pair(FUSION)
+        self.assertEqual(self.shop.add_missing_pairs(self.profile), [away])
+        self.assertIn(f"0x{away:016X}", self.profile.unlocked_items)
+        self.assertEqual(self.shop.add_missing_pairs(self.profile), [])
 
     def test_credit_purchase_uses_captured_price(self):
         receipt = self.shop.purchase(self.profile, "0x02500000000003F8")
@@ -86,7 +115,7 @@ class ShopTests(unittest.TestCase):
             self.shop.purchase(self.profile, ORIGINS)
         self.assertEqual((raised.exception.code, raised.exception.status), ("not_purchasable", 400))
         self.assertEqual(asdict(self.profile), before)
-        self.assertEqual(self.shop.catalog(self.profile, q="Blackwatch Reyes")["total"], 0)
+        self.assertIsNone(self.shop.product(ORIGINS))
 
     def test_unknown_and_malformed_guids_do_not_mutate_profile(self):
         for guid in ("garbage", "", None, True, 1.5, -1, 0, 0x025000000000FFFF):
@@ -97,53 +126,19 @@ class ShopTests(unittest.TestCase):
                 self.assertEqual(raised.exception.status, 400)
                 self.assertEqual(asdict(self.profile), before)
 
-    def test_catalog_filters_and_reports_real_currency_and_price(self):
-        catalog = self.shop.catalog(
-            self.profile, q="Philadelphia Fusion", hero="reaper", currency="league_tokens"
-        )
-        item = next(item for item in catalog["items"] if item["guid"] == "0x02500000000013C3")
-        self.assertEqual(
-            item,
-            {
-                "guid": "0x02500000000013C3",
-                "name": "Philadelphia Fusion",
-                "hero": "Reaper",
-                "type": "Skin",
-                "rarity": "Epic",
-                "price": 100,
-                "currency": "league_tokens",
-                "owned": False,
-                "purchasable": True,
-            },
-        )
-        credits = self.shop.catalog(self.profile, q="Philadelphia Fusion", hero="Reaper", currency="credits")
-        self.assertEqual(credits["total"], 0)
-        golden = self.shop.catalog(self.profile, q="GOLDEN", hero="Reaper", currency="comp_points")
-        self.assertEqual(golden["total"], 1)
-        self.assertEqual(golden["items"][0]["guid"], "0x02500000000003C9")
-
-    def test_catalog_pagination_is_stable_and_has_no_overlap(self):
-        first = self.shop.catalog(self.profile, hero="Reaper", page=1, page_size=5)
-        second = self.shop.catalog(self.profile, hero="Reaper", page=2, page_size=5)
-        again = self.shop.catalog(self.profile, hero="Reaper", page=1, page_size=5)
-        self.assertEqual(first, again)
-        self.assertEqual(len(first["items"]), 5)
-        self.assertEqual(len(second["items"]), 5)
-        self.assertGreater(first["total"], 10)
-        self.assertEqual(first["pages"], (first["total"] + 4) // 5)
-        self.assertEqual((second["page"], second["page_size"]), (2, 5))
-        first_guids = {item["guid"] for item in first["items"]}
-        self.assertFalse(first_guids & {item["guid"] for item in second["items"]})
-
-    def test_owned_catalog_items_are_not_purchasable(self):
-        self.profile.unlocked_items = ["0x02500000000013C3"]
-        catalog = self.shop.catalog(self.profile, q="Philadelphia Fusion", hero="Reaper")
-        item = next(item for item in catalog["items"] if item["guid"] == "0x02500000000013C3")
-        self.assertTrue(item["owned"])
-        self.assertFalse(item["purchasable"])
-        self.profile.unlock_all = True
-        items = self.shop.catalog(self.profile)["items"]
-        self.assertTrue(all(item["owned"] and not item["purchasable"] for item in items))
+    def test_products_carry_the_real_currency_and_price(self):
+        expected = {
+            "guid": "0x02500000000013C3",
+            "name": "Philadelphia Fusion",
+            "hero": "Reaper",
+            "type": "Skin",
+            "rarity": "Epic",
+            "price": 100,
+            "currency": "league_tokens",
+        }
+        self.assertEqual(self.shop.product(FUSION), expected)
+        self.assertEqual(self.shop.product(GOLDEN)["currency"], "comp_points")
+        self.assertEqual(self.shop.product(BLOOD)["currency"], "credits")
 
 
 if __name__ == "__main__":

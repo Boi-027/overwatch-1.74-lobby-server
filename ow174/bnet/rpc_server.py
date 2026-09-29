@@ -3,11 +3,10 @@
 The login, step by step:
   1. ConnectionService.Connect. The client lists the listener services it offers; we answer with
      server time and ids.
-  2. AuthenticationServer.Logon. We send back ChallengeNotify.OnExternalChallenge with the URL of
-     our login form (webauth.py). The client shows that form, and it returns a login ticket.
-  3. AuthenticationServer.VerifyWebCredentials with the ticket. We accept any ticket and send
-     AuthenticationClient.OnLogonComplete with a fixed local account.
-  4. GameUtilities.ProcessTask. We answer with a ReferralInfo that sends the client to our lobby
+  2. AuthenticationServer.Logon. We answer with AuthenticationClient.OnLogonComplete at once, as
+     the player picked in the dashboard. Tested in game: the client needs no login form and no
+     ticket, with or without a cached one, so switching accounts needs no typing.
+  3. GameUtilities.ProcessTask. We answer with a ReferralInfo that sends the client to our lobby
      server. The client then takes the normal retail path and shows the full main menu.
 
 A response goes to service id 254 and repeats the token of the request. A notification names the
@@ -17,6 +16,8 @@ listener by its hash and by the id the client gave it, and uses a token from our
 import asyncio
 import logging
 import time
+from collections.abc import Callable
+from typing import NamedTuple
 
 import websockets
 
@@ -34,12 +35,10 @@ REFERRAL_CID = 379775058
 # tournament mode.
 ZERO_KEY = bytes(64)
 
-# The local Battle.net account and Overwatch game account. The high word is a type tag, the low word
-# the id. Evidence that the client accepts these values: the plasmawatch server.
+# The high words (type tags) of the Battle.net account and Overwatch game account ids; the low words
+# come from the Player. Evidence that the client accepts these tags: the plasmawatch server.
 ACCOUNT_HIGH = 0x0100000000000000
-ACCOUNT_LOW = 379775058
 GAME_ACCOUNT_HIGH = 0x020000010050726F  # the tag ends in "Pro", the Overwatch program id
-GAME_ACCOUNT_LOW = 559865145
 SESSION_KEY = bytes(range(1, 65))  # the client only needs a 64-byte key to be present
 
 
@@ -81,18 +80,26 @@ def _service_name(service_hash: int) -> str:
     return P.SERVICE_NAMES.get(service_hash, hex(service_hash))
 
 
-def _logon_result():
+class Player(NamedTuple):
+    """Who the client logs in as: the Battle.net account, its Overwatch game account and BattleTag."""
+
+    account: int
+    game_account: int
+    battle_tag: str
+
+
+def _logon_result(player: Player):
     result = P.LogonResult()
     result.error_code = 0
     result.account_id.high = ACCOUNT_HIGH
-    result.account_id.low = ACCOUNT_LOW
+    result.account_id.low = player.account
     game_account = result.game_account_id.add()
     game_account.high = GAME_ACCOUNT_HIGH
-    game_account.low = GAME_ACCOUNT_LOW
+    game_account.low = player.game_account
     result.email = "player@localhost"
     result.available_region.append(1)
     result.connected_region = 1
-    result.battle_tag = "Player#11111"
+    result.battle_tag = player.battle_tag
     result.geoip_country = "US"
     result.session_key = SESSION_KEY
     result.restricted_mode = False
@@ -115,10 +122,17 @@ def _fill_referral(attributes) -> None:
 
 
 class BNetRpcServer:
-    def __init__(self, host="127.0.0.1", port=21119, web_url=None):
+    def __init__(
+        self,
+        host="127.0.0.1",
+        port=21119,
+        *,
+        player: Callable[[], Player],
+    ):
+        """`player` gives the Player the client logs in as."""
         self.host = host
         self.port = port
-        self.web_url = web_url or "http://127.0.0.1:6969/battlenet/login?externalChallenge=login&app=pro"
+        self.player = player
 
     def log(self, msg: str):
         log.info("[bnet] %s", msg)
@@ -204,8 +218,6 @@ class BNetRpcServer:
     async def _auth(self, session, header, body):
         if header.method_id == P.LOGON:
             await self._logon(session, header, body)
-        elif header.method_id == P.VERIFY_WEB_CREDENTIALS:
-            await self._verify_web_credentials(session, header, body)
         else:
             session.log(f"   AuthenticationServer.method{header.method_id} unhandled")
             await session.send_response(header, b"")
@@ -216,23 +228,11 @@ class BNetRpcServer:
             f"   Logon program={request.program!r} locale={request.locale!r} version={request.version!r}"
         )
         await session.send_response(header, b"")
-        challenge = P.ChallengeExternalRequest()
-        challenge.payload_type = "web_auth_url"
-        challenge.payload = self.web_url.encode()
+        player = self.player()
         await session.send_notification(
-            P.CHALLENGE_NOTIFY_HASH, P.ON_EXTERNAL_CHALLENGE, challenge.SerializeToString()
+            P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, _logon_result(player).SerializeToString()
         )
-        session.log(f"   -> OnExternalChallenge {self.web_url}")
-
-    async def _verify_web_credentials(self, session, header, body):
-        request = P.VerifyWebCredentialsRequest.FromString(body)
-        # A client with a cached ticket sends a real Battle.net credential here, so never log it.
-        session.log(f"   VerifyWebCredentials ({len(request.web_credentials)}-byte ticket)")
-        await session.send_response(header, b"")
-        await session.send_notification(
-            P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, _logon_result().SerializeToString()
-        )
-        session.log("   -> OnLogonComplete (error_code=0)")
+        session.log(f"   -> OnLogonComplete as {player.battle_tag} (account 0x{player.account:X})")
 
     async def _game_utilities(self, session, header, body):
         if header.method_id != P.PROCESS_TASK:

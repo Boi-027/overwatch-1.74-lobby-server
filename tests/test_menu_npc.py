@@ -19,18 +19,34 @@ class MenuNpcTests(unittest.TestCase):
         cls.content = Content(Schemas(), RetailTemplates(), ItemDB())
 
     def config_entries(self, profile):
-        messages = self.content.retail.at_login(profile, Identity.create(123, 1))
+        messages = self.content.login_messages(profile, Identity.create(123, 1))
         return next(v for c, m, v in messages if (c, m) == (CONFIG, 36600))["+0x78"]
+
+    def menu_overrides(self, profile, live=True):
+        ident = Identity.create(123, 1)
+        messages = (
+            self.content.live_messages(profile, ident)
+            if live
+            else self.content.login_messages(profile, ident)
+        )
+        config = next(v for c, m, v in messages if (c, m) == (CONFIG, 36600))
+        return [e["+0x8"] for e in config["+0x78"] if e["+0x0"] == MENU_HERO_KEY]
 
     def test_npc_choice_adds_the_menu_hero_override(self):
         entries = self.config_entries(Profile(lobby_hero="Talon Sniper"))
         override = [e for e in entries if e["+0x0"] == MENU_HERO_KEY]
         self.assertEqual(override, [{"+0x0": MENU_HERO_KEY, "+0x8": "0x02e00000000001b8"}])
 
-    def test_regular_hero_and_random_add_no_override(self):
-        for choice in ("random", "none", "Genji"):
-            entries = self.config_entries(Profile(lobby_hero=choice))
-            self.assertFalse([e for e in entries if e["+0x0"] == MENU_HERO_KEY], choice)
+    # Tested in game: the override also works for regular heroes (in their normal lobby pose), and
+    # the client applies it live, so every choice goes through it.
+    def test_regular_hero_uses_the_override_too(self):
+        genji = self.content.menu_hero.choose(Profile(lobby_hero="Genji"))
+        self.assertEqual(self.menu_overrides(Profile(lobby_hero="Genji"), live=False), [f"0x{genji:016x}"])
+
+    def test_random_and_none_send_no_override(self):
+        # With "random" the event scene keeps its own hero (the OWL lobby's Genji, for example).
+        self.assertEqual(self.menu_overrides(Profile(lobby_hero="random")), [])
+        self.assertEqual(self.menu_overrides(Profile(lobby_hero="none")), [])
 
     def test_menu_npc_is_case_insensitive_and_unknown_is_none(self):
         self.assertEqual(pve_character(Profile(lobby_hero="b.o.b.")), PVE_NPC_BASE | 0x21D)
@@ -46,10 +62,21 @@ class MenuNpcTests(unittest.TestCase):
         messages = self.content.live_messages(profile, ident)
         config = next(v for c, m, v in messages if (c, m) == (CONFIG, 36600))
         self.assertIn({"+0x0": MENU_HERO_KEY, "+0x8": "0x02e00000000001ac"}, config["+0x78"])
-        profile.lobby_hero = "random"
-        messages = self.content.live_messages(profile, ident)
-        config = next(v for c, m, v in messages if (c, m) == (CONFIG, 36600))
-        self.assertFalse([e for e in config["+0x78"] if e["+0x0"] == MENU_HERO_KEY])
+        profile.lobby_hero = "Genji"
+        genji = self.content.menu_hero.choose(profile)
+        self.assertEqual(self.menu_overrides(profile), [f"0x{genji:016x}"])
+
+    def test_switching_to_random_picks_a_new_hero_at_once(self):
+        profile = Profile(player_name="Picker", lobby_hero="random")
+        first = self.content.menu_hero.choose(profile)
+        picks = set()
+        for _ in range(30):
+            profile.lobby_hero = "Genji"
+            self.content.menu_hero.choose(profile)
+            profile.lobby_hero = "random"
+            picks.add(self.content.menu_hero.choose(profile))
+        self.assertGreater(len(picks | {first}), 1)
+        self.assertEqual(self.content.menu_hero.choose(profile), self.content.menu_hero.choose(profile))
 
     def test_party_state_still_uses_a_real_hero_for_an_npc_choice(self):
         hero = self.content.menu_hero.choose(Profile(lobby_hero="Talon Sniper"))

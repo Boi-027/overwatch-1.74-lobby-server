@@ -3,6 +3,7 @@
 The client speaks this wire format exactly, so any refactor must reproduce these bytes.
 """
 
+import copy
 import hashlib
 import sys
 import unittest
@@ -62,10 +63,32 @@ class CodecTests(unittest.TestCase):
         self.assertEqual(self.schemas.decode(0x3C7E3468, 21800, body)["+0x78"], "Player")
         self.assertEqual(sha(body), "5ef774494c2150e5b721533367200cd1ff1d64c9b44ef776dc8f9a16200cdba1")
 
-    def test_prefixed_protocol_carries_a_leading_u32(self):
-        body = self.schemas.encode(0xBCD57A46, 55500, {"+0x78": {"+0x0": []}})
-        self.assertEqual(body[:4], bytes(4))
-        self.assertEqual(self.schemas.decode(0xBCD57A46, 55500, body), {"+0x78": {"+0x0": []}})
+    def test_a_run_of_bools_goes_on_across_struct_edges(self):
+        # Tested in game: in 20802 the 5 flags of +0x108 and the first 4 of +0x10D form one run of
+        # 9 bits. With a new byte for +0x10D the client read the friends options from the wrong bits.
+        base = self.schemas.empty(0x1A9879A4, 20802)
+        plain = self.schemas.encode(0x1A9879A4, 20802, base)
+
+        def changed_bit(block, key):
+            value = copy.deepcopy(base)
+            value[block][key] = True
+            body = self.schemas.encode(0x1A9879A4, 20802, value)
+            self.assertTrue(self.schemas.decode(0x1A9879A4, 20802, body)[block][key])
+            (index,) = [i for i in range(len(body)) if body[i] != plain[i]]
+            return index, body[index] ^ plain[index]
+
+        first, bit = changed_bit("+0x108", "+0x0")
+        self.assertEqual(bit, 1)
+        self.assertEqual(changed_bit("+0x10D", "+0x0"), (first, 1 << 5))
+        self.assertEqual(changed_bit("+0x10D", "+0x3"), (first + 1, 1))
+
+    def test_prefixed_protocols_carry_a_u32_before_the_message_id(self):
+        # Header flag 8 of the client's registration: the account features and the group finder.
+        self.assertEqual(self.schemas.header(0xBDDBF58A, 70, 52301), bytes([70, 0, 0, 0, 0, 1]))
+        self.assertEqual(self.schemas.header(0xBCD57A46, 69, 55500), bytes([69, 0, 0, 0, 0, 0]))
+        self.assertEqual(self.schemas.header(0x2411DE56, 18, 20703), bytes([18, 3]))
+        body = self.schemas.encode(0xBDDBF58A, 52300, {"+0x78": [], "+0x90": []})
+        self.assertEqual(body, bytes(8))
 
 
 if __name__ == "__main__":

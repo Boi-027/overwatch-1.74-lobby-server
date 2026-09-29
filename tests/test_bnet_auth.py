@@ -1,3 +1,5 @@
+"""Battle.net logon: the client logs in at once as the dashboard's account, with no login form."""
+
 import asyncio
 import sys
 import unittest
@@ -5,9 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ow174.bnet import protocol as P
-from ow174.bnet.rpc_server import BNetRpcServer
-
-SECRET = "US-90e33fa5deadbeefdeadbeefdeadbeef-000000001"
+from ow174.bnet.rpc_server import BNetRpcServer, Player
 
 
 class FakeSession:
@@ -21,26 +21,21 @@ class FakeSession:
         pass
 
     async def send_notification(self, service_hash, method_id, body):
-        self.notifications.append((service_hash, method_id))
+        self.notifications.append((service_hash, method_id, body))
 
 
-class AuthTests(unittest.TestCase):
-    def run_verify(self, ticket):
-        request = P.VerifyWebCredentialsRequest()
-        request.web_credentials = ticket.encode()
+class LogonTests(unittest.TestCase):
+    def test_logon_completes_at_once_as_the_dashboard_account(self):
         header = P.Header()
-        header.method_id = P.VERIFY_WEB_CREDENTIALS
+        header.method_id = P.LOGON
         session = FakeSession()
-        asyncio.run(BNetRpcServer()._auth(session, header, request.SerializeToString()))
-        return session
-
-    def test_cached_ticket_logs_in_and_is_never_written_to_the_log(self):
-        session = self.run_verify(SECRET)
-        self.assertIn((P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE), session.notifications)
-        text = "\n".join(session.logs)
-        self.assertNotIn("US-", text)
-        self.assertNotIn("90e33fa5", text)
-        self.assertIn(str(len(SECRET)), text)
+        server = BNetRpcServer(player=lambda: Player(0x15FF2EDE, 0x1EF42EDE, "Researcher#1214"))
+        asyncio.run(server._auth(session, header, P.LogonRequest().SerializeToString()))
+        ((service, method, body),) = session.notifications
+        self.assertEqual((service, method), (P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE))
+        result = P.LogonResult.FromString(body)
+        self.assertEqual((result.account_id.low, result.battle_tag), (0x15FF2EDE, "Researcher#1214"))
+        self.assertEqual(result.game_account_id[0].low, 0x1EF42EDE)
 
 
 if __name__ == "__main__":

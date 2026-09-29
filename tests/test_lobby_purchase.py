@@ -54,6 +54,19 @@ class PurchasePacketTests(unittest.TestCase):
         self.assertEqual(decoded["+0x78"]["+0x6C"], 2000)
         self.assertEqual(decoded["+0x78"]["+0x74"], 400)
 
+    def test_a_purchase_unlocks_the_item_unlock_first(self):
+        purchase(self.session, 0x02500000000013C3)
+        (unlock,) = [v for c, m, v in self.sent if (c, m) == (PROGRESSION_IN, 24306)]
+        self.assertEqual(unlock["+0x78"], 0x02500000000013C3)
+        self.assertEqual(unlock["+0x80"], self.content.collection.hero_of[0x02500000000013C3])
+
+    def test_a_team_skin_purchase_also_unlocks_its_partner(self):
+        purchase(self.session, 0x02500000000013C3)
+        away = self.items.team_skin_pair(0x02500000000013C3)
+        (granted,) = [v for c, m, v in self.sent if m == 24901]
+        self.assertEqual(granted["+0x80"], away)
+        self.assertTrue(self.content.collection.owns(self.account.profile, away))
+
     def test_rejected_purchase_does_not_change_disk_or_emit_unlock(self):
         self.account.profile.league_tokens = 0
         save_profile(self.account.profile, self.account.path)
@@ -61,7 +74,7 @@ class PurchasePacketTests(unittest.TestCase):
         purchase(self.session, 0x02500000000013C3)
         self.assertEqual(self.account.path.read_bytes(), before)
         self.assertFalse(self.content.collection.owns(self.account.profile, 0x02500000000013C3))
-        self.assertFalse(any(m == 24901 for c, m, v in self.sent))
+        self.assertFalse(any(m in (24306, 24901) for c, m, v in self.sent))
 
 
 if __name__ == "__main__":

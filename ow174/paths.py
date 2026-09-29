@@ -11,6 +11,7 @@ LOG_FILE = LOGS_DIR / "ow174.log"
 GAME_LOG_FILE = LOGS_DIR / "game.log"
 RELAY_DLL = ROOT / "relay" / "owwfd_relay.dll"
 GAME_PATH_FILE = ROOT / "game_path.txt"  # the Overwatch.exe picked on the first start
+SERVER_ADDRESS_FILE = ROOT / "server_address.txt"  # the server joined last time
 REQUIREMENTS = ROOT / "requirements.txt"
 
 
@@ -23,3 +24,4 @@ class Paths:
     matches: Path = LOGS_DIR / "matches"
     client_log: Path = ROOT / "client_msgs.log"
     inject_file: Path = ROOT / "inject.jsonl"
+    log_file: Path = LOG_FILE

@@ -4,13 +4,16 @@ import logging
 import socket
 import threading
 
-from ow174.accounts.profile import load_or_create_profile
+from ow174.accounts.profile import Profile, load_or_create_profile
 from ow174.accounts.registry import Account, Accounts
 from ow174.catalog.items import ItemDB
 from ow174.catalog.templates import RetailTemplates
-from ow174.content import Content
+from ow174.content import Content, Identity
+from ow174.content.leaderboard import Player
 from ow174.jam.codec import Schemas
+from ow174.jam.groups import GROUPS, LOBBY
 from ow174.jam.handshake import server_handshake
+from ow174.jam.values import id16
 from ow174.lobby.handlers import build_router
 from ow174.lobby.research import ClientRecorder
 from ow174.lobby.session import Session
@@ -41,6 +44,7 @@ class LobbyServer:
         if settings.game_port > 0:
             self.matches = MatchManager(paths.matches, base_port=settings.game_port)
         self.accounts = Accounts(paths.profiles, paths.template)
+        self.content.ranked.places = self._top500_places
         self.social = Social(self.accounts, self.content)
         self.recorder = ClientRecorder(paths.client_log)
         self.router = build_router()
@@ -78,16 +82,38 @@ class LobbyServer:
     def session_of(self, account_lo: int) -> Session | None:
         return self.social.sessions.get(account_lo)
 
-    def push_profile(self, account: Account | None = None) -> None:
-        """Send an edited account's state to its client. The dashboard calls this after an edit."""
+    def leaderboard_players(self) -> list[Player]:
+        """Every saved account, as the leaderboard ranks them."""
+        players = []
+        for name in self.accounts.all_saved():
+            account = self.accounts.get(name)
+            players.append(Player(account.name, account.profile, Identity.for_account(account.account_lo)))
+        return players
+
+    def _top500_places(self, profile: Profile) -> dict[str, int]:
+        return self.content.leaderboard.places(profile, self.leaderboard_players())
+
+    def push_profile(self, account: Account | None = None, granted: list[int] | None = None) -> None:
+        """Send an edited account's state to its client. The dashboard calls this after an edit;
+        `granted` are the items it gave."""
         if account is None:
             account = self.dashboard_account()
         for session in list(self.sessions):
             if session.account is account:
                 try:
-                    session.push_state()
+                    session.push_state(granted)
                 except OSError as error:
                     session.log(f"[!] Live update failed: {error}", logging.WARNING)
+
+    def push_settings(self, account: Account) -> None:
+        """Send an account's saved settings (20802) to its client again."""
+        settings = self.content.player.settings(account.profile)
+        for session in list(self.sessions):
+            if session.account is account:
+                try:
+                    session.send(LOBBY, 20802, settings)
+                except OSError as error:
+                    session.log(f"[!] Settings update failed: {error}", logging.WARNING)
 
     def reconnect_all(self) -> None:
         """Drop every client so it logs in again (the menu scene only changes at login)."""
@@ -101,11 +127,26 @@ class LobbyServer:
             session.send_social()
 
     def notify_party(self, party: Party) -> None:
-        """Send the current party state to every member that is online."""
+        """Send the current party state to every member that is online, and the group to players who
+        watch it in the group finder."""
         for member in list(party.members):
             session = self.session_of(member.account_lo)
             if session:
                 session.send_all(session.party_messages())
+        self.notify_watchers(party)
+
+    def notify_watchers(self, party: Party) -> None:
+        """52301 refreshes a watched group while it looks for players; 52302 drops a group that
+        stopped, from the client's watched list."""
+        open_group = party.listing is not None and party.searching
+        for session in list(self.social.sessions.values()):
+            if party.party_id not in session.watched_groups:
+                continue
+            if open_group:
+                session.send(GROUPS, 52301, {"+0x78": self.social.group(party)})
+            else:
+                session.watched_groups.discard(party.party_id)
+                session.send(GROUPS, 52302, {"+0x78": id16(*party.party_id)})
 
     # --- connections ---------------------------------------------------------------------------
 

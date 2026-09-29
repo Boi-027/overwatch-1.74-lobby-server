@@ -24,17 +24,23 @@ class LobbyMatchTests(unittest.TestCase):
         self.matches = MatchManager(Path(self.tmp.name), base_port=0)
         self.addCleanup(self.matches.close)
         self.schemas = Schemas()
+        account = SimpleNamespace(name="Alpha", profile=Profile(player_name="Alpha"), account_lo=1)
+        party = SimpleNamespace(queue=None, roles={}, members=[account])
         server = SimpleNamespace(
             matches=self.matches,
             schemas=self.schemas,
             state_lock=threading.RLock(),
             router=build_router(),
             recorder=SimpleNamespace(record=lambda *args: None),
+            social=SimpleNamespace(party_of=lambda account: party),
+            notify_party=lambda party: None,
+            content=SimpleNamespace(arcade=SimpleNamespace(has_roles=lambda card: False)),
+            session_of=lambda account_lo: self.session,
         )
         self.session = Session(server, None, None, 5)
-        self.session.account = SimpleNamespace(name="Alpha", profile=Profile(player_name="Alpha"))
+        self.session.account = account
         self.session.logged_in = True
-        self.session.log = lambda text: None
+        self.session.log = lambda *args: None
         self.session.announce([QUEUE, CUSTOM])
 
     def test_captured_practice_request_allocates_real_server(self):

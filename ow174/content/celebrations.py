@@ -18,10 +18,9 @@ from ow174.catalog.events import (
 )
 from ow174.catalog.items import UNLOCK_BASE, ItemDB, Unlock
 from ow174.catalog.templates import RetailTemplates
-from ow174.content.clock import server_time, stu_datetime
+from ow174.content.clock import DAY, server_time, stu_datetime
 from ow174.jam.groups import EVENTS, IN_CONNECT
 
-DAY = 86400
 # Every event looks like it started two days ago and runs for another year.
 EVENT_STARTED_DAYS_AGO = 2
 EVENT_ENDS_IN_DAYS = 365
@@ -40,10 +39,13 @@ class Celebrations:
     def records(self, profile: Profile) -> dict:
         """38900: one record per active event, plus one for the selected hero challenge."""
         now = server_time(profile)
+        rewards = self.challenge_rewards(profile)
+        challenge = _challenge(profile).celebration if rewards else None
         records = []
         for event in active_events(profile.events):
-            records.append(self._record(event, now))
-        rewards = self.challenge_rewards(profile)
+            # The challenge record stands for an event of the same celebration (Reaper's).
+            if event.celebration != challenge:
+                records.append(self._record(event, now))
         if rewards:
             records.append(self._challenge_record(profile, rewards, now))
         return {"+0x78": records}

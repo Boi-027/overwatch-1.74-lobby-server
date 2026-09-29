@@ -27,6 +27,9 @@ def open_box(session: Session, value: dict) -> None:
     session.send(PROGRESSION_IN, 24307, {"+0x78": session.profile.credits})
     descriptions = []
     for drop in opening.drops:
+        if "amount" in drop:
+            descriptions.append(f"{drop['amount']} credits")
+            continue
         description = server.items.describe(drop["unlock"])
         if drop["duplicate"]:
             description += f" (dup +{drop['credits']})"
@@ -61,8 +64,9 @@ def _is_icon(server, guid: int) -> bool:
 
 
 @routes.on(GALLERY_OUT, 24501)
-def gallery_purchase(session: Session, value: dict) -> None:
-    purchase(session, value.get("+0x80", 0))
+def item_seen(session: Session, value: dict) -> None:
+    """The player looked at an item marked new. The client clears the mark itself and needs no
+    answer; it sends these in bursts of hundreds when a gallery page opens."""
 
 
 @routes.on(PROGRESSION_OUT, 24203)
@@ -82,7 +86,10 @@ def purchase(session: Session, guid: int) -> None:
     except ShopError as error:
         session.log(f"[<<<] Purchase {server.items.describe(guid)} refused: {error}")
         return
-    session.send(*server.content.collection.unlock_granted(guid))
+    also = [int(pair, 16) for pair in receipt["also"]]  # the other skin of a team skin pair
+    session.send(*server.content.collection.unlock_bought(guid))
+    for pair in also:
+        session.send(*server.content.collection.unlock_granted(pair))
     # 24300 carries all three balances. A credits-only update would leave the league token and
     # competitive point counters stale.
     session.send(PROGRESSION_IN, 24300, server.content.collection.progression(profile))
@@ -91,3 +98,5 @@ def purchase(session: Session, guid: int) -> None:
         f"[>>>] Purchased {server.items.describe(guid)} for {receipt['price']} {currency}, "
         f"balance {getattr(profile, currency)}"
     )
+    for pair in also:
+        session.log(f"[>>>] Came with it: {server.items.describe(pair)}")

@@ -1,8 +1,9 @@
 """Opening loot boxes against the real 1.74 catalog.
 
 Every store entry in the hero and account catalogs has a price and an event: 0 for the base pool,
-1-6 for a seasonal event, -1 for items that never drop from boxes. Rarity and item type come from
-the extracted unlock list in ItemDB.
+1-6 for a seasonal event, -1 for items that never drop from boxes (challenge rewards among them).
+Icons have no price, as the game never sold them, but they drop. Rarity and item type come from the
+extracted unlock list in ItemDB.
 """
 
 import logging
@@ -18,11 +19,23 @@ log = logging.getLogger(__name__)
 
 DUPLICATE_CREDITS = {"Common": 5, "Rare": 15, "Epic": 50, "Legendary": 200}
 LOOTABLE_TYPES = {"Skin", "Emote", "VictoryPose", "VoiceLine", "Spray", "HighlightIntro", "Icon"}
-# Chance of each rarity for an ordinary slot, and for the one slot that is guaranteed to be better
-SLOT_ODDS = (("Legendary", 0.03), ("Epic", 0.07), ("Rare", 0.30))
-GUARANTEED_ODDS = (("Legendary", 0.06), ("Epic", 0.14))
+# Chance of each rarity for an ordinary slot, and for the one slot that is at least rare. They give
+# the odds of the game's own "average chance from containers" screen for a whole box: some common
+# item 99%, rare 94% (here 95%), epic 18.5%, legendary 7.5%.
+SLOT_ODDS = (("Legendary", 0.0193), ("Epic", 0.0498), ("Rare", 0.10))
+GUARANTEED_ODDS = (("Legendary", 0.0193), ("Epic", 0.0498))
 SLOTS_PER_BOX = 4
 LOW_STOCK = 5  # a profile with fewer boxes left is refilled with the starter set
+# Credits drop in place of an item of the same rarity (STUUnlock_Currency 0A5/088B-088D; 500 is the
+# chest full of coins), so a box keeps the rarity odds of the game's odds screen. Retail's share of
+# credits in a rarity is not known: here half of the legendary slots hold the 500 (as often as a
+# legendary item) and 1 in 20 rare or epic slots holds 50 or 150.
+CREDIT_DROPS = {
+    "Rare": (0x025000000000088B, 50),
+    "Epic": (0x025000000000088C, 150),
+    "Legendary": (0x025000000000088D, 500),
+}
+CREDIT_SHARE = {"Rare": 0.05, "Epic": 0.05, "Legendary": 0.5}
 
 
 @dataclass
@@ -88,6 +101,31 @@ def _roll_slot_events(event: int) -> list[int]:
     return events
 
 
+def _roll_credits(rarity: str, slot_event: int, promised: bool) -> tuple | None:
+    """The (currency unlock, amount) a slot gives instead of an item of its rarity, if any. Never in
+    an event slot, nor in place of the legendary item a legendary box promises."""
+    if slot_event or promised or rarity not in CREDIT_SHARE:
+        return None
+    if random.random() < CREDIT_SHARE[rarity]:
+        return CREDIT_DROPS[rarity]
+    return None
+
+
+def _credit_drop(guid: int, amount: int, order: int, rarity: str) -> dict:
+    """A slot that gave credits. The client takes the amount from the currency unlock."""
+    return {
+        "hero": 0,
+        "unlock": guid,
+        "credits": 0,
+        "order": order,
+        "highlight": 0,
+        "duplicate": False,
+        "new": False,
+        "rarity": rarity,
+        "amount": amount,
+    }
+
+
 def _count_stats(profile: Profile, rarities: list[str], credits: int) -> None:
     stats = profile.stats
     stats["boxes_opened"] = stats.get("boxes_opened", 0) + 1
@@ -116,13 +154,18 @@ class LootBoxEngine:
     def __init__(self, collection: Collection, items: ItemDB) -> None:
         self._collection = collection
         self._pools: dict[tuple[int, str], list[int]] = {}  # (event, rarity) -> item GUIDs
+        self._hero_pools: dict[tuple[str, str], list[int]] = {}  # (hero, rarity) -> item GUIDs
         for guid, entry in collection.store_entries.items():
             event = entry["+0x16"]
             price = entry["+0x14"]
             unlock = items.get(guid)
-            if event < 0 or price <= 0 or unlock is None or unlock.type not in LOOTABLE_TYPES:
+            if event < 0 or unlock is None or unlock.type not in LOOTABLE_TYPES:
+                continue
+            if price <= 0 and unlock.type != "Icon":
                 continue
             self._pools.setdefault((event, unlock.rarity), []).append(guid)
+            if event == 0 and unlock.hero:
+                self._hero_pools.setdefault((unlock.hero, unlock.rarity), []).append(guid)
         sizes = {}
         for (event, rarity), pool in sorted(self._pools.items()):
             sizes[f"{event}/{rarity}"] = len(pool)
@@ -147,26 +190,46 @@ class LootBoxEngine:
                 return random.choice(unowned)
         return random.choice(pools[0])
 
-    def open(self, box_id: int, profile: Profile) -> BoxOpening:
+    def _pick_hero_item(self, hero: str, rarity: str, is_owned) -> int:
+        """An item for a hero's box (the Wrecking Ball box), which only holds that hero's items from
+        the base pool. It prefers items the player does not own yet, like _pick."""
+        pool = self._hero_pools[(hero, rarity)]
+        unowned = [guid for guid in pool if not is_owned(guid)]
+        return random.choice(unowned or pool)
+
+    def open(self, box_id: int, profile: Profile, refill: bool = True) -> BoxOpening:
         """Open a box: remove it from the profile, add the drops and credits, update the stats.
+        Without `refill` a low stock stays low.
 
         The caller saves the profile.
         """
         box_type, box_name = _take_box(profile, box_id)
         kind = BOX_TYPES.get(box_type)
         event = kind.event if kind else 0
+        hero = kind.hero if kind else ""
         rarities = _roll_slot_rarities(always_legendary=bool(kind and kind.legendary))
         events = _roll_slot_events(event)
+        promised = rarities.index("Legendary") if kind and kind.legendary else None
 
-        owned = profile.unlocked_guids()
+        # Worked out once per box: asking the collection for each candidate made a box take seconds.
+        owned = self._collection.owned_set(profile)
 
         def is_owned(guid: int) -> bool:
-            return guid in owned or self._collection.owns(profile, guid)
+            return profile.unlock_all or guid in owned
 
         drops = []
         credits = 0
         for order, (rarity, slot_event) in enumerate(zip(rarities, events, strict=True)):
-            guid = self._pick(slot_event, rarity, is_owned)
+            credit = _roll_credits(rarity, slot_event, order == promised)
+            if credit:
+                guid, amount = credit
+                profile.credits += amount
+                drops.append(_credit_drop(guid, amount, order, rarity))
+                continue
+            if hero:
+                guid = self._pick_hero_item(hero, rarity, is_owned)
+            else:
+                guid = self._pick(slot_event, rarity, is_owned)
             duplicate = is_owned(guid)
             duplicate_credits = DUPLICATE_CREDITS[rarity] if duplicate else 0
             credits += duplicate_credits
@@ -188,5 +251,17 @@ class LootBoxEngine:
 
         profile.credits += credits
         _count_stats(profile, rarities, credits)
-        _refill_if_low(profile)
+        if refill:
+            _refill_if_low(profile)
         return BoxOpening(drops, box_name)
+
+    def open_all(self, profile: Profile) -> tuple[int, list[int]]:
+        """Open every box, as the move to Overwatch 2 did. Returns how many were opened and the
+        items that were new."""
+        granted = []
+        box_ids = [box["id"] for box in profile.loot_boxes]
+        for box_id in box_ids:
+            for drop in self.open(box_id, profile, refill=False).drops:
+                if drop["new"]:
+                    granted.append(drop["unlock"])
+        return len(box_ids), granted

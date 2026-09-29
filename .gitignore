@@ -25,6 +25,7 @@ profile.json
 profile.*.json
 profiles/
 game_path.txt
+server_address.txt
 game/
 
 # Logs and research output

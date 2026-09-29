@@ -111,6 +111,26 @@ class RunningCopyTests(TempDirTest):
         self.assertEqual(killed, ["10"])
         self.assertEqual(sorted(running), [11, 12])
 
+    def test_a_copy_that_does_not_close_is_forced(self):
+        # The normal close lets the game save its settings; a copy stuck on a dialog is forced.
+        ours = self.make_game()
+        running = {10: str(ours)}
+        commands = []
+
+        def taskkill(command, **kwargs):
+            commands.append(command[1:])
+            if "/F" in command:
+                running.pop(int(command[-1]), None)
+
+        with (
+            patch.object(game.inject, "find_pids", side_effect=lambda name: sorted(running)),
+            patch.object(game.inject, "image_path", side_effect=running.get),
+            patch.object(game.subprocess, "run", side_effect=taskkill),
+        ):
+            game.close_running_copy(ours, patience=0.1)
+        self.assertEqual(commands, [["/PID", "10"], ["/F", "/PID", "10"]])
+        self.assertEqual(running, {})
+
     def test_nothing_is_closed_when_only_another_overwatch_is_running(self):
         with (
             patch.object(game.inject, "find_pids", return_value=[11]),

@@ -139,12 +139,20 @@ def close_running_copy(game: Path, patience: float = 6.0) -> None:
         raise LaunchError(f"Cannot check for a running Overwatch: {error}") from error
     if others:
         log.info("Another Overwatch is running (PID %s); leaving it alone.", ", ".join(map(str, others)))
-    for pid in ours:
-        log.info("Closing the Overwatch left from the last run (PID %d)...", pid)
-        subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True)
-    deadline = time.monotonic() + patience
-    while ours and running_copies(game)[0] and time.monotonic() < deadline:
-        time.sleep(0.3)
+    # A normal close first: the game writes its settings file (Documents\Overwatch\Settings) only
+    # when it exits by itself. It is forced only if it is still running after that.
+    for force in (False, True):
+        if not ours:
+            return
+        for pid in ours:
+            log.info(
+                "%s the Overwatch left from the last run (PID %d)...", "Forcing" if force else "Closing", pid
+            )
+            subprocess.run(["taskkill", *(["/F"] if force else []), "/PID", str(pid)], capture_output=True)
+        deadline = time.monotonic() + patience
+        while running_copies(game)[0] and time.monotonic() < deadline:
+            time.sleep(0.3)
+        ours = running_copies(game)[0]
 
 
 def running_copies(game: Path) -> tuple[list[int], list[int]]:
@@ -168,7 +176,7 @@ def _same_file(path: str | None, other: Path) -> bool:
 
 
 def start_game(game: Path, arguments: list[str], locale: str = "auto") -> subprocess.Popen:
-    command = [str(game), *arguments, "--console"]
+    command = [str(game), *arguments]
     language = game_locale(game, locale)
     if language:
         command.append(f"--tank_Locale={language}")

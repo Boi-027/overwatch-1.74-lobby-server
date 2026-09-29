@@ -122,14 +122,14 @@ def main():
             if f[0] == 0:
                 continue
             crc = crc_at[f[0]]
-            mid = schemas.base(crc) + f[1]
+            mid, body = schemas.split(crc, f)
             try:
-                v = schemas.decode(crc, mid, f[2:])
+                v = schemas.decode(crc, mid, body)
                 ok += 1
-                print(f"  OK  {crc:08X}/{mid} {len(f) - 2:6d}B  {str(to_jsonable(v))[:110]}")
+                print(f"  OK  {crc:08X}/{mid} {len(body):6d}B  {str(to_jsonable(v))[:110]}")
             except (DecodeError, KeyError, struct.error) as e:
                 bad += 1
-                print(f"  BAD {crc:08X}/{mid} {len(f) - 2:6d}B  {e}")
+                print(f"  BAD {crc:08X}/{mid} {len(body):6d}B  {e}")
         return ok, bad
 
     print("login:")
@@ -155,10 +155,7 @@ def main():
         bytes([wire_of[0xB68870B8], 0])
         + schemas.encode(0xB68870B8, 24500, {"+0x78": 0, "+0x80": top500, "+0x88": 0})
     )
-    c.send(
-        bytes([wire_of[0xB68870B8], 1])
-        + schemas.encode(0xB68870B8, 24501, {"+0x78": genji, "+0x80": illidan})
-    )
+    c.send(bytes([wire_of[0x7F4F46CB], 3]) + schemas.encode(0x7F4F46CB, 24203, {"+0x78": illidan}))
     c.send(
         bytes([wire_of[0x75D32AE2], 6])
         + schemas.encode(

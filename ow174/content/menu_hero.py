@@ -1,8 +1,9 @@
 """The hero that stands in the main menu.
 
-A profile can ask for a hero by name, "random", "none", or a PvE character. PvE characters are not
-in the hero catalog, so they are sent through a retail config key that can put any loaded hero
-record in the menu (see MENU_HERO_KEY). They have no lobby idle animation and stand in a bind pose.
+A profile can ask for a hero by name, "random", "none", or a PvE character. A picked hero goes to
+the client through a retail config key that can put any loaded hero record in the menu
+(MENU_HERO_KEY). The client applies it live, so a dashboard change shows at once. PvE characters
+have no lobby idle animation and stand in a bind pose.
 """
 
 import random
@@ -44,6 +45,7 @@ class MenuHero:
         self._collection = collection
         self._items = items
         self._random_picks: dict[str, int] = {}  # player name -> hero, kept until the next login
+        self._last_choice: dict[str, str] = {}  # player name -> lobby_hero seen last time
 
     def choose(self, profile: Profile) -> int:
         """The hero GUID for the party card and career stats, or 0 for "none".
@@ -51,6 +53,9 @@ class MenuHero:
         A PvE character is not a catalog hero, so it gets the random pick here.
         """
         choice = (profile.lobby_hero or "random").strip()
+        if self._last_choice.get(profile.player_name) != choice:
+            self._last_choice[profile.player_name] = choice
+            self.reroll(profile)  # switching to "random" picks a new hero
         if choice.lower() == "none":
             return 0
         if choice.lower() != "random":
@@ -58,6 +63,19 @@ class MenuHero:
             if hero in self._collection.default_loadouts:
                 return hero
         return self._random_picks.setdefault(profile.player_name, random.choice(self._collection.heroes))
+
+    def menu_guid(self, profile: Profile) -> int | None:
+        """The hero record to put in the menu through MENU_HERO_KEY, or None to leave it alone.
+
+        Only a hero the player picked goes through the key. With "random" or "none" the menu keeps
+        what the event scene brings, such as the OWL lobby's Genji.
+        """
+        npc = pve_character(profile)
+        if npc:
+            return npc
+        if (profile.lobby_hero or "random").strip().lower() in ("random", "none"):
+            return None
+        return self.choose(profile) or None
 
     def reroll(self, profile: Profile) -> None:
         """Forget the random pick, so the next choose() picks again."""

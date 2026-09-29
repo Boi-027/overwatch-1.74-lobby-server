@@ -50,8 +50,6 @@ ConnectResponse = message_class("bgs.protocol.connection.v1.ConnectResponse")
 
 LogonRequest = message_class("bgs.protocol.authentication.v1.LogonRequest")
 LogonResult = message_class("bgs.protocol.authentication.v1.LogonResult")
-VerifyWebCredentialsRequest = message_class("bgs.protocol.authentication.v1.VerifyWebCredentialsRequest")
-ChallengeExternalRequest = message_class("bgs.protocol.challenge.v1.ChallengeExternalRequest")
 
 ProcessTaskRequest = message_class("bgs.protocol.game_utilities.v2.client.ProcessTaskRequest")
 ProcessTaskResponse = message_class("bgs.protocol.game_utilities.v2.client.ProcessTaskResponse")

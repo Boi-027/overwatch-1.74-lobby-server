@@ -5,49 +5,46 @@ Ports:
          open without answering, so the client's TLS stream stays alive until the injected relay DLL
          swaps it for a plaintext pipe.
   21119  BGS RPC over WebSocket; the relay pipes the plaintext here.
-  6969   the web-auth login form.
 """
 
 import asyncio
 import logging
 import threading
+from collections.abc import Callable
 from concurrent.futures import Future
 
-from ow174.bnet.rpc_server import BNetRpcServer
-from ow174.bnet.webauth import start_web_server
+from ow174.bnet.rpc_server import BNetRpcServer, Player
 
 log = logging.getLogger("ow174.bnet")
 
 STALL_PORT = 1119
 RPC_PORT = 21119
-WEB_PORT = 6969
 
 
 def start_bnet(
-    host: str = "127.0.0.1", ports: tuple[int, int, int] = (STALL_PORT, RPC_PORT, WEB_PORT)
+    player: Callable[[], Player],
+    host: str = "127.0.0.1",
+    ports: tuple[int, int] = (STALL_PORT, RPC_PORT),
 ) -> None:
-    """Start the emulator in a background thread and return once its (stall, RPC, web) ports are bound.
+    """Start the emulator in a background thread and return once its (stall, RPC) ports are bound.
 
-    Raises OSError when a port is taken.
+    `player` gives the Player the client logs in as. Raises OSError when a port is taken.
     """
     ready: Future = Future()
-    threading.Thread(target=asyncio.run, args=(_serve(host, ports, ready),), daemon=True, name="bnet").start()
+    serve = _serve(player, host, ports, ready)
+    threading.Thread(target=asyncio.run, args=(serve,), daemon=True, name="bnet").start()
     ready.result()
 
 
-async def _serve(host: str, ports: tuple[int, int, int], ready: Future) -> None:
-    stall_port, rpc_port, web_port = ports
-    web = stall = None
+async def _serve(player: Callable[[], Player], host: str, ports: tuple[int, int], ready: Future) -> None:
+    stall_port, rpc_port = ports
+    stall = None
     try:
-        web = start_web_server(host, web_port)
         stall = await asyncio.start_server(_hold_open, host, stall_port)
-        rpc = await BNetRpcServer(host, rpc_port).start()
+        rpc = await BNetRpcServer(host, rpc_port, player=player).start()
     except OSError as error:
         if stall:
             stall.close()
-        if web:
-            web.shutdown()
-            web.server_close()
         ready.set_exception(error)
         return
     log.info("[stall] holding client dials on %s:%d", host, stall_port)

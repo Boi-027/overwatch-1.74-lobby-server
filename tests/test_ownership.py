@@ -81,6 +81,38 @@ class OwnershipRoutingTests(unittest.TestCase):
     def test_not_granted_icon_is_not_owned(self):
         self.assertFalse(self.collection.owns(Profile(), AURISA))
 
+    def test_items_added_after_the_capture_belong_to_their_hero(self):
+        # Luchador and Dusk (Reaper) and Happi (Genji) came out after the 1.68 capture. Without a hero
+        # the client never counted them as owned and hid them from the hero gallery.
+        reaper = self.items.hero_by_name("Reaper")
+        profile = self.grant(unlock_all=True)
+        for guid in (0x0250000000004F53, 0x0250000000004DC7):
+            self.assertEqual(self.collection.hero_of.get(guid), reaper, hex(guid))
+            self.assertIn(guid, self.collection.owned_for_hero(profile, reaper))
+        missing = [
+            unlock.name
+            for unlock in self.items.unlocks.values()
+            if unlock.hero and unlock.name and unlock.guid not in self.collection.hero_of
+        ]
+        self.assertEqual(missing, [])
+
+    def test_items_added_after_the_capture_are_in_their_hero_store(self):
+        # The hero gallery only shows items from the hero's store list in 24900.
+        catalog = self.collection.hero_catalog(self.grant(unlock_all=True))
+        reaper = self.items.hero_by_name("Reaper")
+        (store,) = [store for store in catalog["+0x98"] if store["+0x18"] == reaper]
+        entries = {entry["+0x0"]: entry for entry in store["+0x0"]}
+        luchador = entries[0x0250000000004F53]
+        self.assertEqual((luchador["+0x14"], luchador["+0x16"]), (0, -1))  # no price, never in boxes
+        # Tested in game: with the default items' flags (+0x10 0, +0x17 true) the hero's count stayed
+        # at 0 with Luchador owned. Contenders Away (not sold either) counts.
+        (contenders,) = [
+            entries[u.guid]
+            for u in self.items.unlocks.values()
+            if (u.hero, u.name) == ("Reaper", "Contenders Away")
+        ]
+        self.assertEqual((luchador["+0x10"], luchador["+0x17"]), (contenders["+0x10"], contenders["+0x17"]))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,10 +2,12 @@
 
 import time
 
-from ow174.accounts.profile import Profile
+from ow174.accounts.profile import Profile, battle_tag
+from ow174.catalog.regions import game_region_number, region_of
 from ow174.content.collection import Collection
 from ow174.content.identity import Identity
 from ow174.content.menu_hero import MenuHero
+from ow174.content.ranked import Ranked
 from ow174.jam.codec import Schemas
 from ow174.jam.groups import ENDORSEMENTS, LOBBY
 from ow174.jam.values import id16
@@ -32,17 +34,45 @@ SAVED_SETTINGS = ("+0x78", "+0x108", "+0x10D", "+0x120", "+0x130")
 # Byte 5 of +0x10D says who may whisper: 0 nobody, 2 friends, anything else everyone.
 # The client hides incoming whispers while it is 0, which is the schema default.
 WHISPERS_FROM_EVERYONE = 1
+# +0x130 holds values [{+0x0 value, +0x8 key}], a key being (type table << 16) | identifier
+# (0x7FF7893512B0). While key B03A of table E0 is above 0, the login popups graph (01B/0C75)
+# shows "N of your containers were opened" (05A/07D9, the move to Overwatch 2) on the main menu,
+# and Continue sets it to -1 (22204).
+BOXES_OPENED_KEY = (0xE0 << 16) | 0xB03A
+
+
+def set_saved_value(profile: Profile, key: int, value: int) -> None:
+    """Set one of the values in 20802 +0x130."""
+    values = [entry for entry in profile.settings.get("+0x130", []) if entry.get("+0x8") != key]
+    values.append({"+0x0": value, "+0x8": key})
+    profile.settings["+0x130"] = values
+
+
+# The three endorsement categories (STUIdentifier 01C, from 054/0x168 in the client data) and how
+# many endorsements each one has. The ring around the level shows each category's share in its
+# color, and stays grey when the list is empty.
+ENDORSEMENT_CATEGORIES = {
+    0x0D80000000003946: 40,  # sportsmanship, green
+    0x0D80000000003945: 35,  # good teammate, purple
+    0x0D80000000003944: 25,  # shot caller, orange
+}
 
 
 def endorsement(level: int) -> dict:
-    return {"+0x0": [], "+0x18": level}
+    counts = [{"+0x0": category, "+0x8": count} for category, count in ENDORSEMENT_CATEGORIES.items()]
+    return {"+0x0": counts, "+0x18": level}
+
+
+# 20812 in the capture.
+RETAIL_UX_STATES = {0: 2, 4: 0}
 
 
 class PlayerMessages:
-    def __init__(self, schemas: Schemas, collection: Collection, menu_hero: MenuHero) -> None:
+    def __init__(self, schemas: Schemas, collection: Collection, menu_hero: MenuHero, ranked: Ranked) -> None:
         self._schemas = schemas
         self._collection = collection
         self._menu_hero = menu_hero
+        self._ranked = ranked
 
     def record(self, profile: Profile, identity: Identity) -> dict:
         """The player card: ids, icon, portrait frame, level and name."""
@@ -54,7 +84,7 @@ class PlayerMessages:
             "+0x30": int(time.time()),
             "+0x38": profile.level,
             "+0x3C": 1,
-            "+0x40": profile.player_name,
+            "+0x40": battle_tag(profile.player_name, identity.account_lo),
         }
 
     def hello(self, profile: Profile, identity: Identity) -> dict:
@@ -63,19 +93,21 @@ class PlayerMessages:
             "+0x78": identity.account,
             "+0x88": identity.account,
             "+0x98": {"+0x0": list(identity.session)},
-            "+0xA8": profile.player_name,
-            "+0xD0": profile.player_name,
-            "+0xF8": "",
+            "+0xA8": battle_tag(profile.player_name, identity.account_lo),
+            "+0xD0": battle_tag(profile.player_name, identity.account_lo),
+            "+0xF8": region_of(profile.region).country,
             "+0x120": "",
+            "+0x14C": game_region_number(profile.game_region),
+            "+0x150": game_region_number(profile.game_region),
         }
 
-    def party_member(self, profile: Profile, identity: Identity, hero: int) -> dict:
+    def party_member(self, profile: Profile, identity: Identity, hero: int, leader: bool) -> dict:
         skin = 0
         if hero:
             skin = self._collection.loadout(profile, hero).get("+0x38", 0)
         return {
             "+0x0": self.record(profile, identity),
-            "+0x68": [],
+            "+0x68": self._ranked.party_ratings(profile),
             "+0x80": endorsement(profile.endorsement_level),
             "+0xA0": [],
             "+0xB8": hero,
@@ -83,7 +115,7 @@ class PlayerMessages:
             "+0xC8": [],
             "+0xE0": 5,
             "+0xE1": 0,
-            "+0xE2": True,
+            "+0xE2": leader,  # only the party leader has it; with it on everyone, all showed as leader
         }
 
     def party_state(self, profile: Profile, identity: Identity, hero: int) -> dict:
@@ -96,11 +128,12 @@ class PlayerMessages:
         Without a hero, each member shows their own menu hero.
         """
         member_records = []
-        for member_profile, member_identity in members:
+        for index, (member_profile, member_identity) in enumerate(members):
             member_hero = hero
             if member_hero is None:
                 member_hero = self._menu_hero.choose(member_profile)
-            member_records.append(self.party_member(member_profile, member_identity, member_hero))
+            leader = index == 0
+            member_records.append(self.party_member(member_profile, member_identity, member_hero, leader))
         return {
             "+0x78": {
                 "+0x0": member_records,
@@ -145,6 +178,15 @@ class PlayerMessages:
             (ENDORSEMENTS, 52005, own_endorsement),
             (ENDORSEMENTS, 52006, {"+0x78": []}),
         ]
+
+    def ux_states(self, profile: Profile) -> dict:
+        """20812: the interface states the client saved with 22207 (a dialog seen, "don't show
+        again", ...), over the capture's. The client keeps them as index -> value
+        (0x7FF789535EB0) and reads a missing one as 0."""
+        states = dict(RETAIL_UX_STATES)
+        for index, value in (profile.ux_states or {}).items():
+            states[int(index)] = value
+        return {"+0x78": [{"+0x0": value, "+0x4": index} for index, value in sorted(states.items())]}
 
     def settings(self, profile: Profile) -> dict:
         """20802: the player's saved settings, with defaults for the parts never saved."""
