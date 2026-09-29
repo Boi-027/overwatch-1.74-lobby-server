@@ -16,7 +16,7 @@ To switch modes, close the game and the black window, then start `START.bat` aga
 - **Retail**: the full main menu with a hero in the lobby.
 - **Tournament**: a simpler menu without the hero.
 - **Server only**: only the server. You start the game yourself.
-- **Join a server**: play on someone else's server. Type its address, like `136.243.156.120:12357`. The next time, Enter reuses it.
+- **Join a server**: play on someone else's server. Type its address, like `1.2.3.4:12357`. The next time, Enter reuses it.
 
 ## Host a server for others
 
@@ -24,7 +24,7 @@ To switch modes, close the game and the black window, then start `START.bat` aga
 START.bat --mode server --host 0.0.0.0 --port 12357
 ```
 
-Open that port in your firewall and router, and give players your address, for example `136.243.156.120:12357`. They choose **Join a server** in `START.bat`. Players join in tournament mode. The dashboard stays reachable only on your own computer.
+Open that port in your firewall and router, and give players your address, for example `1.2.3.4:12357`. They choose **Join a server** in `START.bat`. Players join in tournament mode. The dashboard stays reachable only on your own computer.
 
 Anyone can log in with any name, so a player can take another player's name.
 

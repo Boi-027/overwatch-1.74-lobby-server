@@ -45,9 +45,9 @@ class JoinTests(unittest.TestCase):
             return cli.ask_server(self.saved)
 
     def test_server_addresses(self):
-        self.assertTrue(cli.is_server_address("136.243.156.120:12357"))
+        self.assertTrue(cli.is_server_address("1.2.3.4:12357"))
         self.assertTrue(cli.is_server_address("lobby.example.org:3724"))
-        for text in ("", "136.243.156.120", ":12357", "1.2.3.4:port", "1.2.3.4:0", "1.2.3.4:70000", "a b:1"):
+        for text in ("", "1.2.3.4", ":12357", "1.2.3.4:port", "1.2.3.4:0", "1.2.3.4:70000", "a b:1"):
             self.assertFalse(cli.is_server_address(text), text)
 
     def test_the_address_is_remembered_and_enter_reuses_it(self):
