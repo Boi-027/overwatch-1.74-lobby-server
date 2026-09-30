@@ -31,7 +31,12 @@ ONLINE_BOOL = b"\x10\x01"
 
 # The status dropdown (message 27011 +0x78): its value maps to how friends see the player.
 STATUS_ONLINE, STATUS_AWAY, STATUS_BUSY, STATUS_OFFLINE = 1, 2, 3, 4
-STATUS_NAMES = {STATUS_ONLINE: "online", STATUS_AWAY: "away", STATUS_BUSY: "busy", STATUS_OFFLINE: "appear offline"}
+STATUS_NAMES = {
+    STATUS_ONLINE: "online",
+    STATUS_AWAY: "away",
+    STATUS_BUSY: "busy",
+    STATUS_OFFLINE: "appear offline",
+}
 
 # Confirmed live against the client: away is the game-account bool (group 2, field 10), which the
 # capture carries as false; busy is an account-wide bool (group 1, field 11) not in the capture, so it
@@ -75,9 +80,12 @@ def _encode_varint(value: int) -> bytes:
 def _field_key(group: int, field: int) -> bytes:
     """A presence field key {program "BN", group, field, index 0}, for a field not in the capture."""
     return (
-        b"\x08" + _encode_varint(PRESENCE_PROGRAM)
-        + b"\x10" + _encode_varint(group)
-        + b"\x18" + _encode_varint(field)
+        b"\x08"
+        + _encode_varint(PRESENCE_PROGRAM)
+        + b"\x10"
+        + _encode_varint(group)
+        + b"\x18"
+        + _encode_varint(field)
         + b"\x20\x00"
     )
 
