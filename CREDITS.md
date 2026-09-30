@@ -9,6 +9,7 @@ This repository builds on existing Overwatch preservation work. Its lobby improv
 
 ## Protocol research and shared findings
 
+- **Xref** — big thanks for sharing a knowledge base of captured Overwatch 2 game traffic and research on the 1.74 game server. It gave us the facts behind the game server, matchmaking and hero select, and saved a lot of time.
 - **The AyakaPS Discord community** — fellow Overwatch researchers who share findings, information and research with one another. Thanks to the members whose shared work helped this project.
 - **Logo2K, a researcher in the AyakaPS community** — shared research notes and a lobby-map reference:
   - [Overwatch 1.74 lobby research](https://rentry.co/3bswrgmw#overwatch-174-lobby-protocol-channel-setup-login-and-loot-boxes)
