@@ -46,7 +46,7 @@ SCENARIOS = {
     },
 }
 # Parts of the snapshot that belonged to code removed as dead (nothing called it)
-REMOVED_PARTS = {"name_reply"}
+REMOVED_PARTS = {"name_reply", "notifications"}
 
 
 def canonical(value):
@@ -78,7 +78,7 @@ def build_all(content: Content, profile: Profile) -> dict:
         ),
         "career": summarize(c.career.profile(profile, IDENT, TARGET)),
         "career_other": summarize(c.career.profile(profile, IDENT, {"+0x0": 5, "+0x8": 1})),
-        "notifications": summarize(c.celebrations.notifications(profile)),
+        "greetings": summarize(c.celebrations.greetings(profile)),
         "party": summarize([(0, 0, c.player.party_state(profile, IDENT, c.menu_hero.choose(profile)))]),
         "settings": summarize([(0, 0, c.player.settings(profile))]),
         "summary": summarize([(0, 0, c.player.summary(profile, IDENT))]),

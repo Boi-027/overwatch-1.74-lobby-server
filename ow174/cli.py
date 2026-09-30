@@ -18,9 +18,10 @@ from ow174.accounts.profile import load_or_create_profile
 from ow174.content.presence import PRO_ACCOUNT_BITS
 from ow174.dashboard.server import start_dashboard
 from ow174.launcher import LaunchError
-from ow174.launcher.game import close_running_copy, find_game, inject_relay, start_game
+from ow174.launcher.game import close_running_copy, find_game, start_game
 from ow174.launcher.relay import ensure_relay_dll
 from ow174.launcher.requirements import ensure_requirements
+from ow174.launcher.retail import RetailGames
 from ow174.lobby.research import watch_inject_file
 from ow174.lobby.server import LobbyServer
 from ow174.lobby.settings import Settings
@@ -37,7 +38,6 @@ Which mode?
   3  Server only: you start the game yourself
   4  Join a server: play on someone else's server
 """
-BNET_ADDRESS = "127.0.0.1:1119"
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -166,13 +166,12 @@ def run(args: argparse.Namespace) -> None:
         target=watch_inject_file, args=(server, settings.paths.inject_file), daemon=True, name="inject"
     ).start()
     if args.mode == "retail":
+        server.games = RetailGames(game, relay, args.locale, args.timeout)
         _start_bnet(server)
     _log_banner(server)
 
     if args.mode == "retail":
-        process = start_game(game, [f"--BNetServer={BNET_ADDRESS}"], args.locale)
-        base = inject_relay(process, relay, args.timeout)
-        log.info("[+] Relay loaded into Overwatch (PID %d) at 0x%X.", process.pid, base)
+        server.games.start()
     elif args.mode == "tournament":
         start_game(game, ["--tank_TournamentMode", f"--lobbyServer=127.0.0.1:{settings.port}"], args.locale)
     else:
@@ -209,11 +208,11 @@ def _bind(server: LobbyServer):
 def _start_bnet(server: LobbyServer) -> None:
     # These need the packages ensure_requirements installs.
     from ow174.bnet.rpc_server import Player
-    from ow174.bnet.service import start_bnet
+    from ow174.bnet.service import RPC_PORT, start_bnet
 
-    def player() -> Player:
+    def player(peer: tuple) -> Player:
         # Battle.net logs in as the account the lobby will use, with the ids its presence shows.
-        account = server.dashboard_account()
+        account = server.game_account(peer[1], RPC_PORT)
         return Player(account.account_lo, account.account_lo ^ PRO_ACCOUNT_BITS, account.battle_tag)
 
     try:

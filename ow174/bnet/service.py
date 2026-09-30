@@ -22,13 +22,14 @@ RPC_PORT = 21119
 
 
 def start_bnet(
-    player: Callable[[], Player],
+    player: Callable[[tuple], Player],
     host: str = "127.0.0.1",
     ports: tuple[int, int] = (STALL_PORT, RPC_PORT),
 ) -> None:
     """Start the emulator in a background thread and return once its (stall, RPC) ports are bound.
 
-    `player` gives the Player the client logs in as. Raises OSError when a port is taken.
+    `player` gives the Player a client logs in as, from the (host, port) of its RPC connection.
+    Raises OSError when a port is taken.
     """
     ready: Future = Future()
     serve = _serve(player, host, ports, ready)
@@ -36,7 +37,7 @@ def start_bnet(
     ready.result()
 
 
-async def _serve(player: Callable[[], Player], host: str, ports: tuple[int, int], ready: Future) -> None:
+async def _serve(player: Callable[[tuple], Player], host: str, ports: tuple[int, int], ready: Future) -> None:
     stall_port, rpc_port = ports
     stall = None
     try:

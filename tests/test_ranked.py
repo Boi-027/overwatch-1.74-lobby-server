@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ow174.accounts.profile import Profile
 from ow174.catalog.templates import RetailTemplates
 from ow174.content.clock import from_stu_datetime, server_time, stu_datetime
-from ow174.content.ranked import PC_PLATFORM, PC_POOL, TANK, Ranked
+from ow174.content.ranked import COMPETITIVE_CTF, LUCIO_CUP, PC_PLATFORM, PC_POOL, TANK, Ranked
 from ow174.jam.codec import Schemas
 from ow174.jam.groups import RANKED
 
@@ -120,6 +120,28 @@ class RankedTests(unittest.TestCase):
         seen = {card["+0x18"]: card["+0x2C"] for card in self.ranked.cards(profile)}
         self.assertEqual(seen[ROLE_QUEUE], True)
         self.assertEqual(seen[OPEN_QUEUE], False)
+
+    def test_an_event_card_runs_a_season_while_its_arcade_shows_it(self):
+        ranked = Ranked(self.templates)
+        ranked.event_cards = lambda profile: [LUCIO_CUP]  # the Summer Games
+        profile = Profile(server_date="2026-09-29", ratings={"lucio": 3300})
+        state = ranked.state(profile)
+        self.assertEqual({e["+0x0"] for e in state["+0xB0"]}, {ROLE_QUEUE, OPEN_QUEUE, LUCIO_CUP})
+        (season,) = [s for s in state["+0x98"] if s["+0x18"] == LUCIO_CUP]
+        self.assertLess(from_stu_datetime(season["+0x20"]["+0x0"]), server_time(profile))
+        self.assertGreater(from_stu_datetime(season["+0x30"]["+0x0"]), server_time(profile))
+        cards = {card["+0x18"]: card["+0x0"] for card in state["+0x80"]["+0x0"]}
+        self.assertEqual([r["+0x18"] for r in cards[LUCIO_CUP]], [3300])
+        self.assertNotIn(COMPETITIVE_CTF, cards)
+
+    def test_party_ratings_have_every_event_card(self):
+        # Events are per profile here; a member without a rating greys the card out for the group.
+        ranked = Ranked(self.templates)
+        ranked.event_cards = lambda profile: []
+        ratings = ranked.party_ratings(Profile(ratings={"lucio": 2800}))
+        cards = {card["+0x18"]: card["+0x0"] for card in ratings}
+        self.assertEqual(set(cards), {ROLE_QUEUE, OPEN_QUEUE, COMPETITIVE_CTF, LUCIO_CUP})
+        self.assertEqual([(r["+0x0"], r["+0x10"]) for r in cards[LUCIO_CUP]], [(0, 2800)])
 
     def test_the_state_fits_the_174_schema(self):
         schemas = Schemas()

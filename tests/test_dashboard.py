@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT))
 from ow174.accounts.profile import Profile, save_profile  # noqa: E402
 from ow174.accounts.registry import Accounts  # noqa: E402
 from ow174.catalog.boxes import BOX_TYPES  # noqa: E402
+from ow174.catalog.events import CHALLENGES  # noqa: E402
 from ow174.catalog.items import ItemDB  # noqa: E402
 from ow174.catalog.templates import RetailTemplates  # noqa: E402
 from ow174.content.collection import Collection  # noqa: E402
@@ -36,7 +37,7 @@ class Lobby:
         self.accounts.get("Beta")
         self.sessions = set()
         self.settings = SimpleNamespace(host="127.0.0.1", port=3724)
-        self.items = SimpleNamespace(hero_names={1: "Tracer"}, challenges=lambda: {})
+        self.items = SimpleNamespace(hero_names={1: "Tracer"}, get=lambda guid: None)
         self.content = SimpleNamespace(
             collection=SimpleNamespace(
                 default_loadouts={1: {}},
@@ -138,6 +139,17 @@ class DashboardTests(unittest.TestCase):
         profile = self.lobby.selected.profile
         self.assertEqual((profile.matches, profile.sms_protect, profile.season), ({"tank": 3}, False, 25))
         self.assertEqual(data["profile"]["matches_open"], 25)
+
+    def test_wins_count_for_the_top_500_but_never_pass_the_matches(self):
+        status, data = self.request("/api/update_profile", {"account": "Alpha", "wins_tank": 25})
+        self.assertEqual(status, 200)
+        self.assertEqual(self.lobby.selected.profile.wins, {"tank": 25})
+        self.assertEqual(data["profile"]["wins_damage"], 0)
+        status, _ = self.request("/api/update_profile", {"account": "Alpha", "wins_tank": 26})
+        self.assertEqual(status, 400)
+        status, _ = self.request("/api/update_profile", {"account": "Alpha", "matches_tank": 24})
+        self.assertEqual(status, 400)
+        self.assertEqual(self.lobby.selected.profile.wins, {"tank": 25})
 
     def test_invalid_profile_change_is_atomic_and_reported(self):
         before = self.lobby.selected.path.read_bytes()
@@ -345,10 +357,20 @@ class DashboardTests(unittest.TestCase):
         ids = {e["id"] for e in data["catalogs"]["events"]}
         self.assertTrue({"anniversary", "anniversary_remix_1", "anniversary_remix_2"} <= ids)
         # Events without a menu scene still bring their loot box and trophies; Tracer's has none.
-        self.assertTrue({"summer", "archives", "contenders"} <= ids)
+        self.assertTrue({"summer", "archives"} <= ids)
         self.assertNotIn("tracer_comic", ids)
         status, _ = self.request("/api/update_profile", {"account": "Alpha", "events": ["tracer_comic"]})
         self.assertEqual(status, 400)
+
+    def test_only_the_challenges_with_a_play_menu_banner_can_be_picked(self):
+        status, data = self.request("/api/state")
+        self.assertEqual([c["id"] for c in data["catalogs"]["challenges"]], list(CHALLENGES))
+        reaper = {"account": "Alpha", "challenge": "Reaper's Code of Violence Challenge"}
+        status, _ = self.request("/api/update_profile", reaper)
+        self.assertEqual(status, 400)
+        kanezaka = {"account": "Alpha", "challenge": "Kanezaka Challenge"}
+        status, _ = self.request("/api/update_profile", kanezaka)
+        self.assertEqual(status, 200)
 
 
 if __name__ == "__main__":

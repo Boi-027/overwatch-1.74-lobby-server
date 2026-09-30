@@ -1,4 +1,5 @@
-"""Battle.net logon: the client logs in at once as the dashboard's account, with no login form."""
+"""Battle.net logon: the client logs in at once, with no login form, as the account its connection
+belongs to."""
 
 import asyncio
 import sys
@@ -12,6 +13,7 @@ from ow174.bnet.rpc_server import BNetRpcServer, Player
 
 class FakeSession:
     def __init__(self):
+        self.peer = ("127.0.0.1", 50123)
         self.logs, self.notifications = [], []
 
     def log(self, text):
@@ -25,12 +27,19 @@ class FakeSession:
 
 
 class LogonTests(unittest.TestCase):
-    def test_logon_completes_at_once_as_the_dashboard_account(self):
+    def test_logon_completes_at_once_as_the_connections_account(self):
         header = P.Header()
         header.method_id = P.LOGON
         session = FakeSession()
-        server = BNetRpcServer(player=lambda: Player(0x15FF2EDE, 0x1EF42EDE, "Researcher#1214"))
+        peers = []
+
+        def player(peer):
+            peers.append(peer)
+            return Player(0x15FF2EDE, 0x1EF42EDE, "Researcher#1214")
+
+        server = BNetRpcServer(player=player)
         asyncio.run(server._auth(session, header, P.LogonRequest().SerializeToString()))
+        self.assertEqual(peers, [session.peer])
         ((service, method, body),) = session.notifications
         self.assertEqual((service, method), (P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE))
         result = P.LogonResult.FromString(body)

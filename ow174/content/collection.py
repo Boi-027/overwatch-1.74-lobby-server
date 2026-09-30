@@ -76,6 +76,12 @@ def _loot_box(box: dict) -> dict:
     return {"+0x0": {"+0x0": [box["id"], 0]}, "+0x10": box["type"], "+0x14": 1}
 
 
+# 24302 {boxes, reason, flag} merges boxes into the client's list, skipping ids it has
+# (0x7FF789D32D00); retail's login sent reason 12 with the flag on. Reason 4 with the flag would
+# store the first box as a shop purchase (0x7FF789726DE0).
+BOX_SYNC_REASON = 12
+
+
 class Collection:
     def __init__(self, templates: RetailTemplates, items: ItemDB) -> None:
         self.items = items
@@ -276,8 +282,19 @@ class Collection:
         return value
 
     def unlock_granted(self, guid: int) -> tuple:
-        """24901 {hero, unlock, new}: adds the unlock to the owned list and shows it as new."""
-        return (HERO_CATALOG, 24901, {"+0x78": self.hero_of.get(guid, 0), "+0x80": guid, "+0x88": True})
+        """Adds a given unlock to the owned list and shows it as new: 24901 {hero, unlock, new} for a
+        hero's item, 24301 {unlock, seen} for the account's (an icon; 24901 needs a hero). Both open
+        the challenge reward window when the unlock is a challenge reward (0x7FF7896F8E30)."""
+        hero = self.hero_of.get(guid, 0)
+        if hero:
+            return (HERO_CATALOG, 24901, {"+0x78": hero, "+0x80": guid, "+0x88": True})
+        return (PROGRESSION_IN, 24301, {"+0x78": guid, "+0x80": False})
+
+    @staticmethod
+    def boxes_update(boxes: list[dict]) -> tuple:
+        """24302: the boxes, merged into the client's list (a box it has is skipped)."""
+        value = {"+0x78": [_loot_box(box) for box in boxes], "+0x90": BOX_SYNC_REASON, "+0x94": True}
+        return (PROGRESSION_IN, 24302, value)
 
     def unlock_bought(self, guid: int) -> tuple:
         """24306 {unlock, hero}: adds a bought unlock to the owned list, as retail answered a purchase.

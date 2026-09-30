@@ -39,28 +39,49 @@ class Celebrations:
     def records(self, profile: Profile) -> dict:
         """38900: one record per active event, plus one for the selected hero challenge."""
         now = server_time(profile)
+        records = [self._record(event, now) for event in active_events(profile.events)]
         rewards = self.challenge_rewards(profile)
-        challenge = _challenge(profile).celebration if rewards else None
-        records = []
-        for event in active_events(profile.events):
-            # The challenge record stands for an event of the same celebration (Reaper's).
-            if event.celebration != challenge:
-                records.append(self._record(event, now))
         if rewards:
             records.append(self._challenge_record(profile, rewards, now))
         return {"+0x78": records}
 
-    def notifications(self, profile: Profile) -> list[tuple]:
-        """38901: announce the active celebrations as new, one message each.
+    def greetings(self, profile: Profile) -> list[tuple]:
+        """38901 for each event with a loot box or a splash that the player was not greeted for yet.
 
-        38900 only lists the celebrations. 38901 is what fills the client's "new celebration"
-        queue. Send it once after login or an event change, not on every profile refresh. The
-        client's own data and viewed state decide what it actually shows.
+        38901 puts the record (the same as in 38900) on the client's list of new celebrations
+        (0x7FF7895D0D20). On the main menu the login popups graph (01B/0C75) takes it (0x7FF789818320)
+        and plays 01B/0C74, which shows the event's login rewards (+0x58) one by one. The client
+        keeps no record of it, so the server greets once per event. Retail did this at the first
+        login of Lunar New Year 2022: the box (24302), the icon (24301), then 38901.
         """
-        messages = []
-        for record in self.records(profile)["+0x78"]:
-            messages.append((EVENTS, 38901, {"+0x78": record}))
-        return messages
+        now = server_time(profile)
+        return [(EVENTS, 38901, {"+0x78": self._record(event, now)}) for event in self._ungreeted(profile)]
+
+    def greet(self, profile: Profile) -> tuple[list[tuple], list[int], list[dict]]:
+        """Give the login rewards of the events the player was not greeted for: one event box
+        each, plus any item among the rewards (Lunar New Year's icon). Returns the 38901 messages,
+        the items given and the boxes given."""
+        messages = self.greetings(profile)
+        given = []
+        boxes = []
+        for event in self._ungreeted(profile):
+            if event.box >= 0:
+                boxes += profile.add_boxes(event.box, 1)
+            for reward in event.rewards:
+                guid = UNLOCK_BASE | reward
+                # The box itself is an unlock too (STUUnlock_LootBox), but not an item.
+                if self._items.get(guid) is None or self._owns(profile, guid) or guid in given:
+                    continue
+                given.append(guid)
+            profile.greeted_events.append(event.celebration)
+        profile.unlocked_items += [f"0x{guid:016X}" for guid in given]
+        return messages, given, boxes
+
+    @staticmethod
+    def _ungreeted(profile: Profile) -> list[EventDef]:
+        greeted = set(profile.greeted_events or [])
+        greets = [event for event in active_events(profile.events) if event.box >= 0 or event.splash]
+        return [event for event in greets if event.celebration not in greeted]
 
     def progress(self, profile: Profile) -> dict:
         """38902: the challenge's win counter."""
@@ -71,19 +92,13 @@ class Celebrations:
         return {"+0x78": [counter]}
 
     def challenge_rewards(self, profile: Profile) -> list[tuple[int, Unlock]]:
-        """[(wins needed, unlock)] for the selected challenge, or [] when a reward is unknown."""
-        title = profile.challenge or ""
-        verified_guids = challenge_reward_ids(title)
-        if verified_guids is None:
-            rewards = self._items.challenges().get(title, [])
-        else:
-            rewards = [self._items.get(guid) for guid in verified_guids]
-            if None in rewards:
-                return []
-        tiers = []
-        for tier, unlock in enumerate(rewards, start=1):
-            tiers.append((tier * CHALLENGE_TIER_WINS, unlock))
-        return tiers
+        """[(wins needed, unlock)] for the selected challenge, or [] when there is none or a reward
+        is unknown."""
+        guids = challenge_reward_ids(profile.challenge or "") or []
+        rewards = [self._items.get(guid) for guid in guids]
+        if not rewards or None in rewards:
+            return []
+        return [(tier * CHALLENGE_TIER_WINS, unlock) for tier, unlock in enumerate(rewards, start=1)]
 
     def claim_rewards(self, profile: Profile) -> list[int]:
         """Grant the unlocks earned by the current win count that the profile does not own yet."""

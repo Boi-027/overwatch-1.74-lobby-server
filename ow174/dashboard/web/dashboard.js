@@ -351,6 +351,10 @@ import {api, selectAccount} from './dashboard-api.mjs';
       toast(`The game logs in again as ${name}.`);
     } catch (error) { toast(error.message, true); }
   }
+  // Start another game on this PC that plays the account, next to the one already running.
+  async function startSecondGame(name) {
+    try { toast((await api('/api/start_game', {name})).message); } catch (error) { toast(error.message, true); }
+  }
   function renderSessions() {
     const server = state.server;
     setText('#sidebar-address', `${server.host}:${server.port}`);
@@ -368,7 +372,13 @@ import {api, selectAccount} from './dashboard-api.mjs';
       const current = node('td'); current.append(node('span', item.selected ? 'selected-badge' : 'muted', item.selected ? 'Selected' : '—')); row.append(current);
       const play = node('td'); const button = node('button', 'button secondary small', item.online ? 'Playing' : 'Play as');
       button.type = 'button'; button.disabled = item.online; button.addEventListener('click', () => playAs(item.name));
-      play.append(button); row.append(play); accounts.append(row);
+      play.append(button);
+      if (server.second_games && !item.online) {
+        const second = node('button', 'button secondary small', 'Second game');
+        second.type = 'button'; second.addEventListener('click', () => startSecondGame(item.name));
+        play.append(document.createTextNode(' '), second);
+      }
+      row.append(play); accounts.append(row);
     }
     setText('#accounts-count', `${number((state.accounts || []).length)} accounts`);
     const instances = Array.isArray(server.game_instances) ? server.game_instances : [];

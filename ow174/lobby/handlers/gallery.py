@@ -53,7 +53,7 @@ def equip(session: Session, value: dict) -> None:
         record = server.content.player.record(session.profile, session.ident)
         session.send(IN_CONNECT, 20502, {"+0x78": record})
         server.notify_party(server.social.party_of(session.account))
-        server.broadcast_presence()
+        server.notify_friends(session.account)
     target = server.items.hero_name(hero) if hero else "account"
     session.log(f"[>>>] Equipped {server.items.describe(guid)} ({target}, slot {slot})")
 

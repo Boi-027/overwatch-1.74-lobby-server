@@ -22,13 +22,13 @@ from ow174.jam.groups import (
 CLIENT_BUILD = 104319  # the 1.74 client
 SUPPORTED_BUILDS_KEY = 0x04227E56  # config key in 36600: the client builds the config accepts
 
-# Recorded messages sent at login, in capture order. Groups without a name are unidentified.
+# Recorded messages sent at login, in capture order. Groups without a name are unidentified. The
+# login handler builds 20809 (friends' cards), which the capture had empty.
 AT_LOGIN = [
     (LOBBY, 20814),
     (LOBBY, 20806),
     (LOBBY, 20812),
     (LOBBY, 20813),
-    (LOBBY, 20809),
     (LOBBY, 20821),
     (PASSES, 58501),
     (0xAA91BE18, 40900),

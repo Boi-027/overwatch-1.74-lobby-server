@@ -1,5 +1,6 @@
 """What the dashboard can do with an account, independent of HTTP."""
 
+import logging
 import threading
 import time
 from collections import Counter
@@ -9,18 +10,29 @@ from datetime import date
 from ow174.accounts.profile import Profile, save_profile
 from ow174.accounts.registry import Account, account_id_for
 from ow174.catalog.boxes import BOX_TYPES
-from ow174.catalog.events import EVENT_INFO, EVENT_PRESETS
+from ow174.catalog.events import CHALLENGES, EVENT_INFO, EVENT_PRESETS, challenge_reward_ids
 from ow174.catalog.regions import GAME_REGIONS, REGIONS
 from ow174.content.collection import frame_parts
 from ow174.content.menu_hero import PVE_NPCS
 from ow174.content.passes import MAX_PASSES, POOLS
 from ow174.content.player import BOXES_OPENED_KEY, set_saved_value
-from ow174.content.ranked import CURRENT_SEASON, MAX_MATCHES, MAX_RATING, QUEUE_NAMES, matches_of, rating_of
+from ow174.content.ranked import (
+    CURRENT_SEASON,
+    MAX_MATCHES,
+    MAX_RATING,
+    QUEUE_NAMES,
+    matches_of,
+    rating_of,
+    wins_of,
+)
 from ow174.dashboard.errors import ApiError, parse_bool, parse_guid, parse_int
 from ow174.jam.groups import PARTY
+from ow174.launcher import LaunchError
 from ow174.lobby.handlers.party import MERGE_REQUEST, merge_request
 from ow174.paths import WEB_DIR
 from ow174.services.social import Party
+
+log = logging.getLogger("ow174.dashboard")
 
 PROFILE_FIELDS = (
     "player_name",
@@ -42,9 +54,10 @@ PROFILE_FIELDS = (
     "bot_chat",
     "stats",
 )
-# Competitive ratings, one field per queue ("rating_tank", ..., "rating_ctf").
+# Competitive ratings, one field per queue ("rating_tank", ..., "rating_lucio").
 RATING_FIELDS = {f"rating_{queue}": queue for queue in QUEUE_NAMES}
 MATCH_FIELDS = {f"matches_{queue}": queue for queue in QUEUE_NAMES}
+WIN_FIELDS = {f"wins_{queue}": queue for queue in QUEUE_NAMES}
 # Priority passes, one field per role queue pool ("passes_quick_play", "passes_competitive").
 PASS_FIELDS = {f"passes_{pool}": pool for pool in POOLS}
 # The group the bot lists in the group finder: Quick Play with roles, two of each (slot types
@@ -57,6 +70,7 @@ EDITABLE_FIELDS = (
     | {"account"}
     | frozenset(RATING_FIELDS)
     | frozenset(MATCH_FIELDS)
+    | frozenset(WIN_FIELDS)
     | frozenset(PASS_FIELDS)
 )
 # Whole-number fields that only need a range check; the level starts at 1, the rest at 0.
@@ -101,6 +115,8 @@ def profile_snapshot(profile: Profile) -> dict:
         result[name] = rating_of(profile, queue)
     for name, queue in MATCH_FIELDS.items():
         result[name] = matches_of(profile, queue)
+    for name, queue in WIN_FIELDS.items():
+        result[name] = wins_of(profile, queue)
     for name, pool in PASS_FIELDS.items():
         result[name] = int((profile.priority_passes or {}).get(pool, 0))
     return result
@@ -255,6 +271,7 @@ class DashboardService:
             "uptime_seconds": int(time.monotonic() - self.started),
             "game_instances": matches.snapshot() if matches else [],
             "game_runtime_available": matches is not None,
+            "second_games": getattr(self.lobby, "games", None) is not None,
             "matchmaking_supported": False,
         }
 
@@ -287,9 +304,11 @@ class DashboardService:
         return [vars(info_by_id[event_id]) for event_id in EVENT_PRESETS]
 
     def _challenges(self) -> list:
+        """The hero challenges the Play menu has a banner for, with their rewards."""
         rows = []
-        for title, rewards in sorted(self.lobby.items.challenges().items()):
-            reward_rows = [{"name": reward.name, "type": reward.type} for reward in rewards]
+        for title in CHALLENGES:
+            rewards = [self.lobby.items.get(guid) for guid in challenge_reward_ids(title)]
+            reward_rows = [{"name": reward.name, "type": reward.type} for reward in rewards if reward]
             rows.append({"id": title, "title": title, "rewards": reward_rows})
         return rows
 
@@ -427,6 +446,15 @@ class DashboardService:
                 matches = dict(profile.matches or {})
                 matches[queue] = parse_int(data[name], f"{queue.capitalize()} matches", 0, MAX_MATCHES)
                 profile.matches = matches
+        for name, queue in WIN_FIELDS.items():
+            if name in data:
+                wins = dict(profile.wins or {})
+                wins[queue] = parse_int(data[name], f"{queue.capitalize()} wins", 0, MAX_MATCHES)
+                profile.wins = wins
+        for queue in QUEUE_NAMES:
+            changed = f"wins_{queue}" in data or f"matches_{queue}" in data
+            if changed and int((profile.wins or {}).get(queue, 0)) > matches_of(profile, queue):
+                raise ApiError(f"{queue.capitalize()} wins can't be more than {queue} matches.")
         for name, pool in PASS_FIELDS.items():
             if name in data:
                 counts = dict(profile.priority_passes or {})
@@ -457,7 +485,7 @@ class DashboardService:
         """A challenge title, or "" for none."""
         if not isinstance(value, str):
             raise ApiError("Challenge not found")
-        if value and value not in self.lobby.items.challenges():
+        if value and value not in CHALLENGES:
             raise ApiError("Challenge not found")
         return value
 
@@ -466,16 +494,10 @@ class DashboardService:
         count = parse_int(data.get("count", 10), "Box count", 1, 100)
         if kind not in BOX_TYPES:
             raise ApiError("No such box type in the catalog")
-        name = BOX_TYPES[kind].name
         with self.lock:
             account = self.account(data.get("account"))
             profile = deepcopy(account.profile)
-            # Never reuse an id, even if next_box_id fell behind the boxes already in the profile.
-            highest_id = max((box["id"] for box in profile.loot_boxes), default=0)
-            first_id = max(profile.next_box_id, highest_id + 1)
-            for offset in range(count):
-                profile.loot_boxes.append({"id": first_id + offset, "type": kind, "name": name})
-            profile.next_box_id = first_id + count
+            profile.add_boxes(kind, count)
             self._save(account, profile)
             return {"status": "ok", "added": count, "total_boxes": len(profile.loot_boxes)}
 
@@ -616,6 +638,24 @@ class DashboardService:
     def reconnect(self) -> dict:
         self.lobby.reconnect_all()
         return {"status": "ok"}
+
+    def start_game(self, data: dict) -> dict:
+        """Start a second retail game on this PC that plays the account, to test two players."""
+        games = self.lobby.games
+        if games is None:
+            raise ApiError("A second game needs the server in retail mode", 409)
+        account = self.account(data.get("name"))
+        if self.lobby.social.is_online(account) or account.name in games.second_accounts():
+            raise ApiError(f"{account.name} is already playing", 409)
+
+        def start() -> None:
+            try:
+                games.start(account.name)
+            except LaunchError as error:
+                log.error("The second game for %s did not start: %s", account.name, error)
+
+        threading.Thread(target=start, daemon=True, name="game").start()
+        return {"status": "ok", "message": f"A second game is starting as {account.name}."}
 
     # Helpers
 

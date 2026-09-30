@@ -127,9 +127,9 @@ class BNetRpcServer:
         host="127.0.0.1",
         port=21119,
         *,
-        player: Callable[[], Player],
+        player: Callable[[tuple], Player],
     ):
-        """`player` gives the Player the client logs in as."""
+        """`player` gives the Player a client logs in as, from its (host, port)."""
         self.host = host
         self.port = port
         self.player = player
@@ -228,7 +228,7 @@ class BNetRpcServer:
             f"   Logon program={request.program!r} locale={request.locale!r} version={request.version!r}"
         )
         await session.send_response(header, b"")
-        player = self.player()
+        player = self.player(session.peer)
         await session.send_notification(
             P.AUTH_CLIENT_HASH, P.ON_LOGON_COMPLETE, _logon_result(player).SerializeToString()
         )

@@ -274,7 +274,13 @@ def find_groups(session: Session, value: dict) -> None:
     Join off for it (0x7FF78934B1D0 wants another party id)."""
     social = session.server.social
     wanted = value.get("+0x78", {})
-    found = [party for party in social.listed_groups() if social.matches_filters(party, wanted)]
+    mine = social.party_of(session.account)
+    found = [
+        party
+        for party in social.listed_groups()
+        if social.matches_filters(party, wanted)
+        and (party is mine or social.can_join(party, session.account))
+    ]
     groups = [social.group(party) for party in found]
     session.send(GROUPS, 52300, {"+0x78": groups, "+0x90": []})
     session.log(f"[group] search: {len(groups)} groups")

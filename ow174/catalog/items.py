@@ -15,24 +15,10 @@ UNLOCK_BASE = 0x0250000000000000
 SKIN_THEME_BASE = 0x0A50000000000000  # skin themes (0A6)
 HERO_BASE = 0x02E0000000000000
 
-RARITIES = ("Common", "Rare", "Epic", "Legendary")
-CHALLENGE_TEXT = re.compile(
-    r"Unlocked by (participating in|watching participating streams during) (?:the )?(.+?)$"
-)
 # The text of Overwatch League team skins. Each one has a partner of the same hero and team (home
 # and away, or the white and gray league skins) that unlocks with it.
 TEAM_SKIN_TEXT = "Unlocking includes both home and away skins"
 SKIN_YEAR = re.compile(r" (\d{4})$")  # the 2018 team skins pair up apart from the current ones
-# The order in which a challenge lists its rewards, by unlock type.
-CHALLENGE_REWARD_ORDER = {
-    "Icon": 0,
-    "Spray": 1,
-    "VoiceLine": 2,
-    "Emote": 3,
-    "VictoryPose": 4,
-    "HighlightIntro": 5,
-    "Skin": 6,
-}
 
 
 @dataclass
@@ -70,11 +56,6 @@ def _read_json(path: Path) -> dict:
     if not path.is_file():
         return {}
     return json.loads(path.read_text(encoding="utf-8")) or {}
-
-
-def _reward_order(unlock: Unlock) -> tuple:
-    rarity = RARITIES.index(unlock.rarity) if unlock.rarity in RARITIES else 0
-    return CHALLENGE_REWARD_ORDER.get(unlock.type, 9), rarity, unlock.guid
 
 
 class ItemDB:
@@ -142,21 +123,6 @@ class ItemDB:
     def team_skin_pair(self, guid: int) -> int | None:
         """The home or away skin that comes with an Overwatch League team skin."""
         return self.team_skin_pairs.get(guid)
-
-    def challenges(self) -> dict[str, list[Unlock]]:
-        """Hero challenges and their rewards, from the "Unlocked by participating in ..." texts."""
-        challenges: dict[str, list[Unlock]] = {}
-        for unlock in self.unlocks.values():
-            match = CHALLENGE_TEXT.match(unlock.available_in)
-            if not match:
-                continue
-            title = match.group(2).strip()
-            if match.group(1).startswith("watching"):
-                title += " (Twitch)"
-            challenges.setdefault(title, []).append(unlock)
-        for rewards in challenges.values():
-            rewards.sort(key=_reward_order)
-        return challenges
 
     def get(self, guid: int) -> Unlock | None:
         return self.unlocks.get(guid)

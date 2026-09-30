@@ -34,6 +34,9 @@ SAVED_SETTINGS = ("+0x78", "+0x108", "+0x10D", "+0x120", "+0x130")
 # Byte 5 of +0x10D says who may whisper: 0 nobody, 2 friends, anything else everyone.
 # The client hides incoming whispers while it is 0, which is the schema default.
 WHISPERS_FROM_EVERYONE = 1
+# Byte 0 of +0x10D is "Members can invite to group" (Social.members_may_invite). It starts on: at
+# the schema default (off) the first save of any Social option would quietly turn it off.
+MEMBERS_CAN_INVITE = True
 # +0x130 holds values [{+0x0 value, +0x8 key}], a key being (type table << 16) | identifier
 # (0x7FF7893512B0). While key B03A of table E0 is above 0, the login popups graph (01B/0C75)
 # shows "N of your containers were opened" (05A/07D9, the move to Overwatch 2) on the main menu,
@@ -56,6 +59,11 @@ ENDORSEMENT_CATEGORIES = {
     0x0D80000000003945: 35,  # good teammate, purple
     0x0D80000000003944: 25,  # shot caller, orange
 }
+
+
+# Party member +0xE0, the membership (names from the client's party debug print, 0x7FF789761103):
+# 0 stranger, 1 invitee (accept), 2-4 invitee (transfer info, ticket, owner), 5 member, 6-7 leaving.
+INVITEE, MEMBER = 1, 5
 
 
 def endorsement(level: int) -> dict:
@@ -87,6 +95,20 @@ class PlayerMessages:
             "+0x40": battle_tag(profile.player_name, identity.account_lo),
         }
 
+    def friend_card(self, profile: Profile, identity: Identity) -> dict:
+        """A friend's card for the friends list (20809/20810). The client stores it in its card cache
+        (0x7FF789687D80), so the friend shows an icon, level and endorsement; from presence alone it
+        has only the BattleTag. The id, time and two flags after the endorsement are not known yet;
+        empty, the card shows and no other tab lists the friend (tested in game)."""
+        return {
+            "+0x0": self.record(profile, identity),
+            "+0x68": endorsement(profile.endorsement_level),
+            "+0x88": id16(0, 0),
+            "+0x98": 0,
+            "+0xA0": False,
+            "+0xA1": False,
+        }
+
     def hello(self, profile: Profile, identity: Identity) -> dict:
         """20500, the first message after the handshake."""
         return {
@@ -113,10 +135,24 @@ class PlayerMessages:
             "+0xB8": hero,
             "+0xC0": skin,
             "+0xC8": [],
-            "+0xE0": 5,
+            # Membership, not the away/busy status (that comes from presence). The client checks
+            # 5-7 and +0xE2 for "am I the leader" (0x7FF7895443B0) and turns it into MemberStatus for
+            # the party panel (0x7FF789544370).
+            "+0xE0": MEMBER,
             "+0xE1": 0,
             "+0xE2": leader,  # only the party leader has it; with it on everyone, all showed as leader
         }
+
+    def invitee(self, profile: Profile, identity: Identity, remaining_ms: int) -> dict:
+        """A party member record for a player invited and not answered yet: the panel shows a pending
+        tile with a green bar that runs down (PendingInviteProgressBar of tile 05E/005E). +0xB8 is
+        the time left in ms: the client adds its own clock to it when the party state arrives
+        (0x7FF7895444D4), and the bar shows the deadline minus that clock while under 25 s
+        (0x7FF7895442E0)."""
+        record = self.party_member(profile, identity, 0, leader=False)
+        record["+0xB8"] = remaining_ms
+        record["+0xE0"] = INVITEE
+        return record
 
     def party_state(self, profile: Profile, identity: Identity, hero: int) -> dict:
         """20700 for a player alone in their own party."""
@@ -144,7 +180,7 @@ class PlayerMessages:
                 "+0x70": id16(*entity),
                 "+0x80": {"+0x0": [0, 0]},
                 "+0x90": 15959616,
-                "+0x94": True,
+                "+0x94": True,  # members can invite (0x7FF789D2EE70; Social.members_may_invite)
                 "+0x95": 1,
                 "+0x96": True,
                 "+0x98": True,
@@ -196,6 +232,7 @@ class PlayerMessages:
             if key in saved:
                 value[key] = saved[key]
         if "+0x10D" not in saved:
+            value["+0x10D"]["+0x0"] = MEMBERS_CAN_INVITE
             value["+0x10D"]["+0x5"] = WHISPERS_FROM_EVERYONE
         if "+0x108" not in saved:
             value["+0x108"]["+0x4"] = True

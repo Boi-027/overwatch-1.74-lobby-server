@@ -6,8 +6,8 @@ page, so the answer repeats both. The Top 500 screen packs its filters into the 
     bits 0-15 season, 24-31 role (0 before role queue, 1 damage, 2 tank, 3 support, 4 all roles),
     32-47 friends only, 48-63 region (1 Americas, 2 Europe, 3 Asia; 5 with friends only)
 
-(the role numbers are the ones the client's group check uses). Open queue and Competitive CTF
-boards name a card instead: card in bits 0-31, 2 in bits 40-47, region in bits 48-55
+(the role numbers are the ones the client's group check uses). Open queue and event card (Competitive
+CTF, Lucio Cup) boards name a card instead: card in bits 0-31, 2 in bits 40-47, region in bits 48-55
 (0x00010200000001B4 is season 32's open queue in the Americas).
 
 An entry is a player summary, the same as 39002. The screen sorts the entries by the f64 at +0xB8,
@@ -15,7 +15,8 @@ highest first, and takes names and icons from the client's player card cache.
 
 The game's own rules for the board (string 82C5.07C): the best 500 of each region, Battle.net SMS
 Protect on, 25 matches completed, and only the region with the most matches counts (ours is the
-account's game region). There is no rating floor.
+account's game region), at any rating (4CBE.07C). Ours are stricter: SMS Protect on, a diamond rating
+(3000) and 25 matches won in that queue this season.
 """
 
 from dataclasses import dataclass
@@ -27,21 +28,27 @@ from ow174.content.player import PlayerMessages
 from ow174.content.queue import ROLE_NUMBERS
 from ow174.content.ranked import (
     CARD_BASE,
-    COMPETITIVE_CTF,
+    EVENT_QUEUES,
     QUEUE_NAMES,
+    TIER_FLOORS,
     Ranked,
-    matches_of,
     rating_of,
     tier,
+    wins_of,
 )
 
 TOP = 500
-MATCHES_NEEDED = 25
+RATING_NEEDED = TIER_FLOORS[3]  # diamond, 3000
+WINS_NEEDED = 25
 CARD_BOARD = 2
 
 
 def on_board(profile: Profile, queue: str) -> bool:
-    return profile.sms_protect and matches_of(profile, queue) >= MATCHES_NEEDED
+    return (
+        profile.sms_protect
+        and rating_of(profile, queue) >= RATING_NEEDED
+        and wins_of(profile, queue) >= WINS_NEEDED
+    )
 
 
 @dataclass
@@ -114,7 +121,7 @@ class Leaderboard:
         """The (card, role) ratings a request lists; only the profile's running season has any."""
         season = self._ranked.season(profile)
         if filters.card is not None:
-            if filters.card in (season.open_card, COMPETITIVE_CTF):
+            if filters.card == season.open_card or filters.card in EVENT_QUEUES:
                 return [(filters.card, 0)]
             return []
         if filters.season != season.number:

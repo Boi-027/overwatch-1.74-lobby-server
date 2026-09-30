@@ -5,6 +5,10 @@ It comes from the 1.68 retail capture: season 32 (January to March 2022) on the 
 and 73 past seasons with their reward tiers. 1.74 added three fields to each rating record; they are
 0. The ratings themselves are the profile's (the capture's 2333 by default).
 
+An event's competitive Arcade card (Competitive CTF, the Summer Games' Lucio Cup 1AD) runs a season
+of its own while the Arcade shows it, as 1C3 did in the capture. The group finder offers such a card
+only when every member of the group has a rating on it (the group check below).
+
 Every competitive season is a card of its own (0C7). The season list (+0x98) gives its number
 (+0x118), and from season 23 an open queue card names it as its parent (+0xF0): season 1 is 0xDD,
 18 (the first with roles) 0xC2, 32 0x1B3 with open queue 0x1B4. The profile picks the season; its
@@ -26,7 +30,7 @@ A party member carries the same in 20700 +0x68: +0x10 rating, +0x12 place, +0x14
 """
 
 import copy
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from typing import NamedTuple
 
 from ow174.accounts.profile import Profile
@@ -45,7 +49,9 @@ PC_POOL = 16025156
 CARD_BASE = 0x0630000000000000  # queue and Arcade cards (0C7)
 ROLE_QUEUE = 0x06300000000001B3  # the capture's season, 32
 OPEN_QUEUE = 0x06300000000001B4
-COMPETITIVE_CTF = 0x06300000000001C3
+COMPETITIVE_CTF = 0x06300000000001C3  # Lunar New Year 2022, the capture's
+LUCIO_CUP = 0x06300000000001AD  # Summer Games 2021 (Copa Lucioball)
+EVENT_QUEUES = {COMPETITIVE_CTF: "ctf", LUCIO_CUP: "lucio"}  # one rating each, no roles
 CURRENT_SEASON = 32
 FIRST_ROLE_QUEUE_SEASON = 18
 # Role identifiers (01C), named after the heroes that carry them.
@@ -54,10 +60,10 @@ DAMAGE = 0x0D8000000000084E
 SUPPORT = 0x0D80000000000851
 ROLES = {TANK: "tank", DAMAGE: "damage", SUPPORT: "support"}
 # The profile keeps one rating per queue.
-QUEUE_NAMES = ("tank", "damage", "support", "open", "ctf")
+QUEUE_NAMES = ("tank", "damage", "support", "open", "ctf", "lucio")
 DEFAULT_RATING = 2333
 MAX_RATING = 5000
-# Matches played this season: placements run for the first 5, Top 500 needs 25.
+# Matches played this season: placements run for the first 5.
 DEFAULT_MATCHES = 25
 MAX_MATCHES = 9999
 PLACEMENT_MATCHES = 5
@@ -70,7 +76,7 @@ def tier(rating: int) -> int:
 
 
 def rating_of(profile: Profile, queue: str) -> int:
-    """The profile's rating in a queue ("tank", "damage", "support", "open" or "ctf")."""
+    """The profile's rating in a queue ("tank", "damage", "support", "open", "ctf" or "lucio")."""
     rating = (profile.ratings or {}).get(queue, DEFAULT_RATING)
     return max(1, min(int(rating), MAX_RATING))
 
@@ -79,6 +85,12 @@ def matches_of(profile: Profile, queue: str) -> int:
     """Competitive matches the profile played this season in a queue."""
     matches = (profile.matches or {}).get(queue, DEFAULT_MATCHES)
     return max(0, min(int(matches), MAX_MATCHES))
+
+
+def wins_of(profile: Profile, queue: str) -> int:
+    """Competitive matches the profile won this season in a queue, never more than it played."""
+    wins = (profile.wins or {}).get(queue, 0)
+    return max(0, min(int(wins), matches_of(profile, queue)))
 
 
 class Season(NamedTuple):
@@ -97,6 +109,8 @@ class Ranked:
         # A profile's Top 500 place in each queue ({"tank": 3}). A place depends on every account,
         # so the lobby sets this.
         self.places: Callable[[Profile], dict[str, int]] = lambda profile: {}
+        # The event competitive cards the profile's Arcade shows (content/arcade.py sets this).
+        self.event_cards: Callable[[Profile], list[int]] = lambda profile: [COMPETITIVE_CTF]
         entries = templates.first(RANKED, 36300)["+0x98"]
         self.seasons = {}
         for entry in entries:
@@ -111,8 +125,8 @@ class Ranked:
     def queue(self, profile: Profile, card: int, role: int) -> str | None:
         """The queue a rating on a card of the profile's season counts in."""
         season = self.season(profile)
-        if card == COMPETITIVE_CTF and not role:
-            return "ctf"
+        if card in EVENT_QUEUES and not role:
+            return EVENT_QUEUES[card]
         if card == season.open_card and not role:
             return "open"
         if card == season.card:
@@ -131,7 +145,7 @@ class Ranked:
         value["+0x98"] = [entry for entry in value["+0x98"] if entry["+0x18"] not in later]
         value["+0xC8"] = [card for card in value["+0xC8"] if card not in later]
         recorded_running = {entry["+0x0"]: entry for entry in value["+0xB0"]}
-        running = [card for card in (season.card, season.open_card, COMPETITIVE_CTF) if card]
+        running = [card for card in (season.card, season.open_card, *self.event_cards(profile)) if card]
         value["+0xB0"] = []
         for entry in value["+0x98"]:
             card = entry["+0x18"]
@@ -163,6 +177,9 @@ class Ranked:
     def cards(self, profile: Profile) -> list[dict]:
         """The profile's ratings on each competitive card of its season, as 36300 (+0x80) and the
         career profile (+0x98) carry them."""
+        return self._rated_cards(profile, self.event_cards(profile))
+
+    def _rated_cards(self, profile: Profile, event_cards: Iterable[int]) -> list[dict]:
         season = self.season(profile)
         recorded = {card["+0x18"]: card for card in self._templates.first(RANKED, 36300)["+0x80"]["+0x0"]}
         # The capture's role queue card has one rating per role, its open queue card a single one.
@@ -173,7 +190,10 @@ class Ranked:
             open_queue = copy.deepcopy(recorded[OPEN_QUEUE])
             open_queue["+0x18"] = season.open_card
             cards.append(open_queue)
-        cards.append(copy.deepcopy(recorded[COMPETITIVE_CTF]))
+        for card in event_cards:
+            event = copy.deepcopy(recorded[COMPETITIVE_CTF])  # the capture's one-rating card
+            event["+0x18"] = card
+            cards.append(event)
         places = self.places(profile)
         for card in cards:
             # The client shows a card's season intro until this is on; closing it sends 36200.
@@ -191,10 +211,12 @@ class Ranked:
 
         The client's group check drops every role choice where a member has no rating for the card,
         then compares the highest and lowest rating with 1000 (500 at tier 5, 350 at tier 6); while
-        placements run it takes the placement rating and tier.
+        placements run it takes the placement rating and tier. Every event card is here whatever
+        the member's own events: events are per profile on this server, and one member without a
+        rating on the card greys it out for the whole group (0x7FF789AA3D80, check 0x7FF78934F3A0).
         """
         ratings = []
-        for card in self.cards(profile):
+        for card in self._rated_cards(profile, EVENT_QUEUES):
             roles = []
             for rating in card["+0x0"]:
                 roles.append(

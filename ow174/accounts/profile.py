@@ -5,7 +5,7 @@ import logging
 from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 
-from ow174.catalog.boxes import starter_boxes
+from ow174.catalog.boxes import box_name, starter_boxes
 
 log = logging.getLogger(__name__)
 
@@ -44,6 +44,7 @@ class Profile:
     last_online: int = 0  # unix time of the last login or logout; friends see "offline (2 h)"
     lobby_hero: str = "random"  # the menu hero: "random", "none", a hero name or a PvE character
     events: list = field(default_factory=lambda: ["goodbye"])  # active events, see catalog/events.py
+    greeted_events: list = field(default_factory=list)  # celebrations whose start greeting was shown
     server_date: str = ""  # the clock sent to the client, e.g. "2022-10-03"; empty means now
     challenge: str = ""  # title of the active hero challenge
     challenge_wins: int = 0
@@ -51,6 +52,7 @@ class Profile:
     ratings: dict = field(default_factory=dict)  # competitive rating per queue, see content/ranked.py
     season: int = 32  # the running competitive season, 1-32
     matches: dict = field(default_factory=dict)  # competitive matches played this season, per queue
+    wins: dict = field(default_factory=dict)  # competitive matches won this season, per queue
     sms_protect: bool = True  # Battle.net SMS Protect, which Top 500 needs
     seasons_seen: list = field(default_factory=list)  # competitive cards whose season intro was shown
     priority_passes: dict = field(default_factory=dict)  # role queue pool -> passes, see content/passes.py
@@ -64,6 +66,15 @@ class Profile:
             "credits_earned_from_duplicates": 0,
         }
     )
+
+    def add_boxes(self, box_type: int, count: int) -> list[dict]:
+        """Add loot boxes with ids never used before, even if next_box_id fell behind. Returns them."""
+        highest_id = max((box["id"] for box in self.loot_boxes), default=0)
+        first_id = max(self.next_box_id, highest_id + 1)
+        added = [{"id": first_id + i, "type": box_type, "name": box_name(box_type)} for i in range(count)]
+        self.loot_boxes += added
+        self.next_box_id = first_id + count
+        return added
 
     def unlocked_guids(self) -> set[int]:
         """The extra unlocks as integers; entries that are not numbers are ignored."""

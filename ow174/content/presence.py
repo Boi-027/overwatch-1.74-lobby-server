@@ -38,11 +38,15 @@ STATUS_NAMES = {
     STATUS_OFFLINE: "appear offline",
 }
 
-# Confirmed live against the client: away is the game-account bool (group 2, field 10), which the
-# capture carries as false; busy is an account-wide bool (group 1, field 11) not in the capture, so it
-# is appended to the account record when set. Either makes friends show the player yellow or red.
-AWAY_FIELD = (2, 10)
-BUSY_FIELD = (1, 11)
+# The status bools of the account record (group 1). The client reads its own status from them
+# (0x7FF7896145E0 via 0x7FF789613F90: 7 away, 11 busy, 12 appear offline, none set is online), which
+# the status dropdown and the name card show. A friend's colour (0x7FF789616670) is away on 7, busy on
+# 11, else online while one of the friend's game accounts is. The capture carries only 12, as false;
+# the others are appended. All three always go out, so going back to online clears them.
+ACCOUNT_GROUP = 1
+AWAY_FIELD = (ACCOUNT_GROUP, 7)
+BUSY_FIELD = (ACCOUNT_GROUP, 11)
+APPEAR_OFFLINE_FIELD = (ACCOUNT_GROUP, 12)
 
 # Last online and session times are Variant int values (field 3) in microseconds since 1970.
 INT_VALUE_TAG = b"\x18"
@@ -189,6 +193,17 @@ def _with_time(value: bytes, microseconds: int) -> bytes:
     return INT_VALUE_TAG + _encode_varint(microseconds)
 
 
+def _set_bools(record: dict, values: dict[tuple[int, int], bool]) -> None:
+    """Set bool fields of a presence record by (group, field), appending the ones it does not carry."""
+    missing = dict(values)
+    for field in record["+0x20"]:
+        key = _key_group_field(field["+0x8"])
+        if key in missing:
+            field["+0x30"] = ONLINE_BOOL if missing.pop(key) else OFFLINE
+    for key, value in missing.items():
+        record["+0x20"].append({"+0x8": _field_key(*key), "+0x30": ONLINE_BOOL if value else OFFLINE})
+
+
 def rewrite_ids(blob: bytes, swap: dict[int, int]) -> bytes:
     """Replace account ids inside a presence protobuf value.
 
@@ -206,15 +221,21 @@ class Presence:
         self._templates = templates
 
     def records(
-        self, profile: Profile, account_lo: int, status: int = STATUS_ONLINE, created: int = 0
+        self,
+        profile: Profile,
+        account_lo: int,
+        status: int = STATUS_ONLINE,
+        created: int = 0,
+        own: bool = False,
     ) -> list[dict]:
         """Presence of one account: the account record and its App and Overwatch game accounts.
 
-        `status` is what the player picked in the status dropdown (STATUS_ONLINE/AWAY/BUSY/OFFLINE);
-        appear-offline and a truly offline friend both use STATUS_OFFLINE. Their times (last online,
-        session start) are the account's last login or logout, so an offline friend shows as
-        "offline (2 h)" instead of the capture's date. An account that never logged in counts from
-        when its profile was made.
+        `status` is how friends see the player (STATUS_ONLINE/AWAY/BUSY/OFFLINE); appear-offline and a
+        truly offline friend both use STATUS_OFFLINE. `own` is the player's own copy instead, with
+        `status` as picked in the dropdown: appear-offline stays online there and sets its flag.
+        Times (last online, session start) are the account's last login or logout, so an offline
+        friend shows as "offline (2 h)" instead of the capture's date. An account that never logged
+        in counts from when its profile was made.
         """
         seen = (profile.last_online or created or int(time.time())) * MICROSECONDS
         swap = {
@@ -222,7 +243,12 @@ class Presence:
             RETAIL_APP_ACCOUNT: account_lo ^ APP_ACCOUNT_BITS,
             RETAIL_PRO_ACCOUNT: account_lo ^ PRO_ACCOUNT_BITS,
         }
-        online = status != STATUS_OFFLINE
+        online = own or status != STATUS_OFFLINE
+        flags = {
+            AWAY_FIELD: status == STATUS_AWAY,
+            BUSY_FIELD: status == STATUS_BUSY,
+            APPEAR_OFFLINE_FIELD: own and status == STATUS_OFFLINE,
+        }
         seen_ids: set[int] = set()
         records = []
         for _, value in self._templates.all(FRIENDS, 27113):
@@ -233,28 +259,18 @@ class Presence:
                 continue
             seen_ids.add(recorded_id)
             record = self._personalized(record, profile, account_lo, swap)
-            is_account_record = False
             for field in record["+0x20"]:
                 field["+0x30"] = _with_time(field["+0x30"], seen)
                 if not online and field["+0x8"] == GAME_ACCOUNT_ONLINE:
                     field["+0x30"] = OFFLINE
-                group, number = _key_group_field(field["+0x8"])
-                if (group, number) == AWAY_FIELD:
-                    field["+0x30"] = ONLINE_BOOL if status == STATUS_AWAY else OFFLINE
-                if group == BUSY_FIELD[0]:
-                    is_account_record = True
-            # Busy is an account-wide bool the capture never carries, so append it to the account
-            # record. Always send it (false when not busy) so going back to online clears a busy flag
-            # a friend's client cached, instead of leaving it stuck on.
-            if is_account_record:
-                busy = ONLINE_BOOL if status == STATUS_BUSY else OFFLINE
-                record["+0x20"].append({"+0x8": _field_key(*BUSY_FIELD), "+0x30": busy})
+            if any(_key_group_field(field["+0x8"])[0] == ACCOUNT_GROUP for field in record["+0x20"]):
+                _set_bools(record, flags)
             records.append(record)
         return records
 
     def own(self, profile: Profile, identity: Identity) -> list[tuple]:
         """Our own presence as a 27113 message."""
-        return [(FRIENDS, 27113, {"+0x78": self.records(profile, identity.account_lo)})]
+        return [(FRIENDS, 27113, {"+0x78": self.records(profile, identity.account_lo, own=True)})]
 
     @staticmethod
     def _personalized(record: dict, profile: Profile, account_lo: int, swap: dict[int, int]) -> dict:

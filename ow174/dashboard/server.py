@@ -95,6 +95,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return self.service.set_frame(data)
         if path == "/api/reconnect":
             return self.service.reconnect()
+        if path == "/api/start_game":
+            return self.service.start_game(data)
         raise ApiError("Action not found", 404)
 
     def _read_body(self) -> dict:

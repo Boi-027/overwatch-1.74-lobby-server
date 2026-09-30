@@ -22,7 +22,7 @@ from ow174.jam.framing import (
     parse_announcement,
     send_frame,
 )
-from ow174.jam.groups import CHAT_IN, FRIENDS, PARTY, TELEMETRY
+from ow174.jam.groups import CHAT_IN, FRIENDS, IN_CONNECT, LOBBY, PARTY, TELEMETRY
 from ow174.jam.handshake import Channel
 from ow174.jam.values import to_jsonable
 
@@ -32,6 +32,9 @@ if TYPE_CHECKING:
 logger = logging.getLogger("ow174.lobby")
 
 LOGIN_MESSAGE = 21800  # the only message accepted before the player is logged in
+FRIEND_CARDS = 20809  # replaces the client's list of friends' cards
+DISCONNECT_CLIENT = 20503
+KICK_GRACE_SECONDS = 1.5
 POLL_SECONDS = 2.0  # how often the read loop wakes up to send a keep-alive
 KEEPALIVE_SECONDS = 10.0
 LOG_VALUE_LIMIT = 200  # characters of an unhandled message shown in the log
@@ -78,6 +81,16 @@ class Session:
         with contextlib.suppress(OSError):
             self.sock.shutdown(socket.SHUT_RDWR)
 
+    def kick(self, reason: int) -> None:
+        """Drop the client with a reason: 20503 {reason, close the game} makes the login screen show
+        the reason (a 07C text) instead of "lost connection" (ProCore research). The client only
+        does that while it is still logged in, so the link closes a moment later."""
+        with contextlib.suppress(OSError):
+            self.send(IN_CONNECT, DISCONNECT_CLIENT, {"+0x78": reason, "+0x80": False})
+        timer = threading.Timer(KICK_GRACE_SECONDS, self.disconnect)
+        timer.daemon = True
+        timer.start()
+
     # --- sending -------------------------------------------------------------------------------
 
     def announce(self, crcs: list[int]) -> None:
@@ -118,8 +131,10 @@ class Session:
         return sent
 
     def send_social(self) -> None:
-        """Send a fresh friends list with everyone's presence."""
-        self.send(FRIENDS, 27100, self.server.social.friends_state(self.account))
+        """Send a fresh friends list with everyone's presence, and the cards of the friends online."""
+        social = self.server.social
+        self.send(FRIENDS, 27100, social.friends_state(self.account))
+        self.send(LOBBY, FRIEND_CARDS, {"+0x78": social.friend_cards(self.account)})
 
     def party_messages(self) -> list[tuple]:
         """The party state, plus joining or leaving the party chat channel when that changed."""
@@ -145,16 +160,22 @@ class Session:
             return
         content = self.server.content
         earned = content.celebrations.claim_rewards(self.profile)
-        if earned:
+        # An event switched on in the dashboard greets the player at once. Its box goes out with the
+        # others in live_messages (24302).
+        greetings, gifts, _ = content.celebrations.greet(self.profile)
+        if earned or greetings:
             self.save()
         messages = without_party_state(content.live_messages(self.profile, self.ident))
         messages += self.party_messages()
-        for guid in [*(granted or []), *earned]:
+        for guid in [*(granted or []), *earned, *gifts]:
             messages.append(content.collection.unlock_granted(guid))
+        messages += greetings
         sent = self.send_all(messages)
         summary = f"[>>>] Live update: {sent} messages"
         if earned:
             summary += f", {len(earned)} challenge rewards"
+        if greetings:
+            summary += f", {len(greetings)} event greetings"
         self.log(summary)
 
     # --- receiving -----------------------------------------------------------------------------
@@ -243,4 +264,4 @@ class Session:
         party = server.social.leave(self.account)
         if party:
             server.notify_party(party)
-        server.broadcast_presence()
+        server.notify_friends(self.account)

@@ -11,7 +11,7 @@ from ow174.catalog.templates import RetailTemplates
 from ow174.content import Content
 from ow174.content.identity import Identity
 from ow174.content.leaderboard import Player
-from ow174.content.ranked import DAMAGE, TANK
+from ow174.content.ranked import DAMAGE, QUEUE_NAMES, TANK
 from ow174.jam.codec import Schemas
 from ow174.jam.groups import PROFILES
 
@@ -23,6 +23,8 @@ EUROPE = 0x0002000004000020
 SEASON_25 = 0x0001000004000019
 FRIENDS = 0x0005000104000020
 OPEN_QUEUE = 0x00010200000001B4
+# Enough wins for the Top 500 in every queue.
+WINS = dict.fromkeys(QUEUE_NAMES, 25)
 
 
 class LeaderboardTests(unittest.TestCase):
@@ -34,16 +36,18 @@ class LeaderboardTests(unittest.TestCase):
     def setUp(self):
         self.me = Player(
             "Me",
-            Profile(ratings={"tank": 3000, "damage": 4444, "support": 1111, "open": 2222}),
+            Profile(ratings={"tank": 3000, "damage": 4444, "support": 3111, "open": 3222}, wins=dict(WINS)),
             Identity.for_account(0x10000001),
         )
         self.friend = Player(
             "Friend",
-            Profile(ratings={"tank": 3500, "open": 1800}, game_region="europe"),
+            Profile(ratings={"tank": 3500, "open": 3800}, game_region="europe", wins=dict(WINS)),
             Identity.for_account(0x10000002),
         )
         self.stranger = Player(
-            "Stranger", Profile(ratings={"tank": 2000, "open": 4000}), Identity.for_account(0x10000003)
+            "Stranger",
+            Profile(ratings={"tank": 3200, "open": 4000}, wins=dict(WINS)),
+            Identity.for_account(0x10000003),
         )
         self.me.profile.friends = ["friend"]
 
@@ -59,11 +63,11 @@ class LeaderboardTests(unittest.TestCase):
         return rows
 
     def test_one_role_ranks_that_role(self):
-        self.assertEqual(self.rows(TANK_ONLY), [(0x10000001, TANK, 3000), (0x10000003, TANK, 2000)])
+        self.assertEqual(self.rows(TANK_ONLY), [(0x10000003, TANK, 3200), (0x10000001, TANK, 3000)])
 
     def test_all_roles_lists_each_player_once_by_best_role(self):
-        # Stranger: tank 2000, damage and support at the default 2333.
-        self.assertEqual(self.rows(ALL_ROLES), [(0x10000001, DAMAGE, 4444), (0x10000003, DAMAGE, 2333)])
+        # Stranger: tank 3200; damage and support at the default 2333 are below the board.
+        self.assertEqual(self.rows(ALL_ROLES), [(0x10000001, DAMAGE, 4444), (0x10000003, TANK, 3200)])
 
     def test_region_friends_and_seasons_filter(self):
         self.assertEqual({row[0] for row in self.rows(EUROPE)}, {0x10000002})
@@ -71,25 +75,31 @@ class LeaderboardTests(unittest.TestCase):
         self.assertEqual(self.rows(SEASON_25), [])
 
     def test_the_open_queue_board_uses_the_open_rating(self):
-        self.assertEqual(self.rows(OPEN_QUEUE), [(0x10000003, 0, 4000), (0x10000001, 0, 2222)])
+        self.assertEqual(self.rows(OPEN_QUEUE), [(0x10000003, 0, 4000), (0x10000001, 0, 3222)])
 
-    def test_top_500_needs_sms_protect_and_25_matches(self):
-        # The game's rules text (82C5.07C): SMS Protect on and 25 matches completed.
+    def test_top_500_needs_sms_protect_a_diamond_rating_and_25_wins(self):
+        # Stricter than the game's text (82C5.07C: SMS Protect and 25 matches completed, any rating).
         self.stranger.profile.sms_protect = False
-        self.me.profile.matches = {"tank": 24}
+        self.me.profile.wins = {"tank": 24}
         self.assertEqual(self.rows(TANK_ONLY), [])
-        self.me.profile.matches = {"tank": 25}
+        self.me.profile.wins = {"tank": 25}
         self.assertEqual(self.rows(TANK_ONLY), [(0x10000001, TANK, 3000)])
+        self.me.profile.matches = {"tank": 24}  # no more wins than matches
+        self.assertEqual(self.rows(TANK_ONLY), [])
+        self.me.profile.matches = {}
+        self.me.profile.ratings["tank"] = 2999
+        self.assertEqual(self.rows(TANK_ONLY), [])
 
     def test_places_are_the_rows_of_the_players_region(self):
         players = [self.me, self.friend, self.stranger]
         places = self.content.leaderboard.places(self.me.profile, players)
-        self.assertEqual(places, {"tank": 1, "damage": 1, "support": 2, "open": 2, "ctf": 1})
+        # CTF and Lucio Cup stay at the default 2333, below the board.
+        self.assertEqual(places, {"tank": 2, "damage": 1, "support": 1, "open": 2})
         # Friend plays in Europe alone.
         self.assertEqual(self.content.leaderboard.places(self.friend.profile, players)["tank"], 1)
         self.stranger.profile.sms_protect = False
         self.assertEqual(self.content.leaderboard.places(self.me.profile, players)["open"], 1)
-        self.me.profile.matches = {"tank": 24}
+        self.me.profile.wins = {"tank": 24}
         self.assertNotIn("tank", self.content.leaderboard.places(self.me.profile, players))
 
     def test_the_ctf_board_uses_the_ctf_rating(self):
@@ -97,11 +107,12 @@ class LeaderboardTests(unittest.TestCase):
         self.assertEqual(self.rows(0x00010200000001C3)[0], (0x10000001, 0, 3900))
 
     def test_the_career_profile_carries_the_ratings(self):
+        # The role and open queue cards; an event's competitive card only while its Arcade shows it.
         profile = Profile(ratings={"damage": 3100})
         identity = Identity.for_account(0x10000003)
         (full, _summary) = self.content.career.profile(profile, identity, {"+0x0": 0x10000003})
         cards = full[2]["+0x90"]["+0x98"]["+0x0"]
-        self.assertEqual(len(cards), 3)
+        self.assertEqual(len(cards), 2)
         self.assertIn(3100, [r["+0x18"] for card in cards for r in card["+0x0"]])
 
     def test_the_hello_carries_the_game_region(self):

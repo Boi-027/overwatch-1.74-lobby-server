@@ -14,9 +14,10 @@ from ow174.jam.codec import Schemas
 from ow174.jam.groups import FRIENDS, GROUPS, LOBBY
 from ow174.jam.handshake import server_handshake
 from ow174.jam.values import id16
+from ow174.launcher.retail import RetailGames
 from ow174.lobby.handlers import build_router
 from ow174.lobby.research import ClientRecorder
-from ow174.lobby.session import Session
+from ow174.lobby.session import FRIEND_CARDS, Session
 from ow174.lobby.settings import Settings
 from ow174.matches.runtime import MatchManager
 from ow174.services.lootbox import LootBoxEngine
@@ -52,6 +53,7 @@ class LobbyServer:
         self.state_lock = threading.RLock()
         self.sessions: set[Session] = set()
         self.selected: Account | None = None  # the account the dashboard edits
+        self.games: RetailGames | None = None  # retail mode: starts a second game for an account
         self._connections = 0
         self._connections_lock = threading.Lock()
 
@@ -81,6 +83,12 @@ class LobbyServer:
 
     def session_of(self, account_lo: int) -> Session | None:
         return self.social.sessions.get(account_lo)
+
+    def game_account(self, peer_port: int, server_port: int) -> Account:
+        """The account a retail game plays, found by its connection: a second game plays the account
+        it was started for, the first game the dashboard's, so "Play as" can switch it."""
+        name = self.games.account_of(peer_port, server_port) if self.games else None
+        return self.accounts.get(name) if name else self.dashboard_account()
 
     def leaderboard_players(self) -> list[Player]:
         """Every saved account, as the leaderboard ranks them."""
@@ -121,21 +129,33 @@ class LobbyServer:
             session.log("[>>>] Disconnecting for reconnect (dashboard)")
             session.disconnect()
 
-    def broadcast_presence(self) -> None:
-        """Send everyone online a fresh friends list."""
-        for session in list(self.social.sessions.values()):
-            session.send_social()
-
-    def notify_presence(self, account: Account) -> None:
-        """Tell an account's online friends about its presence again (27113), so a status change
-        (online, away, busy, appear offline) shows on their friends list without a relog."""
-        payload = {"+0x78": self.social.presence(account)}
+    def notify_friends(self, account: Account) -> None:
+        """Show an account's online friends its presence (27113) and card (20809) again, after it logs
+        in or out or changes its icon. Not a whole friends list (27100): the client takes that as every
+        online friend coming online again and says "X is entering the game" for each (0x7FF789613930)."""
+        records = self.social.presence(account)
         for friend in self.social.friends_of(account):
             session = self.session_of(friend.account_lo)
             if session is None:
                 continue
             try:
-                session.send(FRIENDS, 27113, payload)
+                session.send(FRIENDS, 27113, {"+0x78": records})
+                session.send(LOBBY, FRIEND_CARDS, {"+0x78": self.social.friend_cards(friend)})
+            except OSError as error:
+                session.log(f"[!] Friends update failed: {error}", logging.WARNING)
+
+    def notify_presence(self, account: Account) -> None:
+        """Send an account's presence again (27113) after a status change: its online friends see the
+        new colour, and its own client the new status (the dropdown and the name card read it from
+        there, not from what was picked)."""
+        seen = self.social.presence(account)
+        updates = [(self.session_of(friend.account_lo), seen) for friend in self.social.friends_of(account)]
+        updates.append((self.session_of(account.account_lo), self.social.own_presence(account)))
+        for session, records in updates:
+            if session is None:
+                continue
+            try:
+                session.send(FRIENDS, 27113, {"+0x78": records})
             except OSError as error:
                 session.log(f"[!] Presence update failed: {error}", logging.WARNING)
 
@@ -157,9 +177,11 @@ class LobbyServer:
                 continue
             if open_group:
                 session.send(GROUPS, 52301, {"+0x78": self.social.group(party)})
+                session.log(f"[group] {party.leader.name}'s group changed (52301)")
             else:
                 session.watched_groups.discard(party.party_id)
                 session.send(GROUPS, 52302, {"+0x78": id16(*party.party_id)})
+                session.log(f"[group] {party.leader.name}'s group closed (52302)")
 
     # --- connections ---------------------------------------------------------------------------
 

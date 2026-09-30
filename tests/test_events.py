@@ -33,18 +33,23 @@ class EventTests(unittest.TestCase):
         self.celebrations = Celebrations.__new__(Celebrations)
         self.celebrations.resource_keys = {}
         self.celebrations._map_swaps = {}
-        self.celebrations._items = SimpleNamespace(challenges=lambda: {})
+        self.celebrations._items = SimpleNamespace(get=lambda guid: None)
         self.profile = SimpleNamespace(
             server_date="2022-04-10",
             events=["anniversary"],
             challenge="",
             challenge_wins=0,
             priority_passes={},
+            loot_boxes=[],
+            credits=0,
+            comp_points=0,
+            league_tokens=0,
+            level=1,
         )
 
     def test_custom_date_inside_event_and_challenge_windows(self):
-        self.celebrations._items = SimpleNamespace(challenges=lambda: {"test": [SimpleNamespace(guid=123)]})
-        self.profile.challenge = "test"
+        self.celebrations._items = SimpleNamespace(get=lambda guid: SimpleNamespace(guid=guid))
+        self.profile.challenge = "Tracer's Comic Challenge"
         with patch("ow174.content.clock.time.time", return_value=1900000000):
             records = self.celebrations.records(self.profile)["+0x78"]
         self.assertEqual(len(records), 2)
@@ -67,7 +72,11 @@ class EventTests(unittest.TestCase):
             features=Mock(return_value={}),
             endorsements=Mock(return_value=[]),
         )
-        content.collection = Mock(progression=Mock(return_value={}), hero_catalog=Mock(return_value={}))
+        content.collection = Mock(
+            progression=Mock(return_value={}),
+            hero_catalog=Mock(return_value={}),
+            boxes_update=Mock(return_value=(0, 24302, {})),
+        )
         content.ranked = Mock(card_ratings=Mock(return_value=[]))
         messages = content.live_messages(self.profile, Identity.create(1, 1))
         clock_index = next(i for i, (crc, mid, _) in enumerate(messages) if (crc, mid) == (CONFIG, 36602))
@@ -96,14 +105,6 @@ class EventTests(unittest.TestCase):
         for name, box in boxes.items():
             self.assertIn(box, EVENT_PRESETS[name].rewards, name)
 
-    def test_the_reaper_challenge_replaces_the_reaper_event(self):
-        # The challenge record lists the rewards as the event's trophies; two records would clash.
-        profile = Profile(events=["reaper"], challenge="Reaper's Code of Violence Challenge")
-        celebrations = Celebrations(RetailTemplates(), ItemDB(), lambda profile, guid: False)
-        records = celebrations.records(profile)["+0x78"]
-        (record,) = [r for r in records if r["+0x40"] & 0xFFFF == 0x104]
-        self.assertEqual(len(record["+0x18"]), 3)
-
     def test_reaper_event_has_its_rewards(self):
         self.assertEqual(EVENT_PRESETS["reaper"].rewards, (0x4DC7, 0x4EF3, 0x4FCF))
 
@@ -114,8 +115,7 @@ class EventTests(unittest.TestCase):
             row = rows[f"{EVENT_PRESETS[name].celebration:012X}.0C3"]
             self.assertEqual(row["catalog"], "00000000034A.039")
             self.assertEqual(row["maps"][0]["guid"], "000000000E83.09F")
-        for name in ("summer", "contenders"):
-            self.assertNotIn(f"{EVENT_PRESETS[name].celebration:012X}.0C3", rows)
+        self.assertNotIn(f"{EVENT_PRESETS['summer'].celebration:012X}.0C3", rows)
 
     def test_every_event_the_server_can_turn_on_has_dashboard_info(self):
         self.assertEqual({info.id for info in EVENT_INFO}, set(EVENT_PRESETS))

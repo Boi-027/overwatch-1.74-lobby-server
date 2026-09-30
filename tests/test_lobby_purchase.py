@@ -67,6 +67,25 @@ class PurchasePacketTests(unittest.TestCase):
         self.assertEqual(granted["+0x80"], away)
         self.assertTrue(self.content.collection.owns(self.account.profile, away))
 
+    def test_a_given_item_goes_to_its_hero_or_to_the_account(self):
+        # 24901 needs a hero; an icon goes in 24301 {unlock, seen}, as retail gave Year of the Tiger.
+        collection = self.content.collection
+        icon = 0x0250000000004F50
+        expected = (PROGRESSION_IN, 24301, {"+0x78": icon, "+0x80": False})
+        self.assertEqual(collection.unlock_granted(icon), expected)
+        skin = next(guid for guid, hero in collection.hero_of.items() if hero)
+        crc, msg_id, value = collection.unlock_granted(skin)
+        self.assertEqual((msg_id, value["+0x80"], value["+0x88"]), (24901, skin, True))
+        for crc, msg_id, value in (collection.unlock_granted(icon), collection.unlock_granted(skin)):
+            self.schemas.encode(crc, msg_id, value)
+
+    def test_boxes_are_merged_with_the_retail_login_reason(self):
+        boxes = [{"id": 7, "type": 4, "name": "Lunar New Year"}]
+        crc, msg_id, value = self.content.collection.boxes_update(boxes)
+        self.assertEqual((msg_id, value["+0x90"], value["+0x94"]), (24302, 12, True))
+        self.assertEqual(value["+0x78"], [{"+0x0": {"+0x0": [7, 0]}, "+0x10": 4, "+0x14": 1}])
+        self.schemas.encode(crc, msg_id, value)
+
     def test_rejected_purchase_does_not_change_disk_or_emit_unlock(self):
         self.account.profile.league_tokens = 0
         save_profile(self.account.profile, self.account.path)

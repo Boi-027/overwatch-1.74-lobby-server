@@ -55,6 +55,7 @@ class Content:
         self.career = CareerMessages(templates, self.collection, self.menu_hero, self.player, self.ranked)
         self.retail = RetailReplay(templates)
         self.arcade = Arcade(templates, self.ranked)
+        self.ranked.event_cards = lambda profile: self.arcade.competitive_cards(profile, server_time(profile))
         self.leaderboard = Leaderboard(self.player, self.ranked)
         # Skins newer than the capture (Luchador, Royal Knight) show the default model unless their
         # skin theme is in the preload list, so every catalog skin theme is offered.
@@ -114,6 +115,13 @@ class Content:
             *self.player.endorsements(profile, identity),
             (PERMISSIONS, 55500, self.player.features()),
             (PROGRESSION_IN, 24300, self.collection.progression(profile)),
+            # The client merges boxes (24302) and takes each balance and the level from its own
+            # message (ProCore's live checks); a 24300 sent again is not relied on for them.
+            self.collection.boxes_update(profile.loot_boxes),
+            (PROGRESSION_IN, 24307, {"+0x78": profile.credits}),
+            (PROGRESSION_IN, 24308, {"+0x78": profile.comp_points}),
+            (PROGRESSION_IN, 24309, {"+0x78": profile.league_tokens}),
+            (PROGRESSION_IN, 24313, {"+0x78": profile.level, "+0x80": 0}),  # level, experience
             (HERO_CATALOG, 24900, self.collection.hero_catalog(profile)),
             *[(RANKED, 36302, ratings) for ratings in self.ranked.card_ratings(profile)],
             (RANKED, 36300, self.ranked.state(profile)),

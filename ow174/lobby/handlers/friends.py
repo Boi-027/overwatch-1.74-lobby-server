@@ -75,13 +75,18 @@ def remove_friend(session: Session, value: dict) -> None:
 
 @routes.on(FRIENDS_OUT, SET_STATUS)
 def set_status(session: Session, value: dict) -> None:
-    """The status dropdown: remember it and tell online friends, so their friends list updates."""
+    """The status dropdown: remember it and send the presence again, so the player's own client and
+    their friends show it."""
     status = value.get("+0x78", 1)
     if status not in STATUS_NAMES:
         session.log(f"[friends] Unknown status {status}")
         return
-    session.server.social.set_status(session.account, status)
-    session.server.notify_presence(session.account)
+    server = session.server
+    server.social.set_status(session.account, status)
+    server.notify_presence(session.account)
+    # The party panel tiles, the player's own card among them, read the status only when a party
+    # state arrives (0x7FF7898FD14E), so the card kept its old colour until the menu was rebuilt.
+    server.notify_party(server.social.party_of(session.account))
     session.log(f"[friends] Status -> {STATUS_NAMES[status]}")
 
 

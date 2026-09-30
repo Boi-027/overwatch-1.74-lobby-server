@@ -33,6 +33,7 @@ class EventDef:
     kind: int = 0
     box: int = -1
     rewards: tuple = ()
+    splash: bool = False  # its start greeting shows a splash screen (content/celebrations.py)
 
 
 EVENT_PRESETS = {
@@ -54,7 +55,12 @@ EVENT_PRESETS = {
     "cassidy": EventDef(0xF7, key=0x17F),  # Cassidy's New Blood
     "malevento": EventDef(0xFA),
     "owl": EventDef(0x125),
-    "contenders": EventDef(0xC5, key=0x14A, rewards=(0x4B0E, 0x4B0D, 0x4A6A, 0x4A4B)),
+    # The Overwatch 2 Watchpoint Pack promo (2022): the OWL scene, and the main menu's "What's new?"
+    # box shows the pack with a Buy link to the Battle.net shop (01B/1215).
+    "watchpoint": EventDef(0x126),
+    # The notice before Overwatch 2 (spend your credits by 2 October): the one event splash 1.74
+    # still wires (01B/0C74 shows 05A/07D7 when this celebration is greeted).
+    "ow2_credits": EventDef(0x123, splash=True),
 }
 
 # Skins that the Anniversary main menu scene puts on its heroes. The recorded 1.68 preload list has
@@ -106,38 +112,31 @@ def _datatool_index(guid: str) -> int:
 
 
 # Hero challenges. A challenge is also a record in the event list, with reward tiers and the stat
-# that counts toward them. The celebration, content key and stat below are the recorded ones (Ashe's
-# Year of the Tiger 2022, week 1).
-CHALLENGE_CELEBRATION = 0x106
-CHALLENGE_KEY = 0x188
-# In 1.74 this stat counts played plus won matches (a win counts twice), although the profile field
-# is called challenge_wins.
+# that counts toward them. The stat is the recorded one (Ashe's Year of the Tiger 2022, week 1).
+# In 1.74 it counts played plus won matches (a win counts twice), although the profile field is
+# called challenge_wins.
 CHALLENGE_WINS_STAT = 0x086000000000073F
 CHALLENGE_TIER_WINS = 9
 
-# Challenges whose banner the client's Play menu shows (celebrations 0x119 and 0x11A of Anniversary
-# Remix 3, 0x104 for Reaper's), with their rewards: participation icon, spray and skin, in that order.
-VERIFIED_CHALLENGES = {
+# The only challenges 1.74's Play menu has a banner for (01B/0B7C): celebrations 0x119, 0x11A and
+# 0x11B, weeks 1-3 of Anniversary Remix 3. Rewards: participation icon, spray and skin, in that order.
+CHALLENGES = {
     "Tracer's Comic Challenge": (EventDef(0x119, key=0x198), (0x4AEA, 0x4AEB, 0x4AEC)),
     "Symmetra's Restoration Challenge": (EventDef(0x11A, key=0x198), (0x4B10, 0x4B11, 0x4B08)),
-    "Reaper's Code of Violence Challenge": (EventDef(0x104, key=0x189), (0x4EF3, 0x4FCF, 0x4DC7)),
+    "Kanezaka Challenge": (EventDef(0x11B, key=0x198), (0x4BB2, 0x4BB1, 0x4AA4)),  # Hanzo's, week 3
 }
 
 
 def challenge_event(challenge: str) -> EventDef:
-    """The event record for a challenge. Titles we have no native banner for reuse the Lunar layout."""
-    verified = VERIFIED_CHALLENGES.get(challenge)
-    if verified is None:
-        return EventDef(CHALLENGE_CELEBRATION, key=CHALLENGE_KEY)
-    return verified[0]
+    """The event record for one of the CHALLENGES."""
+    return CHALLENGES[challenge][0]
 
 
 def challenge_reward_ids(challenge: str) -> list[int] | None:
-    """Unlock GUIDs of a verified challenge, or None when the title is not a verified one."""
-    verified = VERIFIED_CHALLENGES.get(challenge)
-    if verified is None:
+    """Unlock GUIDs of a challenge's rewards, or None when the title is not one of the CHALLENGES."""
+    if challenge not in CHALLENGES:
         return None
-    return [UNLOCK_BASE | index for index in verified[1]]
+    return [UNLOCK_BASE | index for index in CHALLENGES[challenge][1]]
 
 
 @dataclass(frozen=True)
@@ -258,11 +257,19 @@ EVENT_INFO = [
         "Worked in previous checks.",
     ),
     EventInfo(
-        "contenders",
-        "Overwatch Contenders",
-        "Esports event with login rewards.",
-        "esports",
-        "limited",
-        "Rewards are available, but no separate scene is assigned to this event in the client.",
+        "watchpoint",
+        "Watchpoint Pack",
+        "Overwatch 2 pre-order promo in the What's new box, with the OWL scene.",
+        "special",
+        "verified",
+        "Worked in game. The box's Buy button opens the Battle.net shop page.",
+    ),
+    EventInfo(
+        "ow2_credits",
+        "Overwatch 2 credits notice",
+        "The splash from before Overwatch 2: spend your credits by 2 October.",
+        "special",
+        "verified",
+        "Worked in game. The splash shows once per player, on the main menu.",
     ),
 ]

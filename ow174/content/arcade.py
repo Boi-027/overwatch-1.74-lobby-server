@@ -109,6 +109,12 @@ class Arcade:
             (ARCADE, 39804): self._busy(cards),
         }
 
+    def competitive_cards(self, profile: Profile, now: float) -> list[int]:
+        """The competitive cards among the Arcade's (asset flag 0, card +0xA9), full 0C7 keys. The
+        group finder offers each as a game type (0x7FF789AA3D80), and each runs a season."""
+        cards = self.cards(profile, now)
+        return [CARD_BASE | card for card in cards if self._cards[f"0x{card:X}"]["flags"][0]]
+
     def cards(self, profile: Profile, now: float) -> list[int]:
         """The Arcade's cards (0C7 indexes): event groups first, then everyday ones, in 7 slots."""
         groups = []

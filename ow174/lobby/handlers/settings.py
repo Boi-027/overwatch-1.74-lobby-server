@@ -7,6 +7,7 @@ from functools import partial
 from ow174.jam.groups import RANKED_OUT, SOCIAL_OUT
 from ow174.lobby.router import Router
 from ow174.lobby.session import Session
+from ow174.services.social import SOCIAL_SETTINGS
 
 routes = Router()
 
@@ -20,6 +21,11 @@ def save_block(session: Session, value: dict, field: str) -> None:
     session.profile.settings[field] = value.get("+0x78")
     session.save()
     session.log(f"[<<<] Settings {field} saved")
+    if field == SOCIAL_SETTINGS:
+        # "Members can invite" lives in this block; the members' party state shows it (+0x94).
+        party = session.server.social.parties.get(session.account.account_lo)
+        if party is not None and party.leader is session.account and len(party.members) > 1:
+            session.server.notify_party(party)
 
 
 def _register_block_handlers() -> None:

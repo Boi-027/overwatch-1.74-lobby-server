@@ -16,7 +16,7 @@ from ow174.content import Content
 from ow174.content.presence import GAME_ACCOUNT_ONLINE, OFFLINE
 from ow174.content.presence import _encode_varint as _varint
 from ow174.jam.codec import Schemas
-from ow174.jam.groups import FRIENDS
+from ow174.jam.groups import FRIENDS, LOBBY
 from ow174.lobby.handlers import friends
 from ow174.services.social import Social
 
@@ -50,6 +50,19 @@ class FriendTests(unittest.TestCase):
 
     def test_only_the_bot_is_a_friend_at_first(self):
         self.assertEqual(self.names(self.alpha), ["Bot"])
+
+    def test_friends_online_get_their_cards_sent(self):
+        # Without a card the friends list shows only the BattleTag from presence.
+        self.alpha.profile.friends = ["Beta"]
+        cards = [card["+0x0"]["+0x0"]["+0x0"] for card in self.social.friend_cards(self.alpha)]
+        self.assertEqual(cards, [self.accounts.bot.account_lo])  # Beta is offline
+        self.social.sessions[self.beta.account_lo] = MagicMock()
+        cards = self.social.friend_cards(self.alpha)
+        self.assertEqual(
+            [card["+0x0"]["+0x0"]["+0x0"] for card in cards],
+            [self.accounts.bot.account_lo, self.beta.account_lo],
+        )
+        self.schemas.encode(LOBBY, 20809, {"+0x78": cards})
 
     def test_a_request_waits_for_the_other_player(self):
         target, outcome = self.social.request_friend(self.alpha, self.beta.battle_tag)

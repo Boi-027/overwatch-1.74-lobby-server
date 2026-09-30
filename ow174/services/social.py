@@ -10,12 +10,14 @@ party (the id is the party id) and 7 for General. Whispers (type 3) use their ow
 
 import os
 import threading
+import time
 from dataclasses import dataclass, field
 
 from ow174.accounts.registry import Account, Accounts
 from ow174.content import Content, Identity, passes
-from ow174.content.presence import STATUS_AWAY, STATUS_BUSY, STATUS_OFFLINE, STATUS_ONLINE
+from ow174.content.presence import STATUS_OFFLINE, STATUS_ONLINE
 from ow174.content.queue import group_slot, queue_entry, role_choice
+from ow174.content.ranked import EVENT_QUEUES, ROLES, rating_of
 from ow174.jam.values import id16
 
 CHANNEL_GROUP, CHANNEL_GENERAL = 4, 7
@@ -26,13 +28,28 @@ ID_HIGH_TAG = 1 << 56
 # Group finder slot types (LFG enum table 0x7FF78B566690).
 ANY_SLOT, TANK_SLOT, SUPPORT_SLOT, DAMAGE_SLOT = 1, 2, 3, 4
 # Group finder filters (52200 +0x78), found by changing one filter at a time on the client's filter
-# screen (05A/0668). The client does not filter the found groups itself. +0xC repeats the game type
-# of +0x8 (1 quick play, 2 competitive in game); +0x0 u64 and +0x11 bool are unknown.
+# screen (05A/0668). The client does not filter the found groups itself. +0x8 is the row picked in the
+# game type list (0 any, 1 quick play, 2 competitive, 3 arcade, 4 versus AI); +0xC is that type as the
+# listings carry it in +0x76 (0, 1, 2, 4, 5; seen in game). +0x0 u64 and +0x11 bool are unknown.
 YES_NO_FILTERS = (("+0xD", "+0x77"), ("+0xE", "+0x78"))  # roles assigned, voice chat: 0 any, 1 no, 2 yes
 FREE_SLOT_FILTERS = (("+0x12", TANK_SLOT), ("+0x13", DAMAGE_SLOT), ("+0x14", SUPPORT_SLOT))
-# The party member portrait ring colour (party_member +0xE0): 5 online (green), 4 away (yellow),
-# 6 busy (red), confirmed live. Anything else shows green.
-PORTRAIT_STATUS = {STATUS_ONLINE: 5, STATUS_AWAY: 4, STATUS_BUSY: 6, STATUS_OFFLINE: 5}
+COMPETITIVE_GROUP = 2  # listing +0x76 of a competitive group
+ARCADE_COMPETITIVE_GROUP = 3  # a competitive Arcade card's group (the Lucio Cup), the card in +0x68
+SOCIAL_SETTINGS = "+0x10D"  # the saved block of the Social options (22202)
+# A party invite waits this long for an answer, as the invitee's popup does (0x7FF789761DA0).
+INVITE_SECONDS = 25
+
+
+def _group_rating(account: Account, listing: dict) -> int | None:
+    """The rating a competitive group's spread compares: the best role rating, or the rating on the
+    group's competitive Arcade card."""
+    game_type = listing.get("+0x76")
+    if game_type == COMPETITIVE_GROUP:
+        return max(rating_of(account.profile, role) for role in ROLES.values())
+    queue = EVENT_QUEUES.get(listing.get("+0x68", 0))
+    if game_type == ARCADE_COMPETITIVE_GROUP and queue:
+        return rating_of(account.profile, queue)
+    return None
 
 
 def _random_u64() -> int:
@@ -49,12 +66,24 @@ def _random_party_entity() -> tuple[int, int]:
 
 
 @dataclass(eq=False)
+class Invite:
+    """A party invite waiting for an answer."""
+
+    inviter: Account
+    invitee: Account
+    sent: float = field(default_factory=time.monotonic)
+
+    def remaining_ms(self) -> int:
+        return max(0, int((self.sent + INVITE_SECONDS - time.monotonic()) * 1000))
+
+
+@dataclass(eq=False)
 class Party:
     party_id: tuple
     entity: tuple
     leader: Account
     members: list[Account] = field(default_factory=list)
-    invites: dict[int, Account] = field(default_factory=dict)  # invitee account_lo -> inviter
+    invites: dict[int, Invite] = field(default_factory=dict)  # invitee account_lo -> invite
     listing: dict | None = None  # the group finder entry the leader made (52201), None when not listed
     searching: bool = False  # the listing is open in the group finder (party state +0x9A)
     slot_types: dict[int, list[int]] = field(default_factory=dict)  # account_lo -> group slots taken (52203)
@@ -113,9 +142,25 @@ class Social:
                 records += self.presence(friend)
         return records
 
+    def friend_cards(self, me: Account) -> list[dict]:
+        """The cards of the player's friends who are online, for 20809."""
+        cards = []
+        for friend in self.friends_of(me):
+            if self.is_online(friend):
+                identity = Identity.for_account(friend.account_lo)
+                cards.append(self._content.player.friend_card(friend.profile, identity))
+        return cards
+
     def presence(self, account: Account) -> list[dict]:
+        """The account's presence as its friends see it."""
         return self._content.presence.records(
             account.profile, account.account_lo, self.effective_status(account), account.created
+        )
+
+    def own_presence(self, account: Account) -> list[dict]:
+        """The account's presence as its own client sees it: the status picked in the dropdown."""
+        return self._content.presence.records(
+            account.profile, account.account_lo, account.status, account.created, own=True
         )
 
     def is_online(self, account: Account) -> bool:
@@ -139,7 +184,7 @@ class Social:
         Offline friends get presence too, marked offline: without it the client leaves them out.
         """
         friend_entries = []
-        presence_records = list(self.presence(me))
+        presence_records = list(self.own_presence(me))
         for friend in self.friends_of(me):
             # +0x10 is not a time: with the current time in it every friend showed as a favorite.
             friend_entries.append({"+0x0": friend.account, "+0x10": 0, "+0x18": 0})
@@ -249,15 +294,23 @@ class Social:
             return party
 
     def party_state(self, party: Party) -> dict:
-        """20700 for the party, with the role queue entry and choices while it is in one."""
+        """20700 for the party, with the role queue entry and choices while it is in one. Players
+        invited and not answered yet come last, as pending tiles."""
+        state = self._members_state(party)
+        for invite in list(party.invites.values()):
+            invitee = invite.invitee
+            identity = Identity.for_account(invitee.account_lo)
+            record = self._content.player.invitee(invitee.profile, identity, invite.remaining_ms())
+            state["+0x78"]["+0x0"].append(record)
+        return state
+
+    def _members_state(self, party: Party) -> dict:
         members = []
         for member in party.members:
             members.append((member.profile, Identity.for_account(member.account_lo)))
         state = self._content.player.party_state_for(members, party.party_id, party.entity)
         state["+0x78"]["+0x60"] = id16(*party.party_id)
-        # The member portrait rings show each member's status (online/away/busy).
-        for record, member in zip(state["+0x78"]["+0x0"], party.members, strict=True):
-            record["+0xE0"] = PORTRAIT_STATUS.get(self.effective_status(member), 5)
+        state["+0x78"]["+0x94"] = self.members_may_invite(party)
         if party.listing is not None:
             state["+0x78"]["+0x30"] = [party.listing]
             # +0x9A on: the group is looking for players. The client then refreshes its search
@@ -287,7 +340,7 @@ class Social:
 
     def group(self, party: Party) -> dict:
         """A listed party as the group finder shows it (52300): its party state."""
-        return self.party_state(party)["+0x78"]
+        return self._members_state(party)["+0x78"]
 
     def listed_groups(self) -> list[Party]:
         """Parties whose listing is open in the group finder."""
@@ -309,13 +362,19 @@ class Social:
         return self._content.arcade.pass_pool(party.queue["+0x0"]["+0x0"])
 
     def matches_filters(self, party: Party, wanted: dict) -> bool:
-        """Whether a listed group passes the filters of a search: +0x8 game type, +0xD roles
-        assigned, +0xE voice chat, +0xF minimum endorsement the group asks for, +0x10 minimum
-        players, +0x12/+0x13/+0x14 free tank/damage/support slots, +0x15 free slots of any role,
-        +0x18 slot types that must be free, +0x30 texts to find in the name or the creator."""
+        """Whether a listed group passes the filters of a search: +0xC game type (+0x0 its
+        competitive Arcade card for type 3), +0xD roles assigned, +0xE voice chat, +0xF minimum
+        endorsement the group asks for, +0x10 minimum players, +0x12/+0x13/+0x14 free
+        tank/damage/support slots, +0x15 free slots of any role, +0x18 slot types that must be
+        free, +0x30 texts to find in the name or the creator (filter reader 0x7FF7899B1E00).
+        +0x11 is "only players of my platform" (forced on for competitive games, hidden without
+        crossplay, 0x7FF789AA43A0); every player here is on PC, so it filters nothing."""
         listing = party.listing or {}
-        game_type = wanted.get("+0x8", 0)
+        game_type = wanted.get("+0xC", 0)
         if game_type and listing.get("+0x76", 0) not in (0, game_type):
+            return False
+        card = wanted.get("+0x0", 0)
+        if card and listing.get("+0x68", 0) not in (0, card):
             return False
         for key, flag in YES_NO_FILTERS:
             if wanted.get(key, 0) and bool(listing.get(flag)) != (wanted[key] == 2):
@@ -333,6 +392,37 @@ class Social:
         creator = listing.get("+0x0", {}).get("+0x40", "").split("#")[0]
         names = f"{listing.get('+0xA0', '')} {creator}".casefold()
         return all(entry.get("+0x0", "").casefold() in names for entry in wanted.get("+0x30", []))
+
+    @staticmethod
+    def can_join(party: Party, account: Account) -> bool:
+        """Whether the player meets the group's requirements: its minimum endorsement level (+0x70)
+        and, for a competitive group, its rating spread (+0x74, the "+/- 150" slider). The client
+        checks neither (tested in game; it only sorts the found groups by them, 0x7FF789AA1A60),
+        so the search hides the group and a join is refused. The spread is measured between the
+        ratings of the player and the leader: the best role ones, or those on the group's
+        competitive Arcade card."""
+        if account.virtual:
+            return True
+        listing = party.listing or {}
+        if account.profile.endorsement_level < listing.get("+0x70", 0):
+            return False
+        spread = listing.get("+0x74", 0)
+        mine = _group_rating(account, listing)
+        if not spread or mine is None:
+            return True
+        return abs(mine - _group_rating(party.leader, listing)) <= spread
+
+    @staticmethod
+    def members_may_invite(party: Party) -> bool:
+        """Whether the members may invite too: the leader's "Members can invite to group", one of
+        the Social options (05E/0268) that the group finder shows as well (05E/0359). It is +0x0 of
+        the block 22202 saves (20802 +0x10D), which followed it on/off/on/off in game; on until the
+        leader saves it. The party state carries it in +0x94: the client offers "Invite" to a
+        member only when it is on (0x7FF7899B33FE)."""
+        return bool((party.leader.profile.settings.get(SOCIAL_SETTINGS) or {}).get("+0x0", True))
+
+    def may_invite(self, party: Party, account: Account) -> bool:
+        return party.leader is account or self.members_may_invite(party)
 
     def update_search(self, party: Party) -> None:
         """A full group stops looking for players; the client then offers to play (0x7FF78934B390)."""
@@ -397,8 +487,22 @@ class Social:
 
     def invite(self, inviter: Account, target: Account) -> Party:
         party = self.party_of(inviter)
-        party.invites[target.account_lo] = inviter
+        with self._lock:
+            party.invites[target.account_lo] = Invite(inviter, target)
         return party
+
+    def cancel_invite(self, party: Party, invitee: Account) -> Invite | None:
+        """Drop an invite that was not answered yet and return it, or None when there is none."""
+        with self._lock:
+            return party.invites.pop(invitee.account_lo, None)
+
+    def expire_invite(self, party: Party, invite: Invite) -> bool:
+        """Drop an invite nobody answered. False when it was answered or replaced by a newer one."""
+        with self._lock:
+            if party.invites.get(invite.invitee.account_lo) is not invite:
+                return False
+            del party.invites[invite.invitee.account_lo]
+            return True
 
     def join(self, account: Account, party: Party) -> None:
         with self._lock:

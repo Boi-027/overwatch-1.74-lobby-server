@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ow174.accounts.profile import Profile
 from ow174.catalog.templates import RetailTemplates
 from ow174.content.arcade import CARD_BASE, LUNAR_BRAWLS, WINTER_BRAWLS, Arcade
-from ow174.content.ranked import Ranked
+from ow174.content.ranked import COMPETITIVE_CTF, LUCIO_CUP, Ranked
 from ow174.jam.groups import ARCADE
 
 
@@ -38,6 +38,11 @@ class ArcadeTests(unittest.TestCase):
         self.assertEqual(today, [0x15C, 0x34, 0x1C, 0x64, 0xAD, 0xEF, 0x2])
         tomorrow = self.arcade.cards(Profile(events=["goodbye"]), 86400)
         self.assertEqual(tomorrow[2:5], [0x64, 0xAD, 0x1])
+
+    def test_the_events_competitive_cards_are_game_types_of_the_group_finder(self):
+        self.assertEqual(self.arcade.competitive_cards(Profile(events=["summer"]), 0), [LUCIO_CUP])
+        self.assertEqual(self.arcade.competitive_cards(Profile(events=["lunar"]), 0), [COMPETITIVE_CTF])
+        self.assertEqual(self.arcade.competitive_cards(Profile(events=["goodbye"]), 0), [])
 
     def test_every_card_has_a_date_window(self):
         built = self.arcade.messages(Profile(events=["anniversary"]), 1000 * 86400)
