@@ -128,7 +128,7 @@ class Social:
             return STATUS_ONLINE
         if account.account_lo not in self.sessions:
             return STATUS_OFFLINE
-        return getattr(account, "status", STATUS_ONLINE)
+        return account.status
 
     def set_status(self, account: Account, status: int) -> None:
         account.status = status

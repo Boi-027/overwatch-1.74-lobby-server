@@ -24,7 +24,7 @@ from ow174.lobby.handlers.matchmaking import (
     unwatch_groups,
     watch_groups,
 )
-from ow174.lobby.handlers.party import accept_merge, answer, invite_group, merge_request
+from ow174.lobby.handlers.party import accept_merge, invite_group, join_group, merge_request
 from ow174.lobby.server import LobbyServer
 from ow174.services.social import Social
 
@@ -192,7 +192,7 @@ class GroupFinderTests(unittest.TestCase):
         self.assertEqual(group.slot_types[bot.account_lo], [2])  # the leader takes the first slot
         self.assertEqual(self.search(seeker, seeker_sent), ["Bot's group"])
         # Join in the group finder: no inviter, the group's party id in +0x88.
-        answer(seeker, {"+0x78": {"+0x0": 0, "+0x8": 0}, "+0x88": id16(*group.party_id), "+0x98": True})
+        join_group(seeker, {"+0x78": {"+0x0": 0, "+0x8": 0}, "+0x88": id16(*group.party_id), "+0x98": True})
         self.assertIs(self.social.party_of(seeker.account), group)
         self.assertEqual(group.members, [bot, seeker.account])
         self.assertEqual(self.notified, [group])

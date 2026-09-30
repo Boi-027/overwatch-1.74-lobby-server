@@ -1,9 +1,8 @@
-"""Party invites, answers, leader transfer, kicks and leaving."""
+"""Party invites and their answers, joining from the group finder, leader transfer, kicks and leaving."""
 
 from ow174.jam.groups import CHAT_IN, PARTY, PARTY_OUT
 from ow174.lobby.router import Router
 from ow174.lobby.session import Session
-from ow174.services.social import Party
 
 routes = Router()
 
@@ -12,11 +11,15 @@ BOT_GREETING = "Hi! I'm in the group."
 # puts a request on the client's list for 20 seconds (0x7FF789762200), 20705 {+0x78 id} takes it
 # off. Yes answers 22110 and No or the timeout 22111, each with the asking leader's id (01B/1666).
 MERGE_REQUEST = 20703
-# 20704 shows "Join X's group?" with Accept/Decline and joins on Accept; 20701 instead renders
-# "X suggests Y" with a lone button that never joins. Accept sends 22108, Decline 22109.
+# 20704 {inviter id, inviter card} shows "Join X's group?" with Accept (22108) and Decline (22109),
+# each with the inviter's id. 20701 {card, card} is "X suggests Y", with a button that never joins.
 INVITE = 20704
+INVITE_PLAYER = 22102
+JOIN_GROUP = 22103
 INVITE_GROUP = 22104
+KICK = 22105
 MAKE_LEADER = 22106
+LEAVE = 22107
 ACCEPT_INVITE = 22108
 DECLINE_INVITE = 22109
 MERGE_ACCEPT = 22110
@@ -27,17 +30,22 @@ def merge_request(social, leader, group) -> dict:
     return {"+0x78": social.player_record(leader), "+0xE0": social.group(group)}
 
 
-def _asking_group(social, value: dict) -> tuple:
-    """The leader who asked to merge (22110/22111 +0x78) and that leader's group."""
-    leader = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
-    return leader, social.parties.get(leader.account_lo) if leader else None
+def _account_at(social, value: dict):
+    """The account whose id a party message carries at +0x78."""
+    return social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
 
 
-@routes.on(PARTY_OUT, 22102)
+def _sender_party(social, value: dict) -> tuple:
+    """The player at +0x78 who invited or asked to merge, and that player's party."""
+    player = _account_at(social, value)
+    return player, social.parties.get(player.account_lo) if player else None
+
+
+@routes.on(PARTY_OUT, INVITE_PLAYER)
 def invite(session: Session, value: dict) -> None:
     server = session.server
     social = server.social
-    target = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
+    target = _account_at(social, value)
     if target is None or target is session.account:
         session.log(f"[<<<] Party invite for unknown player {value}")
         return
@@ -55,50 +63,14 @@ def invite(session: Session, value: dict) -> None:
         recipient.send(PARTY, INVITE, {"+0x78": inviter["+0x0"], "+0x88": inviter})
 
 
-@routes.on(PARTY_OUT, 22103)
-def answer(session: Session, value: dict) -> None:
-    """Accept or decline an invite. Join in the group finder sends the same message with the
-    group's party id in +0x88 and no inviter (0x7FF78975FAB0)."""
-    social = session.server.social
-    party = _party_inviting(session)
-    if party is None:
-        group = social.party_by_id(value.get("+0x88"))
-        if group is None or group.listing is None or not group.searching:
-            session.log(f"[<<<] Party answer without invite {value}")
-            return
-        social.join(session.account, group)
-        session.server.notify_party(group)
-        session.log(f"[group] Joined {group.leader.name}'s group from the group finder")
-        return
-    if value.get("+0x98"):
-        social.join(session.account, party)
-        session.server.notify_party(party)
-        session.log(f"[<<<] Joined {party.leader.name}'s party")
-    else:
-        party.invites.pop(session.account.account_lo, None)
-        session.log(f"[<<<] Declined {party.leader.name}'s party")
-
-
-def _party_inviting(session: Session) -> Party | None:
-    """A party that has invited this player. Several members share one Party, so each is checked once."""
-    account_lo = session.account.account_lo
-    for party in set(session.server.social.parties.values()):
-        if account_lo in party.invites:
-            return party
-    return None
-
-
 @routes.on(PARTY_OUT, ACCEPT_INVITE)
 def accept_invite(session: Session, value: dict) -> None:
-    """Accept on the invite popup, which carries the inviter's id at +0x78: join the inviter's party."""
+    """Accept on the invite popup: join the inviter's party."""
     server = session.server
     social = server.social
-    inviter = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
-    if inviter is None:
-        return
-    party = social.party_of(inviter)
-    if session.account.account_lo not in party.invites:
-        session.log(f"[<<<] Accept-invite to {inviter.name} without a pending invite")
+    inviter, party = _sender_party(social, value)
+    if party is None or session.account.account_lo not in party.invites:
+        session.log(f"[<<<] Invite accepted without an invite {value}")
         return
     social.join(session.account, party)
     server.notify_party(party)
@@ -107,14 +79,23 @@ def accept_invite(session: Session, value: dict) -> None:
 
 @routes.on(PARTY_OUT, DECLINE_INVITE)
 def decline_invite(session: Session, value: dict) -> None:
-    """Decline on the invite popup: drop the pending invite from the inviter (+0x78)."""
-    social = session.server.social
-    inviter = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
-    if inviter is None:
-        return
-    party = social.party_of(inviter)
-    if party.invites.pop(session.account.account_lo, None) is not None:
+    """Decline on the invite popup: drop the invite."""
+    inviter, party = _sender_party(session.server.social, value)
+    if party is not None and party.invites.pop(session.account.account_lo, None) is not None:
         session.log(f"[<<<] Declined {inviter.name}'s invite")
+
+
+@routes.on(PARTY_OUT, JOIN_GROUP)
+def join_group(session: Session, value: dict) -> None:
+    """Join in the group finder: the group's party id in +0x88 and no inviter (0x7FF78975FAB0)."""
+    social = session.server.social
+    group = social.party_by_id(value.get("+0x88"))
+    if group is None or group.listing is None or not group.searching:
+        session.log(f"[<<<] Join for a group that is not looking for players {value}")
+        return
+    social.join(session.account, group)
+    session.server.notify_party(group)
+    session.log(f"[group] Joined {group.leader.name}'s group from the group finder")
 
 
 @routes.on(PARTY_OUT, INVITE_GROUP)
@@ -138,31 +119,12 @@ def invite_group(session: Session, value: dict) -> None:
     session.log(f"[group] Invite group: {target.leader.name}'s group joined")
 
 
-@routes.on(PARTY_OUT, MAKE_LEADER)
-def make_leader(session: Session, value: dict) -> None:
-    """Make another member the group leader (their id at +0x78). The 20700 leader flag (+0xE2) is on
-    members[0], so move the target to the front and update party.leader, then re-send the party."""
-    server = session.server
-    social = server.social
-    party = social.party_of(session.account)
-    target = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
-    if target is None or target is session.account:
-        return
-    if party.leader is not session.account or target not in party.members:
-        return
-    party.members.remove(target)
-    party.members.insert(0, target)
-    party.leader = target
-    server.notify_party(party)
-    session.log(f"[<<<] {target.name} is now the group leader")
-
-
 @routes.on(PARTY_OUT, MERGE_ACCEPT)
 def accept_merge(session: Session, value: dict) -> None:
     """Yes on "X wants to merge groups": the player's party moves into X's group."""
     server = session.server
     social = server.social
-    leader, group = _asking_group(social, value)
+    leader, group = _sender_party(social, value)
     me = session.account.account_lo
     if group is None or me not in group.merge_invites:
         session.log(f"[group] Merge accepted without a request {value}")
@@ -177,19 +139,35 @@ def accept_merge(session: Session, value: dict) -> None:
 
 @routes.on(PARTY_OUT, MERGE_DECLINE)
 def decline_merge(session: Session, value: dict) -> None:
-    social = session.server.social
-    leader, group = _asking_group(social, value)
+    leader, group = _sender_party(session.server.social, value)
     if group is not None:
         group.merge_invites.discard(session.account.account_lo)
     session.log(f"[group] Merge declined ({leader.name if leader else 'unknown'})")
 
 
-@routes.on(PARTY_OUT, 22105)
+@routes.on(PARTY_OUT, MAKE_LEADER)
+def make_leader(session: Session, value: dict) -> None:
+    """The leader hands the party to another member (+0x78). The 20700 leader flag (+0xE2) goes to
+    the first member, so the new leader moves to the front."""
+    server = session.server
+    social = server.social
+    party = social.party_of(session.account)
+    target = _account_at(social, value)
+    if party.leader is not session.account or target is session.account or target not in party.members:
+        return
+    party.members.remove(target)
+    party.members.insert(0, target)
+    party.leader = target
+    server.notify_party(party)
+    session.log(f"[<<<] {target.name} is now the group leader")
+
+
+@routes.on(PARTY_OUT, KICK)
 def kick(session: Session, value: dict) -> None:
     server = session.server
     social = server.social
     party = social.party_of(session.account)
-    target = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
+    target = _account_at(social, value)
     if target is None or party.leader is not session.account or target not in party.members:
         return
     social.leave(target)
@@ -200,7 +178,7 @@ def kick(session: Session, value: dict) -> None:
     session.log(f"[<<<] Kicked {target.name}")
 
 
-@routes.on(PARTY_OUT, 22107)
+@routes.on(PARTY_OUT, LEAVE)
 def leave(session: Session, value: dict) -> None:
     server = session.server
     party = server.social.leave(session.account)

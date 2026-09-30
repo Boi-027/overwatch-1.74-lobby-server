@@ -26,6 +26,7 @@ OFFLINE_REFRESH_SECONDS = 60
 def login(session: Session, value: dict) -> None:
     server = session.server
     typed_name = (value.get("+0x78") or "").strip()
+    # The retail frontend has no name screen and sends no name, so it gets the dashboard's account.
     account = server.accounts.get(typed_name) if typed_name else server.dashboard_account()
     _take_over_account(session, account)
     session.log(f"[<<<] Login as '{account.name}' (account 0x{account.account_lo:X})")
