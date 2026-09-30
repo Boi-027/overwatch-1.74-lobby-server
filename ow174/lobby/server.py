@@ -11,7 +11,7 @@ from ow174.catalog.templates import RetailTemplates
 from ow174.content import Content, Identity
 from ow174.content.leaderboard import Player
 from ow174.jam.codec import Schemas
-from ow174.jam.groups import GROUPS, LOBBY
+from ow174.jam.groups import FRIENDS, GROUPS, LOBBY
 from ow174.jam.handshake import server_handshake
 from ow174.jam.values import id16
 from ow174.lobby.handlers import build_router
@@ -125,6 +125,19 @@ class LobbyServer:
         """Send everyone online a fresh friends list."""
         for session in list(self.social.sessions.values()):
             session.send_social()
+
+    def notify_presence(self, account: Account) -> None:
+        """Tell an account's online friends about its presence again (27113), so a status change
+        (online, away, busy, appear offline) shows on their friends list without a relog."""
+        payload = {"+0x78": self.social.presence(account)}
+        for friend in self.social.friends_of(account):
+            session = self.session_of(friend.account_lo)
+            if session is None:
+                continue
+            try:
+                session.send(FRIENDS, 27113, payload)
+            except OSError as error:
+                session.log(f"[!] Presence update failed: {error}", logging.WARNING)
 
     def notify_party(self, party: Party) -> None:
         """Send the current party state to every member that is online, and the group to players who

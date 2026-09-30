@@ -1,5 +1,6 @@
 """Friends: requests by BattleTag, accepting or declining them, and removing a friend."""
 
+from ow174.content.presence import STATUS_NAMES
 from ow174.jam.groups import FRIENDS, FRIENDS_OUT
 from ow174.lobby.router import Router
 from ow174.lobby.session import Session
@@ -9,6 +10,7 @@ routes = Router()
 SEND_REQUEST = 27000  # {token, 1, BattleTag, message}; answered by 27110
 ANSWER_REQUEST = 27001  # {token, inviter id, 0 = accept}; answered by 27111 ("Invitation accepted!")
 REMOVE_FRIEND = 27002  # {token, friend id}; answered by 27112 ("Friend removed")
+SET_STATUS = 27011  # {status}: the status dropdown, 1 online, 2 away, 3 busy, 4 appear offline
 REQUEST_RECEIVED = 27107  # {request}: unlike the list (27100), it shows the "friend request" banner
 REQUEST_RESULT = 27110  # {token, text, 0}: the client shows the text (0x7FF78960D700)
 ANSWERED = 27111
@@ -69,6 +71,18 @@ def remove_friend(session: Session, value: dict) -> None:
     session.send(FRIENDS, REMOVED, {"+0x78": token, "+0x80": OK})
     session.log(f"[friends] Removed {friend.name}")
     _refresh(session, friend)
+
+
+@routes.on(FRIENDS_OUT, SET_STATUS)
+def set_status(session: Session, value: dict) -> None:
+    """The status dropdown: remember it and tell online friends, so their friends list updates."""
+    status = value.get("+0x78", 1)
+    if status not in STATUS_NAMES:
+        session.log(f"[friends] Unknown status {status}")
+        return
+    session.server.social.set_status(session.account, status)
+    session.server.notify_presence(session.account)
+    session.log(f"[friends] Status -> {STATUS_NAMES[status]}")
 
 
 def _refresh(session: Session, other) -> None:

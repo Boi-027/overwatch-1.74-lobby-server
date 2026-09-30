@@ -25,6 +25,7 @@ class Account:
     path: Path | None = None
     virtual: bool = False  # the built-in bot has no file
     created: int = 0  # unix time the profile file was made; "offline since" for one never used
+    status: int = 1  # status dropdown for friends: 1 online, 2 away, 3 busy, 4 appear offline
 
     @property
     def account(self) -> dict:

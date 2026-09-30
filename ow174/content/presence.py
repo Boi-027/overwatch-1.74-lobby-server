@@ -24,8 +24,20 @@ PRO_ACCOUNT_BITS = 0x0B0B0000
 
 # A presence field key is {program "BN", group, field, unique id}. Field 1 of group 2 (a game
 # account) says whether it is online; its value is a Variant bool (field 2).
+PRESENCE_PROGRAM = 16974  # "BN", the program of the Battle.net presence fields
 GAME_ACCOUNT_ONLINE = bytes.fromhex("08ce8401100218012000")
 OFFLINE = b"\x10\x00"
+ONLINE_BOOL = b"\x10\x01"
+
+# The status dropdown (message 27011 +0x78): its value maps to how friends see the player.
+STATUS_ONLINE, STATUS_AWAY, STATUS_BUSY, STATUS_OFFLINE = 1, 2, 3, 4
+STATUS_NAMES = {STATUS_ONLINE: "online", STATUS_AWAY: "away", STATUS_BUSY: "busy", STATUS_OFFLINE: "appear offline"}
+
+# Confirmed live against the client: away is the game-account bool (group 2, field 10), which the
+# capture carries as false; busy is an account-wide bool (group 1, field 11) not in the capture, so it
+# is appended to the account record when set. Either makes friends show the player yellow or red.
+AWAY_FIELD = (2, 10)
+BUSY_FIELD = (1, 11)
 
 # Last online and session times are Variant int values (field 3) in microseconds since 1970.
 INT_VALUE_TAG = b"\x18"
@@ -58,6 +70,44 @@ def _encode_varint(value: int) -> bytes:
         value >>= 7
     out.append(value)
     return bytes(out)
+
+
+def _field_key(group: int, field: int) -> bytes:
+    """A presence field key {program "BN", group, field, index 0}, for a field not in the capture."""
+    return (
+        b"\x08" + _encode_varint(PRESENCE_PROGRAM)
+        + b"\x10" + _encode_varint(group)
+        + b"\x18" + _encode_varint(field)
+        + b"\x20\x00"
+    )
+
+
+def _key_group_field(blob: bytes) -> tuple[int | None, int | None]:
+    """The (group, field) of a presence field key, from its protobuf fields 2 and 3."""
+    group = field = None
+    position = 0
+    try:
+        while position < len(blob):
+            tag, position = _read_varint(blob, position)
+            number, wire_type = tag >> 3, tag & 7
+            if wire_type == VARINT:
+                value, position = _read_varint(blob, position)
+                if number == 2:
+                    group = value
+                elif number == 3:
+                    field = value
+            elif wire_type == LENGTH_DELIMITED:
+                length, position = _read_varint(blob, position)
+                position += length
+            elif wire_type == FIXED64:
+                position += 8
+            elif wire_type == FIXED32:
+                position += 4
+            else:
+                break
+    except IndexError:
+        pass
+    return group, field
 
 
 def _swap_varint_fields(blob: bytes, position: int, swap: dict[int, int]) -> bytes | None:
@@ -147,12 +197,16 @@ class Presence:
     def __init__(self, templates: RetailTemplates) -> None:
         self._templates = templates
 
-    def records(self, profile: Profile, account_lo: int, online: bool = True, created: int = 0) -> list[dict]:
+    def records(
+        self, profile: Profile, account_lo: int, status: int = STATUS_ONLINE, created: int = 0
+    ) -> list[dict]:
         """Presence of one account: the account record and its App and Overwatch game accounts.
 
-        Their times (last online, session start) are the account's last login or logout, so an
-        offline friend shows as "offline (2 h)" instead of the capture's date. An account that never
-        logged in counts from when its profile was made.
+        `status` is what the player picked in the status dropdown (STATUS_ONLINE/AWAY/BUSY/OFFLINE);
+        appear-offline and a truly offline friend both use STATUS_OFFLINE. Their times (last online,
+        session start) are the account's last login or logout, so an offline friend shows as
+        "offline (2 h)" instead of the capture's date. An account that never logged in counts from
+        when its profile was made.
         """
         seen = (profile.last_online or created or int(time.time())) * MICROSECONDS
         swap = {
@@ -160,6 +214,7 @@ class Presence:
             RETAIL_APP_ACCOUNT: account_lo ^ APP_ACCOUNT_BITS,
             RETAIL_PRO_ACCOUNT: account_lo ^ PRO_ACCOUNT_BITS,
         }
+        online = status != STATUS_OFFLINE
         seen_ids: set[int] = set()
         records = []
         for _, value in self._templates.all(FRIENDS, 27113):
@@ -170,10 +225,22 @@ class Presence:
                 continue
             seen_ids.add(recorded_id)
             record = self._personalized(record, profile, account_lo, swap)
+            is_account_record = False
             for field in record["+0x20"]:
                 field["+0x30"] = _with_time(field["+0x30"], seen)
                 if not online and field["+0x8"] == GAME_ACCOUNT_ONLINE:
                     field["+0x30"] = OFFLINE
+                group, number = _key_group_field(field["+0x8"])
+                if (group, number) == AWAY_FIELD:
+                    field["+0x30"] = ONLINE_BOOL if status == STATUS_AWAY else OFFLINE
+                if group == BUSY_FIELD[0]:
+                    is_account_record = True
+            # Busy is an account-wide bool the capture never carries, so append it to the account
+            # record. Always send it (false when not busy) so going back to online clears a busy flag
+            # a friend's client cached, instead of leaving it stuck on.
+            if is_account_record:
+                busy = ONLINE_BOOL if status == STATUS_BUSY else OFFLINE
+                record["+0x20"].append({"+0x8": _field_key(*BUSY_FIELD), "+0x30": busy})
             records.append(record)
         return records
 

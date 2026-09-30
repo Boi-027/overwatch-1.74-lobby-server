@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 
 from ow174.accounts.registry import Account, Accounts
 from ow174.content import Content, Identity, passes
+from ow174.content.presence import STATUS_AWAY, STATUS_BUSY, STATUS_OFFLINE, STATUS_ONLINE
 from ow174.content.queue import group_slot, queue_entry, role_choice
 from ow174.jam.values import id16
 
@@ -29,6 +30,9 @@ ANY_SLOT, TANK_SLOT, SUPPORT_SLOT, DAMAGE_SLOT = 1, 2, 3, 4
 # of +0x8 (1 quick play, 2 competitive in game); +0x0 u64 and +0x11 bool are unknown.
 YES_NO_FILTERS = (("+0xD", "+0x77"), ("+0xE", "+0x78"))  # roles assigned, voice chat: 0 any, 1 no, 2 yes
 FREE_SLOT_FILTERS = (("+0x12", TANK_SLOT), ("+0x13", DAMAGE_SLOT), ("+0x14", SUPPORT_SLOT))
+# The party member portrait ring colour (party_member +0xE0): 5 online (green), 4 away (yellow),
+# 6 busy (red), confirmed live. Anything else shows green.
+PORTRAIT_STATUS = {STATUS_ONLINE: 5, STATUS_AWAY: 4, STATUS_BUSY: 6, STATUS_OFFLINE: 5}
 
 
 def _random_u64() -> int:
@@ -111,11 +115,23 @@ class Social:
 
     def presence(self, account: Account) -> list[dict]:
         return self._content.presence.records(
-            account.profile, account.account_lo, self.is_online(account), account.created
+            account.profile, account.account_lo, self.effective_status(account), account.created
         )
 
     def is_online(self, account: Account) -> bool:
         return account.virtual or account.account_lo in self.sessions
+
+    def effective_status(self, account: Account) -> int:
+        """How friends see the account: offline when not connected, else its chosen status (which
+        may be appear-offline). The bot is always online."""
+        if account.virtual:
+            return STATUS_ONLINE
+        if account.account_lo not in self.sessions:
+            return STATUS_OFFLINE
+        return getattr(account, "status", STATUS_ONLINE)
+
+    def set_status(self, account: Account, status: int) -> None:
+        account.status = status
 
     def friends_state(self, me: Account) -> dict:
         """Message 27100: friends, incoming friend requests, and presence.
@@ -239,6 +255,9 @@ class Social:
             members.append((member.profile, Identity.for_account(member.account_lo)))
         state = self._content.player.party_state_for(members, party.party_id, party.entity)
         state["+0x78"]["+0x60"] = id16(*party.party_id)
+        # The member portrait rings show each member's status (online/away/busy).
+        for record, member in zip(state["+0x78"]["+0x0"], party.members, strict=True):
+            record["+0xE0"] = PORTRAIT_STATUS.get(self.effective_status(member), 5)
         if party.listing is not None:
             state["+0x78"]["+0x30"] = [party.listing]
             # +0x9A on: the group is looking for players. The client then refreshes its search

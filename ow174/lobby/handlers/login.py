@@ -5,6 +5,7 @@ import time
 
 from ow174.accounts.registry import Account
 from ow174.content import Identity
+from ow174.content.presence import STATUS_ONLINE
 from ow174.jam.groups import CHAT_IN, FRIENDS, LOBBY, OUT_CONNECT, PERMISSIONS
 from ow174.lobby.router import Router
 from ow174.lobby.session import Session, without_party_state
@@ -25,7 +26,6 @@ OFFLINE_REFRESH_SECONDS = 60
 def login(session: Session, value: dict) -> None:
     server = session.server
     typed_name = (value.get("+0x78") or "").strip()
-    # The retail frontend has no name screen and sends no name, so it gets the dashboard's account.
     account = server.accounts.get(typed_name) if typed_name else server.dashboard_account()
     _take_over_account(session, account)
     session.log(f"[<<<] Login as '{account.name}' (account 0x{account.account_lo:X})")
@@ -53,6 +53,7 @@ def _take_over_account(session: Session, account: Account) -> None:
     """Bind the account to this session and disconnect any older session that had it."""
     server = session.server
     session.account = account
+    account.status = STATUS_ONLINE  # the client's dropdown starts at Online on a fresh login
     session.ident = Identity.create(account.account_lo, session.channel.seq)
     account.profile.last_online = int(time.time())
     account.save()

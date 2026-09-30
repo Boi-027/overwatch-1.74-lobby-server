@@ -47,6 +47,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--mode", choices=MODES, help="what to start; without it you are asked")
     parser.add_argument("--server", help="address of the server to join, such as 1.2.3.4:12357")
+    # LOCAL PATCH (two full-retail accounts on one PC; re-apply after an upstream pull):
+    parser.add_argument(
+        "--no-game",
+        action="store_true",
+        help="LOCAL PATCH: start the servers (incl. Battle.net in retail) but not a game, and do not "
+        "close a running one -- for the two-account launcher",
+    )
+    parser.add_argument(
+        "--client",
+        metavar="NAME",
+        help="LOCAL PATCH: launch only a game client (relay injected) for account NAME against a "
+        "running server; claims NAME via account_queue.txt (used by launch_account.py)",
+    )
     parser.add_argument(
         "--game-exe", type=Path, help="Overwatch.exe to start (default: the one picked before)"
     )
@@ -111,6 +124,13 @@ def is_server_address(text: str) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.client:  # LOCAL PATCH: launch only a named client against a running server
+        setup_logging(_paths(args).log_file)
+        try:
+            return run_client(args)
+        except LaunchError as error:
+            log.error("%s", error)
+            return 1
     if args.mode is None:
         args.mode = ask_mode() if sys.stdin.isatty() else "retail"
     setup_logging(_paths(args).log_file)
@@ -150,12 +170,13 @@ def run(args: argparse.Namespace) -> None:
         paths=_paths(args),
     )
     game = relay = None
-    if args.mode != "server":
+    if args.mode != "server" and not args.no_game:  # LOCAL PATCH: --no-game keeps other clients alive
         game = find_game(args.game_exe)
         close_running_copy(game)
     if args.mode == "retail":
-        ensure_requirements()
-        relay = ensure_relay_dll()
+        ensure_requirements()  # the Battle.net emulator needs these even with --no-game
+        if not args.no_game:
+            relay = ensure_relay_dll()
 
     load_or_create_profile(settings.paths.template)
     server = LobbyServer(settings)
@@ -169,7 +190,9 @@ def run(args: argparse.Namespace) -> None:
         _start_bnet(server)
     _log_banner(server)
 
-    if args.mode == "retail":
+    if args.no_game:  # LOCAL PATCH: servers only; each client is launched via --client NAME
+        log.info("[+] Servers only (--no-game). Launch each client with launch_account.py / --client NAME.")
+    elif args.mode == "retail":
         process = start_game(game, [f"--BNetServer={BNET_ADDRESS}"], args.locale)
         base = inject_relay(process, relay, args.timeout)
         log.info("[+] Relay loaded into Overwatch (PID %d) at 0x%X.", process.pid, base)
@@ -194,6 +217,26 @@ def join(args: argparse.Namespace) -> None:
     close_running_copy(game)
     start_game(game, ["--tank_TournamentMode", f"--lobbyServer={address}"], args.locale)
     log.info("[+] The game is starting on %s. You can close this window.", address)
+
+
+def run_client(args: argparse.Namespace) -> int:
+    """LOCAL PATCH: launch ONE retail game + relay for a named account against an already-running
+    server (started with --mode retail --no-game). Claims the name via account_queue.txt so a second
+    client becomes a different account, and does NOT close the other running client."""
+    from ow174.paths import ROOT
+
+    name = args.client.strip()
+    game = find_game(args.game_exe)
+    ensure_requirements()
+    relay = ensure_relay_dll()
+    with (ROOT / "account_queue.txt").open("a", encoding="utf-8") as queue:
+        queue.write(name + "\n")
+    log.info("[client] Claimed account '%s'.", name)
+    process = start_game(game, [f"--BNetServer={BNET_ADDRESS}"], args.locale)
+    log.info("[client] Overwatch started (PID %d).", process.pid)
+    base = inject_relay(process, relay, args.timeout)
+    log.info("[client] Relay loaded at 0x%X. Log in with anything; you are '%s'.", base, name)
+    return 0
 
 
 def _bind(server: LobbyServer):
