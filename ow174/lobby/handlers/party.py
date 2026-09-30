@@ -1,4 +1,4 @@
-"""Party invites, answers, kicks and leaving."""
+"""Party invites, answers, leader transfer, kicks and leaving."""
 
 from ow174.jam.groups import CHAT_IN, PARTY, PARTY_OUT
 from ow174.lobby.router import Router
@@ -12,7 +12,13 @@ BOT_GREETING = "Hi! I'm in the group."
 # puts a request on the client's list for 20 seconds (0x7FF789762200), 20705 {+0x78 id} takes it
 # off. Yes answers 22110 and No or the timeout 22111, each with the asking leader's id (01B/1666).
 MERGE_REQUEST = 20703
+# 20704 shows "Join X's group?" with Accept/Decline and joins on Accept; 20701 instead renders
+# "X suggests Y" with a lone button that never joins. Accept sends 22108, Decline 22109.
+INVITE = 20704
 INVITE_GROUP = 22104
+MAKE_LEADER = 22106
+ACCEPT_INVITE = 22108
+DECLINE_INVITE = 22109
 MERGE_ACCEPT = 22110
 MERGE_DECLINE = 22111
 
@@ -45,8 +51,8 @@ def invite(session: Session, value: dict) -> None:
         return
     recipient = server.session_of(target.account_lo)
     if recipient:
-        invitation = {"+0x78": social.player_record(session.account), "+0xE0": social.player_record(target)}
-        recipient.send(PARTY, 20701, invitation)
+        inviter = social.player_record(session.account)
+        recipient.send(PARTY, INVITE, {"+0x78": inviter["+0x0"], "+0x88": inviter})
 
 
 @routes.on(PARTY_OUT, 22103)
@@ -82,6 +88,35 @@ def _party_inviting(session: Session) -> Party | None:
     return None
 
 
+@routes.on(PARTY_OUT, ACCEPT_INVITE)
+def accept_invite(session: Session, value: dict) -> None:
+    """Accept on the invite popup, which carries the inviter's id at +0x78: join the inviter's party."""
+    server = session.server
+    social = server.social
+    inviter = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
+    if inviter is None:
+        return
+    party = social.party_of(inviter)
+    if session.account.account_lo not in party.invites:
+        session.log(f"[<<<] Accept-invite to {inviter.name} without a pending invite")
+        return
+    social.join(session.account, party)
+    server.notify_party(party)
+    session.log(f"[<<<] Joined {inviter.name}'s party")
+
+
+@routes.on(PARTY_OUT, DECLINE_INVITE)
+def decline_invite(session: Session, value: dict) -> None:
+    """Decline on the invite popup: drop the pending invite from the inviter (+0x78)."""
+    social = session.server.social
+    inviter = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
+    if inviter is None:
+        return
+    party = social.party_of(inviter)
+    if party.invites.pop(session.account.account_lo, None) is not None:
+        session.log(f"[<<<] Declined {inviter.name}'s invite")
+
+
 @routes.on(PARTY_OUT, INVITE_GROUP)
 def invite_group(session: Session, value: dict) -> None:
     """Invite Group in the group finder: while the player's group is looking for players, another
@@ -101,6 +136,25 @@ def invite_group(session: Session, value: dict) -> None:
     server.notify_party(party)
     server.notify_watchers(target)  # left empty, so closed
     session.log(f"[group] Invite group: {target.leader.name}'s group joined")
+
+
+@routes.on(PARTY_OUT, MAKE_LEADER)
+def make_leader(session: Session, value: dict) -> None:
+    """Make another member the group leader (their id at +0x78). The 20700 leader flag (+0xE2) is on
+    members[0], so move the target to the front and update party.leader, then re-send the party."""
+    server = session.server
+    social = server.social
+    party = social.party_of(session.account)
+    target = social.accounts.by_id((value.get("+0x78") or {}).get("+0x0", 0))
+    if target is None or target is session.account:
+        return
+    if party.leader is not session.account or target not in party.members:
+        return
+    party.members.remove(target)
+    party.members.insert(0, target)
+    party.leader = target
+    server.notify_party(party)
+    session.log(f"[<<<] {target.name} is now the group leader")
 
 
 @routes.on(PARTY_OUT, MERGE_ACCEPT)
