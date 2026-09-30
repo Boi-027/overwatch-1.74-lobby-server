@@ -4,8 +4,8 @@ import logging
 import socket
 import threading
 
-from ow174.accounts.profile import Profile, load_or_create_profile
-from ow174.accounts.registry import Account, Accounts
+from ow174.accounts.profile import Profile, battle_tag, load_or_create_profile
+from ow174.accounts.registry import Account, Accounts, account_id_for
 from ow174.catalog.items import ItemDB
 from ow174.catalog.templates import RetailTemplates
 from ow174.content import Content, Identity
@@ -15,6 +15,7 @@ from ow174.jam.groups import FRIENDS, GROUPS, LOBBY
 from ow174.jam.handshake import server_handshake
 from ow174.jam.values import id16
 from ow174.launcher.retail import RetailGames
+from ow174.lobby.battle_tag_query import answer_query
 from ow174.lobby.handlers import build_router
 from ow174.lobby.research import ClientRecorder
 from ow174.lobby.session import FRIEND_CARDS, Session
@@ -84,6 +85,12 @@ class LobbyServer:
     def session_of(self, account_lo: int) -> Session | None:
         return self.social.sessions.get(account_lo)
 
+    def battle_tag_of(self, name: str) -> str:
+        """The BattleTag a name plays with here, without making an account for it."""
+        account_lo = account_id_for(name)
+        account = self.accounts.by_id(account_lo)
+        return account.battle_tag if account else battle_tag(name, account_lo)
+
     def game_account(self, peer_port: int, server_port: int) -> Account:
         """The account a retail game plays, found by its connection: a second game plays the account
         it was started for, the first game the dashboard's, so "Play as" can switch it."""
@@ -123,11 +130,14 @@ class LobbyServer:
                 except OSError as error:
                     session.log(f"[!] Settings update failed: {error}", logging.WARNING)
 
-    def reconnect_all(self) -> None:
-        """Drop every client so it logs in again (the menu scene only changes at login)."""
+    def reconnect_own_game(self) -> None:
+        """Drop the game played on this PC so it logs in again, as the dashboard's account now (the
+        menu scene only changes at login). Second games and other players' games stay."""
+        second = self.games.second_accounts() if self.games else set()
         for session in list(self.sessions):
-            session.log("[>>>] Disconnecting for reconnect (dashboard)")
-            session.disconnect()
+            if session.local and (session.account is None or session.account.name not in second):
+                session.log("[>>>] Disconnecting for reconnect (dashboard)")
+                session.disconnect()
 
     def notify_friends(self, account: Account) -> None:
         """Show an account's online friends its presence (27113) and card (20809) again, after it logs
@@ -227,10 +237,14 @@ class LobbyServer:
             self._connections += 1
             conn_id = self._connections
         log.info("[lobby #%d] Incoming connection from %s:%d", conn_id, address[0], address[1])
-        channel = server_handshake(sock, self.settings.host, self.settings.port, conn_id)
+        sock.settimeout(30)
+        if answer_query(sock, self.battle_tag_of):
+            log.info("[lobby #%d] Answered a join's BattleTag question", conn_id)
+            return
+        channel = server_handshake(sock, conn_id)
         log.info("[lobby #%d] [+] Handshake complete, waiting for the protocol announcement", conn_id)
 
-        session = Session(self, sock, channel, conn_id)
+        session = Session(self, sock, channel, conn_id, address)
         self.sessions.add(session)
         try:
             session.run()

@@ -64,6 +64,14 @@ class MenuHero:
                 return hero
         return self._random_picks.setdefault(profile.player_name, random.choice(self._collection.heroes))
 
+    def picked(self, profile: Profile) -> int:
+        """The hero picked for the menu in the dashboard, or 0 for random, none or a PvE character."""
+        choice = (profile.lobby_hero or "").strip()
+        if choice.lower() in ("", "random", "none"):
+            return 0
+        hero = self._hero_by_name_or_guid(choice)
+        return hero if hero in self._collection.default_loadouts else 0
+
     def menu_guid(self, profile: Profile) -> int | None:
         """The hero record to put in the menu through MENU_HERO_KEY, or None to leave it alone.
 

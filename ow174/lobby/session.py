@@ -1,6 +1,7 @@
 """One connected client: reading and sending messages, and the logged-in player."""
 
 import contextlib
+import ipaddress
 import json
 import logging
 import socket
@@ -22,7 +23,7 @@ from ow174.jam.framing import (
     parse_announcement,
     send_frame,
 )
-from ow174.jam.groups import CHAT_IN, FRIENDS, IN_CONNECT, LOBBY, PARTY, TELEMETRY
+from ow174.jam.groups import CHAT_IN, IN_CONNECT, PARTY, TELEMETRY
 from ow174.jam.handshake import Channel
 from ow174.jam.values import to_jsonable
 
@@ -51,11 +52,19 @@ def without_party_state(messages: list[tuple]) -> list[tuple]:
 
 
 class Session:
-    def __init__(self, server: "LobbyServer", sock: socket.socket, channel: Channel, conn_id: int) -> None:
+    def __init__(
+        self,
+        server: "LobbyServer",
+        sock: socket.socket,
+        channel: Channel,
+        conn_id: int,
+        peer: tuple = ("127.0.0.1", 0),
+    ) -> None:
         self.server = server
         self.sock = sock
         self.channel = channel
         self.conn_id = conn_id
+        self.local = ipaddress.ip_address(peer[0]).is_loopback  # the game runs on this PC
         self.account: Account | None = None
         self.ident: Identity | None = None
         self.logged_in = False
@@ -129,12 +138,6 @@ class Session:
             if self.send(crc, msg_id, value):
                 sent += 1
         return sent
-
-    def send_social(self) -> None:
-        """Send a fresh friends list with everyone's presence, and the cards of the friends online."""
-        social = self.server.social
-        self.send(FRIENDS, 27100, social.friends_state(self.account))
-        self.send(LOBBY, FRIEND_CARDS, {"+0x78": social.friend_cards(self.account)})
 
     def party_messages(self) -> list[tuple]:
         """The party state, plus joining or leaving the party chat channel when that changed."""

@@ -64,10 +64,12 @@ class ItemDB:
     def __init__(self, data_dir: Path = DATA_DIR) -> None:
         self.unlocks: dict[int, Unlock] = {}
         self.hero_names: dict[int, str] = {}
+        self.hero_classes: dict[int, str] = {}  # "Tank", "Damage" or "Support"
         for guid, hero in _read_json(data_dir / "extracted_heroes.json").items():
             if hero.get("Name"):
                 index = int(guid.partition(".")[0], 16)
                 self.hero_names[HERO_BASE | index] = hero["Name"]
+                self.hero_classes[HERO_BASE | index] = hero.get("Class", "")
         for hero, groups in _read_json(data_dir / "extracted_items.json").items():
             self._load_groups(groups, hero)
         self._load_groups(_read_json(data_dir / "extracted_general_unlocks.json"), None)

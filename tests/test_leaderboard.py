@@ -115,6 +115,30 @@ class LeaderboardTests(unittest.TestCase):
         self.assertEqual(len(cards), 2)
         self.assertIn(3100, [r["+0x18"] for card in cards for r in card["+0x0"]])
 
+    def test_the_career_profile_shows_the_matches_won_per_role(self):
+        # The role tables sum a hero stat per role themselves, so a role's wins go on one of its heroes
+        # (062/039), in "All modes" (key 0) and in the running season's category.
+        profile = Profile(wins={"damage": 12, "support": 3}, matches={"damage": 30})
+        identity = Identity.for_account(0x10000003)
+        (full, _summary) = self.content.career.profile(profile, identity, {"+0x0": 0x10000003})
+        crc, msg_id, value = full
+        classes = self.content.collection.items.hero_classes
+        categories = {c["+0x18"]: c["+0x0"] for c in value["+0x90"]["+0xB0"]}
+        for key in (0, (32 << 16) | 0x03, (32 << 16) | 0x23):
+            won = {}
+            for entry in categories[key]:
+                for stat in entry["+0x0"]:
+                    if stat["+0x0"] == 0x0860000000000039:
+                        won[classes[entry["+0x18"]]] = won.get(classes[entry["+0x18"]], 0) + stat["+0x8"]
+            self.assertEqual(won, {"Damage": 12.0, "Support": 3.0}, hex(key))
+        self.schemas.encode(crc, msg_id, value)
+
+    def test_the_favourite_heroes_stay_the_same_with_a_random_menu_hero(self):
+        profile = Profile(player_name="Mei", lobby_hero="random")
+        first = self.content.career.stats(profile)[0]["+0x0"]
+        self.content.menu_hero.reroll(profile)  # a new random menu hero
+        self.assertEqual(self.content.career.stats(profile)[0]["+0x0"], first)
+
     def test_the_hello_carries_the_game_region(self):
         hello = self.content.player.hello(Profile(game_region="europe", region="RU"), Identity.for_account(1))
         self.assertEqual((hello["+0xF8"], hello["+0x14C"], hello["+0x150"]), ("RUS", 2, 2))

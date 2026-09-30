@@ -23,26 +23,30 @@ RPC_PORT = 21119
 
 def start_bnet(
     player: Callable[[tuple], Player],
+    lobby: str,
     host: str = "127.0.0.1",
     ports: tuple[int, int] = (STALL_PORT, RPC_PORT),
 ) -> None:
     """Start the emulator in a background thread and return once its (stall, RPC) ports are bound.
 
-    `player` gives the Player a client logs in as, from the (host, port) of its RPC connection.
-    Raises OSError when a port is taken.
+    `player` gives the Player a client logs in as, from the (host, port) of its RPC connection;
+    `lobby` is the IPv4 address and port of the lobby server the client goes on to. Raises OSError
+    when a port is taken.
     """
     ready: Future = Future()
-    serve = _serve(player, host, ports, ready)
+    serve = _serve(player, lobby, host, ports, ready)
     threading.Thread(target=asyncio.run, args=(serve,), daemon=True, name="bnet").start()
     ready.result()
 
 
-async def _serve(player: Callable[[tuple], Player], host: str, ports: tuple[int, int], ready: Future) -> None:
+async def _serve(
+    player: Callable[[tuple], Player], lobby: str, host: str, ports: tuple[int, int], ready: Future
+) -> None:
     stall_port, rpc_port = ports
     stall = None
     try:
         stall = await asyncio.start_server(_hold_open, host, stall_port)
-        rpc = await BNetRpcServer(host, rpc_port, player=player).start()
+        rpc = await BNetRpcServer(host, rpc_port, player=player, lobby=lobby).start()
     except OSError as error:
         if stall:
             stall.close()

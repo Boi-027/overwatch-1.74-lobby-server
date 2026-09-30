@@ -77,6 +77,8 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Could not save changes: " + str(error)}, 500)
 
     def _run_action(self, path: str, data: dict) -> dict:
+        if path == "/api/apply_to_all":
+            return self.service.apply_to_all(data)
         if path == "/api/update_profile":
             return self.service.update_profile(data)
         if path == "/api/add_boxes":

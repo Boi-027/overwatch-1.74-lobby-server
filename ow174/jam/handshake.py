@@ -46,14 +46,18 @@ def recv_exact(sock: socket.socket, count: int, timeout: float = 30) -> bytes:
 def build_state_blob(seq: int, host: str, port: int) -> bytes:
     """The 292-byte state message that completes the handshake.
 
-    Bytes 0-255 are a fixed pattern holding the host address and an HMAC over the rest of it. A
-    36-byte trailer follows: the peer id (type 5), the channel id (type 13, with the lobby port and
-    address) and a u32 equal to 1. Evidence for the trailer: the AyakaPS and Blizless servers.
+    Bytes 0-255 are a fixed pattern holding the server's address and an HMAC over the rest of it. The
+    address is a type (2, IPv4), the IPv4 address and the port. The retail client goes on only when
+    the address or the port is the one it dialed (0x7FF789D48F10, else error 0x300DA); it keeps that
+    port as a plain number (strtol in 0x7FF78932C11D), so it is little-endian here. A 36-byte trailer
+    follows: the peer id (type 5), the channel id (type 13, with the lobby port and address) and a
+    u32 equal to 1. Evidence for the trailer: the AyakaPS and Blizless servers.
     """
     blob = bytearray(range(256))
     blob[0] = 0x02
     address = socket.inet_aton(host)
     blob[1:5] = address
+    blob[5:7] = struct.pack("<H", port)
     blob[255] = 0xFF
     signed = bytes(blob[:176]) + bytes(blob[208:256])
     blob[176:208] = hmac.new(BLOB_KEY, signed, hashlib.sha256).digest()
@@ -80,7 +84,7 @@ def _recv_client_value(sock: socket.socket) -> bytes:
     return recv_exact(sock, CLIENT_MESSAGE_SIZE)[8:]
 
 
-def server_handshake(sock: socket.socket, host: str, port: int, conn_id: int) -> Channel:
+def server_handshake(sock: socket.socket, conn_id: int) -> Channel:
     """Run the server side of the handshake and return the encrypted channel."""
     hello = recv_exact(sock, len(HELLO_CLIENT))
     if hello != HELLO_CLIENT:
@@ -99,5 +103,8 @@ def server_handshake(sock: socket.socket, host: str, port: int, conn_id: int) ->
 
     seq = (int(time.time() * 1000) ^ (conn_id << 16)) & 0xFFFFFFFF
     channel = Channel(tx=Jam(server_to_client_key), rx=Jam(client_to_server_key), seq=seq)
+    # The address the connection came in on, not the one the server listens on (0.0.0.0 for players
+    # on other PCs): the client compares it with the address it dialed.
+    host, port = sock.getsockname()[:2]
     sock.sendall(client_to_server_key + channel.tx.crypt(build_state_blob(seq, host, port)))
     return channel

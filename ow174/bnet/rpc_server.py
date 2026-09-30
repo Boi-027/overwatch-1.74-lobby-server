@@ -6,8 +6,9 @@ The login, step by step:
   2. AuthenticationServer.Logon. We answer with AuthenticationClient.OnLogonComplete at once, as
      the player picked in the dashboard. Tested in game: the client needs no login form and no
      ticket, with or without a cached one, so switching accounts needs no typing.
-  3. GameUtilities.ProcessTask. We answer with a ReferralInfo that sends the client to our lobby
-     server. The client then takes the normal retail path and shows the full main menu.
+  3. GameUtilities.ProcessTask. We answer with a ReferralInfo that sends the client to the lobby
+     server, ours or another PC's. The client then takes the normal retail path and shows the full
+     main menu.
 
 A response goes to service id 254 and repeats the token of the request. A notification names the
 listener by its hash and by the id the client gave it, and uses a token from our own counter.
@@ -22,14 +23,13 @@ from typing import NamedTuple
 import websockets
 
 from ow174.bnet import protocol as P
+from ow174.bnet.session_key import session_key
 
 log = logging.getLogger("ow174.bnet")
 
 SUBPROTOCOL = "v1.rpc.battle.net"
 RESPONSE_SERVICE_ID = 254
 
-# Where the ReferralInfo sends the client: our lobby server.
-LOBBY_HOSTV4 = "127.0.0.1:3724"
 REFERRAL_CID = 379775058
 # The referral's session keys. With all zeros the lobby does not validate the state blob, as in
 # tournament mode.
@@ -39,7 +39,6 @@ ZERO_KEY = bytes(64)
 # come from the Player. Evidence that the client accepts these tags: the plasmawatch server.
 ACCOUNT_HIGH = 0x0100000000000000
 GAME_ACCOUNT_HIGH = 0x020000010050726F  # the tag ends in "Pro", the Overwatch program id
-SESSION_KEY = bytes(range(1, 65))  # the client only needs a 64-byte key to be present
 
 
 class Session:
@@ -81,11 +80,13 @@ def _service_name(service_hash: int) -> str:
 
 
 class Player(NamedTuple):
-    """Who the client logs in as: the Battle.net account, its Overwatch game account and BattleTag."""
+    """Who the client logs in as: the Battle.net account, its Overwatch game account, BattleTag and
+    the lobby account name (sent on in the session key)."""
 
     account: int
     game_account: int
     battle_tag: str
+    name: str
 
 
 def _logon_result(player: Player):
@@ -101,7 +102,7 @@ def _logon_result(player: Player):
     result.connected_region = 1
     result.battle_tag = player.battle_tag
     result.geoip_country = "US"
-    result.session_key = SESSION_KEY
+    result.session_key = session_key(player.name)
     result.restricted_mode = False
     return result
 
@@ -113,12 +114,12 @@ def _add_attribute(attributes, name: str, **value) -> None:
         setattr(attribute.value, kind, data)
 
 
-def _fill_referral(attributes) -> None:
+def _fill_referral(attributes, lobby: str) -> None:
     _add_attribute(attributes, "response_type", string_value="ReferralInfo")
     for key_name in ("k0", "k1", "k2", "k3"):
         _add_attribute(attributes, key_name, blob_value=ZERO_KEY)
     _add_attribute(attributes, "cid", uint_value=REFERRAL_CID)
-    _add_attribute(attributes, "hostv4", string_value=LOBBY_HOSTV4)
+    _add_attribute(attributes, "hostv4", string_value=lobby)
 
 
 class BNetRpcServer:
@@ -128,11 +129,14 @@ class BNetRpcServer:
         port=21119,
         *,
         player: Callable[[tuple], Player],
+        lobby: str = "127.0.0.1:3724",
     ):
-        """`player` gives the Player a client logs in as, from its (host, port)."""
+        """`player` gives the Player a client logs in as, from its (host, port). `lobby` is the
+        lobby server's IPv4 address and port, where the referral sends the client."""
         self.host = host
         self.port = port
         self.player = player
+        self.lobby = lobby
 
     def log(self, msg: str):
         log.info("[bnet] %s", msg)
@@ -242,6 +246,6 @@ class BNetRpcServer:
         request = P.ProcessTaskRequest.FromString(body)
         session.log(f"   ProcessTask attrs={[attribute.name for attribute in request.attribute]}")
         response = P.ProcessTaskResponse()
-        _fill_referral(response.result)
+        _fill_referral(response.result, self.lobby)
         await session.send_response(header, response.SerializeToString())
-        session.log(f"   -> ProcessTaskResponse ReferralInfo hostv4={LOBBY_HOSTV4}")
+        session.log(f"   -> ProcessTaskResponse ReferralInfo hostv4={self.lobby}")

@@ -4,6 +4,7 @@ import threading
 import time
 
 from ow174.accounts.registry import Account
+from ow174.bnet.session_key import name_in_key
 from ow174.content import Identity
 from ow174.content.presence import STATUS_ONLINE
 from ow174.jam.groups import CHAT_IN, FRIENDS, LOBBY, OUT_CONNECT, PERMISSIONS
@@ -12,6 +13,8 @@ from ow174.lobby.session import FRIEND_CARDS, Session, without_party_state
 
 # "Connection interrupted: the Battle.net account signed in on another device." (13C84.07C)
 SIGNED_IN_ELSEWHERE = 0x0DE0000000013C84
+# "Load error: incompatible client version." (103BF.07C)
+INCOMPATIBLE_CLIENT = 0x0DE00000000103BF
 
 routes = Router()
 
@@ -28,12 +31,17 @@ OFFLINE_REFRESH_SECONDS = 60
 @routes.on(OUT_CONNECT, 21800)
 def login(session: Session, value: dict) -> None:
     server = session.server
-    typed_name = (value.get("+0x78") or "").strip()
-    # The retail frontend has no name screen and sends no name.
-    if typed_name:
-        account = server.accounts.get(typed_name)
+    name = login_name(value)
+    if name:
+        account = server.accounts.get(name)
+    elif session.local:
+        account = server.dashboard_account()
     else:
-        account = server.game_account(session.sock.getpeername()[1], server.settings.port)
+        # A game on another PC whose Battle.net emulator put no name in the key, from an older
+        # version of this server: it would play the dashboard's account.
+        session.log("[<<<] Login without a name from another PC, refused")
+        session.kick(INCOMPATIBLE_CLIENT)
+        return
     _take_over_account(session, account)
     session.log(f"[<<<] Login as '{account.name}' (account 0x{account.account_lo:X})")
 
@@ -62,6 +70,17 @@ def login(session: Session, value: dict) -> None:
     threading.Thread(target=_after_menu_ready, args=(session,), daemon=True).start()
 
 
+def login_name(value: dict) -> str:
+    """The account name of a login (21800), or "" when it has none. The tournament frontend sends the
+    name typed on its name screen. The retail frontend has no name screen: it passes on what
+    Battle.net gave it at logon (+0xB8), whose session key our emulator fills with the name."""
+    typed = (value.get("+0x78") or "").strip()
+    if typed:
+        return typed
+    battle_net = value.get("+0xB8") or {}
+    return name_in_key(bytes(battle_net.get("+0x20") or [])) or ""
+
+
 def _take_over_account(session: Session, account: Account) -> None:
     """Bind the account to this session and disconnect any older session that had it."""
     server = session.server
@@ -70,8 +89,9 @@ def _take_over_account(session: Session, account: Account) -> None:
     session.ident = Identity.create(account.account_lo, session.channel.seq)
     account.profile.last_online = int(time.time())
     account.save()
-    if server.games is None or account.name not in server.games.second_accounts():
-        server.selected = account  # the dashboard follows the first game, not a second one
+    second_game = server.games is not None and account.name in server.games.second_accounts()
+    if session.local and not second_game:
+        server.selected = account  # the dashboard follows the game on this PC, not a second one
     previous = server.social.sessions.get(account.account_lo)
     if previous is not None and previous is not session:
         previous.log("[>>>] Replaced by a new login")

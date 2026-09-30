@@ -186,8 +186,7 @@ class Social:
         friend_entries = []
         presence_records = list(self.own_presence(me))
         for friend in self.friends_of(me):
-            # +0x10 is not a time: with the current time in it every friend showed as a favorite.
-            friend_entries.append({"+0x0": friend.account, "+0x10": 0, "+0x18": 0})
+            friend_entries.append(self.friend_entry(friend))
             presence_records += self.presence(friend)
         return {
             "+0x78": friend_entries,
@@ -195,6 +194,12 @@ class Social:
             "+0xA8": presence_records,
             "+0xC0": [],
         }
+
+    @staticmethod
+    def friend_entry(friend: Account) -> dict:
+        """One friend of the list (27100 +0x78, 27105)."""
+        # +0x10 is not a time: with the current time in it every friend showed as a favorite.
+        return {"+0x0": friend.account, "+0x10": 0, "+0x18": 0}
 
     def _requests_for(self, me: Account) -> list[dict]:
         """Incoming friend requests as 27100 invitation records."""

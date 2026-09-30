@@ -155,6 +155,21 @@ class FriendTests(unittest.TestCase):
         )
         return MagicMock(server=server, account=account, profile=account.profile)
 
+    def online(self, *accounts):
+        """Sessions for accounts that are all online, so each sees what the other is sent."""
+        sessions = {}
+        server = SimpleNamespace(social=self.social, accounts=self.accounts, session_of=sessions.get)
+        for account in accounts:
+            sessions[account.account_lo] = MagicMock(server=server, account=account, profile=account.profile)
+            self.social.sessions[account.account_lo] = sessions[account.account_lo]
+        return [sessions[account.account_lo] for account in accounts]
+
+    def sent(self, session):
+        messages = [(call.args[1], call.args[2]) for call in session.send.call_args_list]
+        for msg_id, value in messages:
+            self.schemas.encode(FRIENDS if msg_id != 20809 else LOBBY, msg_id, value)
+        return messages
+
     def test_accepting_in_game_makes_both_friends(self):
         self.social.request_friend(self.alpha, self.beta.battle_tag)
         session = self.session_of(self.beta)
@@ -191,6 +206,33 @@ class FriendTests(unittest.TestCase):
         friends.remove_friend(session, {"+0x78": 8, "+0x80": self.beta.account})
         session.send.assert_any_call(FRIENDS, 27112, {"+0x78": 8, "+0x80": 0})
         self.assertEqual(self.names(self.alpha), ["Bot"])
+
+    # A whole friends list (27100) makes the client announce every online friend again, so changes
+    # go one friend at a time.
+    def test_a_friend_removed_leaves_both_lists_one_entry_at_a_time(self):
+        self.social.accept_friend(self.alpha, self.beta)
+        alpha, beta = self.online(self.alpha, self.beta)
+        friends.remove_friend(alpha, {"+0x78": 8, "+0x80": self.beta.account})
+        self.assertIn((27106, {"+0x78": self.beta.account}), self.sent(alpha))
+        self.assertEqual(self.sent(beta), [(27106, {"+0x78": self.alpha.account})])
+        self.assertNotIn(27100, [msg_id for msg_id, _ in self.sent(alpha)])
+
+    def test_an_accepted_request_adds_each_friend_to_the_other(self):
+        self.social.request_friend(self.alpha, self.beta.battle_tag)
+        alpha, beta = self.online(self.alpha, self.beta)
+        friends.answer_request(beta, {"+0x78": 6, "+0x80": self.alpha.account, "+0x90": 0})
+        beta_got = [msg_id for msg_id, _ in self.sent(beta)]
+        self.assertEqual(beta_got, [27111, 27108, 27105, 27113, 20809])  # the request goes, the friend comes
+        self.assertIn((27105, {"+0x78": self.social.friend_entry(self.alpha)}), self.sent(beta))
+        self.assertEqual([msg_id for msg_id, _ in self.sent(alpha)], [27105, 27113, 20809])
+        self.assertIn((27105, {"+0x78": self.social.friend_entry(self.beta)}), self.sent(alpha))
+
+    def test_a_declined_request_only_leaves_the_list(self):
+        self.social.request_friend(self.alpha, self.beta.battle_tag)
+        alpha, beta = self.online(self.alpha, self.beta)
+        friends.answer_request(beta, {"+0x78": 6, "+0x80": self.alpha.account, "+0x90": 1})
+        self.assertEqual([msg_id for msg_id, _ in self.sent(beta)], [27111, 27108])
+        self.assertEqual(self.sent(alpha), [])
 
 
 if __name__ == "__main__":

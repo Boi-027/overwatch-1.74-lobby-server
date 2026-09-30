@@ -1,4 +1,5 @@
-"""Two retail games on one PC: the Battle.net emulator and the lobby give each game its own account."""
+"""Retail games with their own accounts: a second game on this PC, and games on other PCs that join
+with their own Battle.net emulator."""
 
 import sys
 import tempfile
@@ -11,11 +12,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from ow174.accounts.profile import Profile, save_profile
 from ow174.accounts.registry import Accounts
 from ow174.bnet.service import RPC_PORT
+from ow174.bnet.session_key import session_key
 from ow174.launcher import LaunchError, retail
-from ow174.lobby.handlers.login import SIGNED_IN_ELSEWHERE, _take_over_account
+from ow174.lobby.handlers.login import (
+    INCOMPATIBLE_CLIENT,
+    SIGNED_IN_ELSEWHERE,
+    _take_over_account,
+    login,
+    login_name,
+)
 from ow174.lobby.server import LobbyServer
-
-LOBBY_PORT = 3724
 
 
 class FakeGame:
@@ -89,7 +95,7 @@ class LoginAccountTests(unittest.TestCase):
         self.accounts = Accounts(root / "profiles", root / "template.json")
         self.main = self.accounts.get("Main")
         self.second = self.accounts.get("Second")
-        second_game = {(50002, LOBBY_PORT): "Second"}  # the second game's lobby connection
+        second_game = {(50002, RPC_PORT): "Second"}  # the second game's Battle.net connection
         self.server = SimpleNamespace(
             accounts=self.accounts,
             games=SimpleNamespace(
@@ -101,28 +107,60 @@ class LoginAccountTests(unittest.TestCase):
             dashboard_account=lambda: self.main,
         )
 
-    def session(self):
-        return SimpleNamespace(server=self.server, channel=SimpleNamespace(seq=1))
+    def session(self, local=True):
+        kicked = []
+        return SimpleNamespace(
+            server=self.server,
+            channel=SimpleNamespace(seq=1),
+            local=local,
+            log=lambda *args: None,
+            kick=kicked.append,
+            kicked=kicked,
+        )
 
     def test_a_second_game_plays_its_account_and_the_first_the_dashboards(self):
-        self.assertIs(LobbyServer.game_account(self.server, 50002, LOBBY_PORT), self.second)
-        self.assertIs(LobbyServer.game_account(self.server, 50001, LOBBY_PORT), self.main)
+        self.assertIs(LobbyServer.game_account(self.server, 50002, RPC_PORT), self.second)
+        self.assertIs(LobbyServer.game_account(self.server, 50001, RPC_PORT), self.main)
 
-    def test_the_dashboard_stays_on_the_first_game(self):
+    def test_a_login_names_its_account(self):
+        # The tournament frontend sends the typed name; the retail one passes on the session key.
+        self.assertEqual(login_name({"+0x78": " Main "}), "Main")
+        self.assertEqual(login_name({"+0x78": "", "+0xB8": {"+0x20": list(session_key("Second"))}}), "Second")
+        self.assertEqual(login_name({"+0x78": "", "+0xB8": {"+0x20": list(range(1, 65))}}), "")
+
+    def test_the_dashboard_follows_only_the_game_on_this_pc(self):
         _take_over_account(self.session(), self.main)
-        _take_over_account(self.session(), self.second)
+        _take_over_account(self.session(), self.second)  # the second game
+        _take_over_account(self.session(local=False), self.accounts.get("Friend"))  # another PC
         self.assertIs(self.server.selected, self.main)
-        self.assertEqual(set(self.server.social.sessions), {self.main.account_lo, self.second.account_lo})
+        self.assertEqual(len(self.server.social.sessions), 3)
+
+    def test_a_game_from_another_pc_without_a_name_is_refused(self):
+        # An older join would play the dashboard's account and drop the host's own game.
+        remote = self.session(local=False)
+        login(remote, {"+0x78": "", "+0xB8": {"+0x20": list(range(1, 65))}})
+        self.assertEqual(remote.kicked, [INCOMPATIBLE_CLIENT])
+        self.assertEqual(self.server.social.sessions, {})
 
     def test_a_new_login_drops_the_old_one_with_the_reason(self):
         # The old game shows "signed in on another device" instead of "lost connection".
-        kicked = []
         old = self.session()
-        old.log = lambda *args: None
-        old.kick = kicked.append
         _take_over_account(old, self.main)
         _take_over_account(self.session(), self.main)
-        self.assertEqual(kicked, [SIGNED_IN_ELSEWHERE])
+        self.assertEqual(old.kicked, [SIGNED_IN_ELSEWHERE])
+
+    def test_play_as_reconnects_only_the_game_on_this_pc(self):
+        dropped = []
+
+        def game(name, local):
+            account = self.accounts.get(name)
+            return SimpleNamespace(
+                local=local, account=account, log=lambda *args: None, disconnect=lambda: dropped.append(name)
+            )
+
+        self.server.sessions = [game("Main", True), game("Second", True), game("Friend", False)]
+        LobbyServer.reconnect_own_game(self.server)
+        self.assertEqual(dropped, ["Main"])
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from ow174.accounts.profile import Profile, save_profile  # noqa: E402
+from ow174.accounts.profile import Profile, load_or_create_profile, save_profile  # noqa: E402
 from ow174.accounts.registry import Accounts  # noqa: E402
 from ow174.catalog.boxes import BOX_TYPES  # noqa: E402
 from ow174.catalog.events import CHALLENGES  # noqa: E402
@@ -71,7 +71,7 @@ class Lobby:
     def push_settings(self, account):
         self.settings_pushed.append(account)
 
-    def reconnect_all(self):
+    def reconnect_own_game(self):
         raise AssertionError("No test should disconnect the game")
 
 
@@ -361,6 +361,22 @@ class DashboardTests(unittest.TestCase):
         self.assertNotIn("tracer_comic", ids)
         status, _ = self.request("/api/update_profile", {"account": "Alpha", "events": ["tracer_comic"]})
         self.assertEqual(status, 400)
+
+    def test_an_event_and_a_challenge_for_all_players(self):
+        status, data = self.request("/api/apply_to_all", {"events": ["halloween"]})
+        self.assertEqual((status, data["accounts"]), (200, 2))
+        for name in ("Alpha", "Beta"):
+            self.assertEqual(self.lobby.accounts.get(name).profile.events, ["halloween"])
+        template = load_or_create_profile(self.lobby.accounts.template)
+        self.assertEqual(template.events, ["halloween"])  # new accounts start from it
+        self.lobby.accounts.get("Beta").profile.challenge_wins = 7
+        status, _ = self.request("/api/apply_to_all", {"challenge": "Kanezaka Challenge"})
+        self.assertEqual(status, 200)
+        beta = self.lobby.accounts.get("Beta").profile
+        self.assertEqual((beta.challenge, beta.challenge_wins), ("Kanezaka Challenge", 7))  # wins stay
+        for wrong in ({"events": ["nope"]}, {"credits": 5}, {}):
+            status, _ = self.request("/api/apply_to_all", wrong)
+            self.assertEqual(status, 400, wrong)
 
     def test_only_the_challenges_with_a_play_menu_banner_can_be_picked(self):
         status, data = self.request("/api/state")

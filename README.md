@@ -13,18 +13,17 @@ The server and the game start. Keep the black window open while you play.
 
 To switch modes, close the game and the black window, then start `START.bat` again and choose another mode.
 
-- **Retail**: the full main menu with a hero in the lobby.
-- **Tournament**: a simpler menu without the hero.
-- **Server only**: only the server. You start the game yourself.
-- **Join a server**: play on someone else's server. Type its address, like `1.2.3.4:12357`. The next time, Enter reuses it.
+- **Play in retail mode**: the default Overwatch menu, with a hero in the lobby.
+- **Play in tournament mode**: the mode used on LANs by pros, with a simpler menu.
+- **Server only**: only the server, for players on other PCs (see below).
+- **Join a server in retail mode**: play on someone else's server with the default Overwatch menu. Type its address, like `1.2.3.4:12357`, and your name. The next time, Enter reuses them.
+- **Join a server in tournament mode**: the same with the mode used on LANs by pros.
 
 ## Host a server for others
 
-```
-START.bat --mode server --host 0.0.0.0 --port 12357
-```
+Choose **Server only**. It shows the addresses players on your network can use. For players over the internet, open port 3724 in your firewall and router and give them your public address, for example `1.2.3.4:3724`. They choose one of the **Join a server** modes in `START.bat`. Another port: `START.bat --mode server --port 12357`.
 
-Open that port in your firewall and router, and give players your address, for example `1.2.3.4:12357`. They choose **Join a server** in `START.bat`. Players join in tournament mode. The dashboard stays reachable only on your own computer.
+To play on it yourself too, start `START.bat` once more and choose **Join a server in retail mode** with `127.0.0.1:3724`. The dashboard stays reachable only on your own computer.
 
 Anyone can log in with any name, so a player can take another player's name.
 

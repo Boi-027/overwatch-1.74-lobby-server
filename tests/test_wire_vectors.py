@@ -45,7 +45,12 @@ class HandshakeBlobTests(unittest.TestCase):
     def test_state_blob_vector(self):
         blob = build_state_blob(0x12345678, "127.0.0.1", 3724)
         self.assertEqual(len(blob), 292)
-        self.assertEqual(sha(blob), "8921b1aa09174ced2ccf3f5900603a09337d9c7f20f8459dde71a93d63cccef2")
+        self.assertEqual(sha(blob), "a7801afdb7ebcc93ecb35590cfa79f9658f75374521cea22cafcb0dc66087837")
+
+    def test_the_blob_names_the_address_and_port_the_client_dialed(self):
+        # The retail client drops the connection unless the address or the port matches its own.
+        blob = build_state_blob(1, "192.0.2.10", 12357)  # an address kept for examples (RFC 5737)
+        self.assertEqual(blob[:7], bytes([2, 192, 0, 2, 10]) + (12357).to_bytes(2, "little"))
 
 
 class CodecTests(unittest.TestCase):

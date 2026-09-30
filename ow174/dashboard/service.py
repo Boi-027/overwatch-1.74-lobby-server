@@ -7,7 +7,7 @@ from collections import Counter
 from copy import deepcopy
 from datetime import date
 
-from ow174.accounts.profile import Profile, save_profile
+from ow174.accounts.profile import Profile, load_or_create_profile, save_profile
 from ow174.accounts.registry import Account, account_id_for
 from ow174.catalog.boxes import BOX_TYPES
 from ow174.catalog.events import CHALLENGES, EVENT_INFO, EVENT_PRESETS, challenge_reward_ids
@@ -489,6 +489,24 @@ class DashboardService:
             raise ApiError("Challenge not found")
         return value
 
+    def apply_to_all(self, data: dict) -> dict:
+        """Give the lobby event or the hero challenge to every account, and to new ones through the
+        template profile. Challenge wins stay each player's own."""
+        changes = {key: data[key] for key in ("events", "challenge") if key in data}
+        if not changes or set(data) - set(changes):
+            raise ApiError("Send an event or a challenge")
+        accounts = self.lobby.accounts
+        with self.lock:
+            everyone = [accounts.get(name) for name in accounts.all_saved()]
+            for account in everyone:
+                profile = deepcopy(account.profile)
+                self._apply(profile, changes)
+                self._save(account, profile)
+            template = load_or_create_profile(accounts.template)
+            self._apply(template, changes)
+            save_profile(template, accounts.template)
+        return {"status": "ok", "accounts": len(everyone)}
+
     def add_boxes(self, data: dict) -> dict:
         kind = parse_int(data.get("type", 0), "Box type")
         count = parse_int(data.get("count", 10), "Box count", 1, 100)
@@ -636,7 +654,7 @@ class DashboardService:
         return {"status": "ok"}
 
     def reconnect(self) -> dict:
-        self.lobby.reconnect_all()
+        self.lobby.reconnect_own_game()
         return {"status": "ok"}
 
     def start_game(self, data: dict) -> dict:

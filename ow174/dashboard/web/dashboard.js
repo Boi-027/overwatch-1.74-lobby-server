@@ -90,11 +90,15 @@ import {api, selectAccount} from './dashboard-api.mjs';
       if (!busyForms.has(form)) for (const control of $$('input, select, button[type=button]', form)) control.disabled = !state;
     }
     $('button[type=submit]', profileForm).disabled = !state || !profileDirty.size || busyForms.has(profileForm);
-    $('button[type=submit]', challengeForm).disabled = !state || !challengeDirty.size || busyForms.has(challengeForm);
+    // "For all players" sends the challenge alone: the wins stay each player's own.
+    const challengeForAll = $('#challenge-all').checked;
+    if (challengeForAll) challengeForm.elements.challenge_wins.disabled = true;
+    $('button[type=submit]', challengeForm).disabled = !state || !(challengeDirty.size || challengeForAll) || busyForms.has(challengeForm);
     $('button[type=submit]', boxForm).disabled = !state || selectedBox === null || busyForms.has(boxForm);
-    $('#apply-event').disabled = !state || !eventDirty || eventBusy;
+    const eventForAll = $('#event-all').checked;
+    $('#apply-event').disabled = !state || !(eventDirty || eventForAll) || eventBusy;
     $('#profile-draft').hidden = !profileDirty.size;
-    $('#apply-event').textContent = eventBusy ? 'Applying…' : 'Apply event';
+    $('#apply-event').textContent = eventBusy ? 'Applying…' : eventForAll ? 'Apply to all players' : 'Apply event';
   }
   // Level rules: the card shows a level from 1 to 100; every 100 levels add a star (up to 5), and
   // every 600 levels move up a tier (Bronze to Diamond). The total level is what the server keeps.
@@ -581,17 +585,36 @@ import {api, selectAccount} from './dashboard-api.mjs';
   profileForm.addEventListener('submit', event => saveForm(event, profileForm, profileDirty, '#profile-error', 'Profile saved.'));
   challengeForm.addEventListener('input', event => markDirty(event, challengeDirty, state?.profile));
   challengeForm.addEventListener('change', event => { markDirty(event, challengeDirty, state?.profile); renderChallengeRewards(); });
-  challengeForm.addEventListener('submit', event => saveForm(event, challengeForm, challengeDirty, '#challenge-error', 'Challenge saved.'));
+  challengeForm.addEventListener('submit', event => {
+    if ($('#challenge-all').checked) applyChallengeToAll(event);
+    else saveForm(event, challengeForm, challengeDirty, '#challenge-error', 'Challenge saved.');
+  });
+  async function applyChallengeToAll(event) {
+    event.preventDefault(); if (busyForms.has(challengeForm)) return;
+    const challenge = formValue(challengeForm.elements.challenge);
+    lockForm(challengeForm, true); showError('#challenge-error', '');
+    const button = $('button[type=submit]', challengeForm); const label = button.textContent; button.textContent = 'Saving…';
+    try {
+      const result = await api('/api/apply_to_all', {challenge});
+      if (result.status !== 'ok') throw new Error('The challenge was not saved.');
+      challengeDirty.delete('challenge'); await refreshState();
+      toast(`Challenge set for all players (${result.accounts}).`);
+    } catch (error) { showError('#challenge-error', error.message); }
+    finally { button.textContent = label; lockForm(challengeForm, false); }
+  }
+  for (const id of ['#event-all', '#challenge-all']) $(id).addEventListener('change', updateButtons);
   $('#apply-event').addEventListener('click', async () => {
-    if (!eventDirty || eventBusy || !state) return;
+    const forAll = $('#event-all').checked;
+    if (!(eventDirty || forAll) || eventBusy || !state) return;
     const targetAccount = currentAccount(); const eventId = selectedEvent;
     const event = state.catalogs.events.find(item => item.id === eventId);
     eventBusy = true; updateButtons(); showError('#event-error', '');
     try {
-      const result = await api('/api/update_profile', {account: targetAccount, events: eventId ? [eventId] : []});
+      const events = eventId ? [eventId] : [];
+      const result = forAll ? await api('/api/apply_to_all', {events}) : await api('/api/update_profile', {account: targetAccount, events});
       if (result.status !== 'ok') throw new Error('The event was not saved.');
       if (account === targetAccount) { eventDirty = false; if (result.profile) state.profile = result.profile; await refreshState(); }
-      toast(`Event set: ${event?.label || 'none'}.`);
+      toast(forAll ? `Event set for all players (${result.accounts}): ${event?.label || 'none'}.` : `Event set: ${event?.label || 'none'}.`);
     } catch (error) { if (account === targetAccount) showError('#event-error', error.message); else toast(error.message, true); }
     finally { eventBusy = false; updateButtons(); }
   });
