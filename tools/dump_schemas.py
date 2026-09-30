@@ -9,10 +9,14 @@ type 14 nests a struct through inner*, and a non-null resize* marks an array.
 The process is only read (ReadProcessMemory), never written.
 
     py tools/dump_schemas.py            (with Overwatch.exe running)
+    py tools/dump_schemas.py --game-link [--image dump.bin --base 0x7FF788F10000]
 
-Writes data/schemas_174.json and data/schemas_174.txt.
+Writes data/schemas_174.json and data/schemas_174.txt. With --game-link it writes the protocols of
+the game server link instead (data/game_schemas_174.json and .txt); --image reads a saved dump of
+the client's image, taken at --base, instead of the running game.
 """
 
+import argparse
 import collections
 import ctypes
 import ctypes.wintypes as wt
@@ -181,22 +185,51 @@ def describe(fields, indent="  "):
     return lines
 
 
-def main():
-    announced = json.loads((DATA_DIR / "announced_crcs_174.json").read_text())
-    index = {int(c, 16): i for i, c in announced}
-    index[0x11D82194] = 0
-    base, img = read_image()
-    groups = SchemaReader(base, img).messages(set(index))
-    (DATA_DIR / "schemas_174.json").write_text(
+# The game server link has no protocol announcement: its protocols sit in a fixed table, in this
+# order (the client's message system, 0x7FF789B797C0).
+GAME_LINK_CRCS = [
+    0xC77F6403,
+    0xA7FBBD0C,
+    0x8F89E0DF,
+    0x82A2F991,
+    0x9F0A9F88,
+    0xA9385A52,
+    0x398E145E,
+    0x741EC7B2,
+    0x716AD5D9,
+    0x145CE2DA,
+    0xCF043764,
+]
+
+
+def write_schemas(groups, index, name):
+    (DATA_DIR / f"{name}.json").write_text(
         json.dumps({f"{c:08X}": {str(m): f for m, f in sorted(g.items())} for c, g in sorted(groups.items())})
     )
-    with open(DATA_DIR / "schemas_174.txt", "w") as out:
+    with open(DATA_DIR / f"{name}.txt", "w") as out:
         for crc in sorted(groups, key=lambda c: index[c]):
             g = groups[crc]
             out.write(f"=== wire {index[crc]} crc {crc:08X} ids {min(g)}..{max(g)}\n")
             for mid in sorted(g):
                 out.write(f" msg {mid} (off {mid - min(g)})\n" + "\n".join(describe(g[mid])) + "\n")
-    print(f"{sum(len(g) for g in groups.values())} messages in {len(groups)} protocols")
+    print(f"{sum(len(g) for g in groups.values())} messages in {len(groups)} protocols -> data/{name}.json")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Extract the client's message schemas.")
+    parser.add_argument("--game-link", action="store_true", help="the game server link's protocols")
+    parser.add_argument("--image", type=Path, help="a saved dump of the client's image")
+    parser.add_argument("--base", type=lambda text: int(text, 0), default=0x7FF788F10000)
+    args = parser.parse_args()
+    base, img = (args.base, args.image.read_bytes()) if args.image else read_image()
+    if args.game_link:
+        index = {crc: i for i, crc in enumerate(GAME_LINK_CRCS)}
+        write_schemas(SchemaReader(base, img).messages(set(index)), index, "game_schemas_174")
+        return
+    announced = json.loads((DATA_DIR / "announced_crcs_174.json").read_text())
+    index = {int(c, 16): i for i, c in announced}
+    index[0x11D82194] = 0
+    write_schemas(SchemaReader(base, img).messages(set(index)), index, "schemas_174")
 
 
 if __name__ == "__main__":

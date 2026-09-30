@@ -17,10 +17,10 @@ from ow174.jam.values import id16
 from ow174.launcher.retail import RetailGames
 from ow174.lobby.battle_tag_query import answer_query
 from ow174.lobby.handlers import build_router
+from ow174.lobby.matchmaker import Matchmaker
 from ow174.lobby.research import ClientRecorder
 from ow174.lobby.session import FRIEND_CARDS, Session
 from ow174.lobby.settings import Settings
-from ow174.matches.runtime import MatchManager
 from ow174.services.lootbox import LootBoxEngine
 from ow174.services.shop import ShopService
 from ow174.services.social import Party, Social
@@ -28,6 +28,7 @@ from ow174.services.social import Party, Social
 log = logging.getLogger("ow174.lobby")
 
 BACKLOG = 16
+GOLDEN_WEAPON = "GOLDEN"  # the name of every hero's golden weapon skin; the other one is "DEFAULT"
 
 
 class LobbyServer:
@@ -42,9 +43,8 @@ class LobbyServer:
         self.content = Content(self.schemas, self.templates, self.items)
         self.loot = LootBoxEngine(self.content.collection, self.items)
         self.shop = ShopService(self.content.collection, self.items)
-        self.matches: MatchManager | None = None
-        if settings.game_port > 0:
-            self.matches = MatchManager(paths.matches, base_port=settings.game_port)
+        self.game = None  # the game server (ow174.game.server), once start_game_server() ran
+        self.matchmaker = Matchmaker(self, settings.test_players)
         self.accounts = Accounts(paths.profiles, paths.template)
         self.content.ranked.places = self._top500_places
         self.social = Social(self.accounts, self.content)
@@ -61,10 +61,31 @@ class LobbyServer:
     # --- shared operations ---------------------------------------------------------------------
 
     def dashboard_account(self) -> Account:
-        """The account the dashboard edits: the last one that logged in, else the first saved one."""
+        """The account the dashboard edits: the last one that logged in, else the default one (set in
+        the dashboard), else the first saved one."""
         if self.selected is None:
-            self.selected = self._last_online_account() or self.accounts.get(self._first_saved_name())
+            self.selected = (
+                self._last_online_account()
+                or self._saved_account(self.default_account_name())
+                or self.accounts.get(self._first_saved_name())
+            )
         return self.selected
+
+    def default_account_name(self) -> str:
+        """The account a freshly started game logs in as; "" when none was set."""
+        try:
+            return self.settings.paths.default_account.read_text(encoding="utf-8").strip()
+        except OSError:
+            return ""
+
+    def set_default_account(self, name: str) -> None:
+        self.settings.paths.default_account.write_text(name + "\n", encoding="utf-8")
+
+    def _saved_account(self, name: str) -> Account | None:
+        for saved in self.accounts.all_saved():
+            if name and saved.lower() == name.lower():
+                return self.accounts.get(saved)
+        return None
 
     def _last_online_account(self) -> Account | None:
         last = None
@@ -193,6 +214,39 @@ class LobbyServer:
                 session.send(GROUPS, 52302, {"+0x78": id16(*party.party_id)})
                 session.log(f"[group] {party.leader.name}'s group closed (52302)")
 
+    # --- matches -------------------------------------------------------------------------------
+
+    def start_game_server(self) -> None:
+        """Bind the game server's UDP port and start it. Raises OSError when the port is taken. It
+        needs the packages of requirements.txt, so it is imported here."""
+        from ow174.game.server import GameServer
+
+        game = GameServer(
+            self.settings.host, self.settings.game_port, on_leave=self.game_left, skin_of=self.skin_of
+        )
+        game.start()
+        self.game = game
+
+    def skin_of(self, account_lo: int, hero: int) -> tuple[int, bool]:
+        """The skin theme and golden weapon a player has equipped on a hero, for the bodies the game
+        server creates. No state lock: the game server calls it under its own lock."""
+        account = self.accounts.by_id(account_lo)
+        if account is None:
+            return 0, False
+        loadout = self.content.collection.loadout(account.profile, hero)
+        skin = self.items.unlocks.get(loadout.get("+0x38") or 0)
+        weapon = self.items.unlocks.get(loadout.get("+0x50") or 0)
+        return (skin.skin_theme if skin else 0), bool(weapon and weapon.name == GOLDEN_WEAPON)
+
+    def game_left(self, player) -> None:
+        """A player's game left its match: back in the menu, it gets its party state again."""
+        session = self.session_of(player.account_lo)
+        if session is None:
+            return
+        with self.state_lock:
+            self.social.leave_match_chat(session.account)
+            self.notify_party(self.social.party_of(session.account))
+
     # --- connections ---------------------------------------------------------------------------
 
     def listen(self) -> socket.socket:
@@ -217,8 +271,6 @@ class LobbyServer:
             log.info("Server shutdown.")
         finally:
             listener.close()
-            if self.matches is not None:
-                self.matches.close()
 
     def _serve_client(self, sock: socket.socket, address: tuple) -> None:
         try:

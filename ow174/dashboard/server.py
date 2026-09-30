@@ -93,12 +93,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
             return self.service.grant_skin(data)
         if path == "/api/select_account":
             return self.service.select_account(data)
+        if path == "/api/default_account":
+            return self.service.default_account(data)
         if path == "/api/set_frame":
             return self.service.set_frame(data)
         if path == "/api/reconnect":
             return self.service.reconnect()
         if path == "/api/start_game":
             return self.service.start_game(data)
+        if path == "/api/matchmaking":
+            return self.service.matchmaking(data)
+        if path == "/api/end_matches":
+            return self.service.end_matches()
         raise ApiError("Action not found", 404)
 
     def _read_body(self) -> dict:

@@ -1,0 +1,162 @@
+{
+ "0x02E0000000000002": {
+  "name": "Reaper",
+  "class": "Damage",
+  "body": "0x0400000000000022"
+ },
+ "0x02E0000000000003": {
+  "name": "Tracer",
+  "class": "Damage",
+  "body": "0x0400000000000001"
+ },
+ "0x02E0000000000004": {
+  "name": "Mercy",
+  "class": "Support",
+  "body": "0x04000000000000E4"
+ },
+ "0x02E0000000000005": {
+  "name": "Hanzo",
+  "class": "Damage",
+  "body": "0x0400000000000141"
+ },
+ "0x02E0000000000006": {
+  "name": "Torbjörn",
+  "class": "Damage",
+  "body": "0x04000000000028B6"
+ },
+ "0x02E0000000000007": {
+  "name": "Reinhardt",
+  "class": "Tank",
+  "body": "0x0400000000000024"
+ },
+ "0x02E0000000000008": {
+  "name": "Pharah",
+  "class": "Damage",
+  "body": "0x0400000000000032"
+ },
+ "0x02E0000000000009": {
+  "name": "Winston",
+  "class": "Tank",
+  "body": "0x04000000000001C0"
+ },
+ "0x02E000000000000A": {
+  "name": "Widowmaker",
+  "class": "Damage",
+  "body": "0x040000000000001C"
+ },
+ "0x02E0000000000015": {
+  "name": "Bastion",
+  "class": "Damage",
+  "body": "0x04000000000001FD"
+ },
+ "0x02E0000000000016": {
+  "name": "Symmetra",
+  "class": "Damage",
+  "body": "0x04000000000026F0"
+ },
+ "0x02E0000000000020": {
+  "name": "Zenyatta",
+  "class": "Support",
+  "body": "0x0400000000000216"
+ },
+ "0x02E0000000000029": {
+  "name": "Genji",
+  "class": "Damage",
+  "body": "0x0400000000000225"
+ },
+ "0x02E0000000000040": {
+  "name": "Roadhog",
+  "class": "Tank",
+  "body": "0x040000000000028F"
+ },
+ "0x02E0000000000042": {
+  "name": "Cassidy",
+  "class": "Damage",
+  "body": "0x04000000000002A3"
+ },
+ "0x02E0000000000065": {
+  "name": "Junkrat",
+  "class": "Damage",
+  "body": "0x0400000000000380"
+ },
+ "0x02E0000000000068": {
+  "name": "Zarya",
+  "class": "Tank",
+  "body": "0x04000000000003BF"
+ },
+ "0x02E000000000006E": {
+  "name": "Soldier: 76",
+  "class": "Damage",
+  "body": "0x04000000000003CF"
+ },
+ "0x02E0000000000079": {
+  "name": "Lúcio",
+  "class": "Support",
+  "body": "0x04000000000003FC"
+ },
+ "0x02E000000000007A": {
+  "name": "D.Va",
+  "class": "Tank",
+  "body": "0x040000000000040A"
+ },
+ "0x02E00000000000DD": {
+  "name": "Mei",
+  "class": "Damage",
+  "body": "0x04000000000008BA"
+ },
+ "0x02E000000000012E": {
+  "name": "Sombra",
+  "class": "Damage",
+  "body": "0x040000000000121C"
+ },
+ "0x02E000000000012F": {
+  "name": "Doomfist",
+  "class": "Damage",
+  "body": "0x0400000000001235"
+ },
+ "0x02E000000000013B": {
+  "name": "Ana",
+  "class": "Support",
+  "body": "0x0400000000001424"
+ },
+ "0x02E000000000013E": {
+  "name": "Orisa",
+  "class": "Tank",
+  "body": "0x0400000000001498"
+ },
+ "0x02E0000000000195": {
+  "name": "Brigitte",
+  "class": "Support",
+  "body": "0x0400000000001B1B"
+ },
+ "0x02E00000000001A2": {
+  "name": "Moira",
+  "class": "Support",
+  "body": "0x0400000000001C46"
+ },
+ "0x02E00000000001CA": {
+  "name": "Wrecking Ball",
+  "class": "Tank",
+  "body": "0x040000000000200B"
+ },
+ "0x02E0000000000200": {
+  "name": "Ashe",
+  "class": "Damage",
+  "body": "0x040000000000251C"
+ },
+ "0x02E0000000000206": {
+  "name": "Echo",
+  "class": "Damage",
+  "body": "0x0400000000002593"
+ },
+ "0x02E0000000000221": {
+  "name": "Baptiste",
+  "class": "Support",
+  "body": "0x04000000000029A6"
+ },
+ "0x02E000000000023B": {
+  "name": "Sigma",
+  "class": "Tank",
+  "body": "0x0400000000002AB1"
+ }
+}

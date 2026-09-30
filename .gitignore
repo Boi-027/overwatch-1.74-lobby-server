@@ -27,7 +27,8 @@ profiles/
 game_path.txt
 server_address.txt
 player_name.txt
-game/
+default_account.txt
+/game/
 
 # Logs and research output
 logs/

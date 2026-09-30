@@ -62,10 +62,14 @@ class QueueTests(unittest.TestCase):
         self.accounts = Accounts(root / "profiles", root / "template.json")
         self.social = Social(self.accounts, self.content)
         self.sessions = {}
+        self.searches = []
+        matchmaker = SimpleNamespace(
+            search=lambda party, key, card: self.searches.append(card), cancel=lambda party: None
+        )
         self.server = SimpleNamespace(
             social=self.social,
             notify_party=lambda party: None,
-            matches=None,
+            matchmaker=matchmaker,
             content=self.content,
             session_of=self.sessions.get,
         )

@@ -64,6 +64,12 @@ class Lobby:
     def select_account(self, name):
         self.selected = self.accounts.get(name)
 
+    def default_account_name(self):
+        return getattr(self, "default_name", "")
+
+    def set_default_account(self, name):
+        self.default_name = name
+
     def push_profile(self, account=None, granted=None):
         self.pushed.append(account or self.selected)
         self.granted.append(granted or [])
@@ -112,6 +118,13 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual({b["id"] for b in data["catalogs"]["box_types"]}, set(BOX_TYPES))
         self.assertEqual(data["server"]["connected_clients"], 0)
         self.assertEqual(data["profile"]["player_name"], "Alpha")
+
+    def test_an_account_can_be_made_the_default(self):
+        status, data = self.request("/api/default_account", {"name": "beta"})
+        self.assertEqual(status, 200)
+        self.assertEqual(self.lobby.default_name, "Beta")  # the saved name, not the typed case
+        _, data = self.request("/api/state")
+        self.assertEqual([row["name"] for row in data["accounts"] if row["default"]], ["Beta"])
 
     def test_selected_marks_the_game_account_not_the_page_account(self):
         # Viewing Beta in the dashboard must not move the "Selected" mark off the game's account.

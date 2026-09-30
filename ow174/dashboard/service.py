@@ -248,8 +248,10 @@ class DashboardService:
         }
 
     def _account_rows(self, online: set) -> list:
-        """Every saved account; "selected" marks the one the game logs in as."""
+        """Every saved account; "selected" marks the one the game logs in as, "default" the one it
+        logs in as after the server starts."""
         selected = self.lobby.dashboard_account()
+        default_name = getattr(self.lobby, "default_account_name", lambda: "")().lower()
         rows = []
         for name in self.lobby.accounts.all_saved():
             rows.append(
@@ -257,23 +259,43 @@ class DashboardService:
                     "name": name,
                     "online": account_id_for(name) in online,
                     "selected": name.lower() == selected.name.lower(),
+                    "default": name.lower() == default_name,
                 }
             )
         return rows
 
     def _server_info(self, online: set) -> dict:
-        matches = getattr(self.lobby, "matches", None)
+        game = getattr(self.lobby, "game", None)
         settings = self.lobby.settings
         return {
             "host": settings.host,
             "port": settings.port,
             "connected_clients": len(online),
             "uptime_seconds": int(time.monotonic() - self.started),
-            "game_instances": matches.snapshot() if matches else [],
-            "game_runtime_available": matches is not None,
+            "game_instances": self._matches(game) if game else [],
+            "game_runtime_available": game is not None,
             "second_games": getattr(self.lobby, "games", None) is not None,
-            "matchmaking_supported": False,
+            "matchmaking_supported": game is not None,
+            "test_players": getattr(getattr(self.lobby, "matchmaker", None), "minimum_players", 0),
         }
+
+    @staticmethod
+    def _matches(game) -> list[dict]:
+        """The game server's matches, in the fields the Game sessions panel shows."""
+        rows = []
+        for match in game.snapshot():
+            players = [f"{p['name']} ({p['hero']}, team {p['team']}, {p['state']})" for p in match["players"]]
+            playing = sum(1 for p in match["players"] if p["state"] == "playing")
+            rows.append(
+                {
+                    "name": f"{match['map']} · {match['id']}",
+                    "player": ", ".join(players),
+                    "host": game.host,
+                    "port": game.port,
+                    "state": f"{playing}/{len(match['players'])} playing",
+                }
+            )
+        return rows
 
     def _catalogs(self) -> dict:
         return {
@@ -652,6 +674,26 @@ class DashboardService:
         """Make this account the one a freshly started game logs in as."""
         self.lobby.select_account(self.account(data.get("name")).name)
         return {"status": "ok"}
+
+    def default_account(self, data: dict) -> dict:
+        """Make this account the one the game logs in as each time the server starts."""
+        account = self.account(data.get("name"))
+        self.lobby.set_default_account(account.name)
+        return {"message": f"{account.name} is the default account now."}
+
+    def matchmaking(self, data: dict) -> dict:
+        """How many searching players start a match: 0 = full teams only."""
+        players = parse_int(data.get("test_players", 0), "Players to start", 0, 12)
+        self.lobby.matchmaker.minimum_players = players
+        if not players:
+            return {"message": "Matches start with full teams."}
+        return {"message": f"Matches start as soon as {players} player(s) search."}
+
+    def end_matches(self) -> dict:
+        game = self.lobby.game
+        if game is None:
+            raise ApiError("The game server is off.", 409)
+        return {"message": f"Sent {game.send_home()} game(s) back to the menu."}
 
     def reconnect(self) -> dict:
         self.lobby.reconnect_own_game()
