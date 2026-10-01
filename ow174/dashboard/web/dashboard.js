@@ -372,6 +372,12 @@ import {api, selectAccount} from './dashboard-api.mjs';
     setText('#sessions-status', 'Server is up');
     if (document.activeElement !== $('#test-players')) $('#test-players').value = server.test_players ?? 0;
     setText('#matchmaking-note', server.matchmaking_supported ? 'Matchmaking is on: a search that fills the teams starts a match on the game server.' : 'Lobby only: the game server is off.');
+    const mapSelect = $('#map-select');
+    if (mapSelect && Array.isArray(server.maps) && mapSelect.options.length <= 1) {
+      mapSelect.innerHTML = '<option value="random">Random (queue pick)</option>' +
+        server.maps.map(m => `<option value="${m.guid}">${m.name}</option>`).join('');
+    }
+    if (mapSelect && document.activeElement !== mapSelect) mapSelect.value = server.forced_map || 'random';
     const accounts = $('#sessions-accounts'); accounts.replaceChildren();
     for (const item of state.accounts || []) {
       const row = node('tr'); row.append(node('td', '', item.name));
@@ -658,6 +664,11 @@ import {api, selectAccount} from './dashboard-api.mjs';
     showError('#matchmaking-error', '');
     try { toast((await api('/api/end_matches', {})).message); refreshState(true); }
     catch (error) { showError('#matchmaking-error', error.message); }
+  });
+  $('#map-form').addEventListener('submit', async event => {
+    event.preventDefault(); showError('#map-error', '');
+    try { toast((await api('/api/set_map', {map: $('#map-select').value})).message); }
+    catch (error) { showError('#map-error', error.message); }
   });
   for (const button of $$('[data-bot-action]')) button.addEventListener('click', async () => {
     if (button.disabled) return;
