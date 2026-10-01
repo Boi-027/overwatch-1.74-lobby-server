@@ -1,6 +1,8 @@
-"""Chat channels and whispers."""
+"""Chat channels and whispers, and the commands a player types in any chat while in a match:
+.hero <name> plays another hero, .leave goes back to the menu."""
 
 from ow174.accounts.registry import Account
+from ow174.game.content import find_hero
 from ow174.jam.groups import CHAT_IN, CHAT_OUT, FRIENDS, FRIENDS_OUT
 from ow174.lobby.router import Router
 from ow174.lobby.session import Session
@@ -15,6 +17,8 @@ def chat(session: Session, value: dict) -> None:
     social = session.server.social
     channel = value.get("+0x78") or {}
     text = value.get("+0x90") or ""
+    if text.startswith(".") and _match_command(session, channel, text):
+        return
     message = social.chat_message(channel, session.account, text, value.get("+0xB8", 0))
     members = social.channel_members(channel)
     _deliver(session.server, members, message)
@@ -23,6 +27,31 @@ def chat(session: Session, value: dict) -> None:
     if bot in members and session.profile.bot_chat:
         reply_text = BOT_REPLY.format(name=session.account.name, text=text)
         _deliver(session.server, members, social.chat_message(channel, bot, reply_text))
+
+
+def _match_command(session: Session, channel: dict, text: str) -> bool:
+    """Run a match command. False when it is not one, so the text goes out as chat."""
+    game = session.server.game
+    command, _, rest = text[1:].partition(" ")
+    command = command.lower()
+    if command not in ("hero", "leave") or game is None:
+        return False
+    if command == "hero":
+        hero = find_hero(rest.strip())
+        if hero is None:
+            reply = f"No hero called '{rest.strip()}'."
+        elif game.switch_hero(session.account.account_lo, hero):
+            reply = f"You play {hero.name} now."
+        else:
+            reply = "You are not in a match."
+    else:
+        reply = (
+            "Back to the menu." if game.send_home(session.account.account_lo) else "You are not in a match."
+        )
+    session.log(f"[chat] {text} -> {reply}")
+    bot = session.server.social.accounts.bot
+    session.send(CHAT_IN, 20400, session.server.social.chat_message(channel, bot, reply))
+    return True
 
 
 def _deliver(server, members: list[Account], message: dict) -> None:

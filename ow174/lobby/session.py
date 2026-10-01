@@ -65,6 +65,7 @@ class Session:
         self.channel = channel
         self.conn_id = conn_id
         self.local = ipaddress.ip_address(peer[0]).is_loopback  # the game runs on this PC
+        self.tournament = False  # the game runs in tournament mode (it typed a name at login)
         self.account: Account | None = None
         self.ident: Identity | None = None
         self.logged_in = False
@@ -253,13 +254,12 @@ class Session:
             logger.exception("[lobby #%d] Handler for %08X/%d failed", self.conn_id, crc, msg_id)
 
     def _cleanup(self) -> None:
-        """Stop the client's game instance and tell the others it left."""
+        """Take the player out of the queue and tell the others it left."""
         self.logged_in = False  # ends the session's presence refresh thread (login._after_menu_ready)
         server = self.server
-        if server.matches is not None:
-            server.matches.cancel(self.conn_id)
         if not self.account or server.social.sessions.get(self.account.account_lo) is not self:
             return
+        server.matchmaker.cancel(server.social.party_of(self.account))
         del server.social.sessions[self.account.account_lo]
         with server.state_lock:
             self.profile.last_online = int(time.time())

@@ -32,6 +32,9 @@ OFFLINE_REFRESH_SECONDS = 60
 def login(session: Session, value: dict) -> None:
     server = session.server
     name = login_name(value)
+    # The tournament frontend sends the name it asked for; the retail one sends none. They run the
+    # game at different command frame lengths, which the game server has to know.
+    session.tournament = bool((value.get("+0x78") or "").strip())
     if name:
         account = server.accounts.get(name)
     elif session.local:

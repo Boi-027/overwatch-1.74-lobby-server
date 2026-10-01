@@ -359,6 +359,10 @@ import {api, selectAccount} from './dashboard-api.mjs';
   async function startSecondGame(name) {
     try { toast((await api('/api/start_game', {name})).message); } catch (error) { toast(error.message, true); }
   }
+  // The account the game logs in as each time the server starts.
+  async function setDefaultAccount(name) {
+    try { toast((await api('/api/default_account', {name})).message); await refreshState(); } catch (error) { toast(error.message, true); }
+  }
   function renderSessions() {
     const server = state.server;
     setText('#sidebar-address', `${server.host}:${server.port}`);
@@ -366,7 +370,8 @@ import {api, selectAccount} from './dashboard-api.mjs';
     setText('#server-clients', number(server.connected_clients));
     setText('#server-uptime', duration(server.uptime_seconds));
     setText('#sessions-status', 'Server is up');
-    setText('#matchmaking-note', server.matchmaking_supported ? 'Matchmaking is on.' : 'Lobby only. Matchmaking does not work.');
+    if (document.activeElement !== $('#test-players')) $('#test-players').value = server.test_players ?? 0;
+    setText('#matchmaking-note', server.matchmaking_supported ? 'Matchmaking is on: a search that fills the teams starts a match on the game server.' : 'Lobby only: the game server is off.');
     const accounts = $('#sessions-accounts'); accounts.replaceChildren();
     for (const item of state.accounts || []) {
       const row = node('tr'); row.append(node('td', '', item.name));
@@ -382,11 +387,15 @@ import {api, selectAccount} from './dashboard-api.mjs';
         second.type = 'button'; second.addEventListener('click', () => startSecondGame(item.name));
         play.append(document.createTextNode(' '), second);
       }
+      const makeDefault = node('button', 'button secondary small', item.default ? 'Default' : 'Make default');
+      makeDefault.type = 'button'; makeDefault.disabled = item.default;
+      makeDefault.addEventListener('click', () => setDefaultAccount(item.name));
+      play.append(document.createTextNode(' '), makeDefault);
       row.append(play); accounts.append(row);
     }
     setText('#accounts-count', `${number((state.accounts || []).length)} accounts`);
     const instances = Array.isArray(server.game_instances) ? server.game_instances : [];
-    setText('#instances-count', `${number(instances.length)} processes`);
+    setText('#instances-count', `${number(instances.length)} matches`);
     const container = $('#instances-list'); container.replaceChildren();
     for (const instance of instances) {
       const row = node('div', 'instance-row'); row.append(node('span', 'instance-icon', '▣'));
@@ -639,6 +648,16 @@ import {api, selectAccount} from './dashboard-api.mjs';
       toast(`Added ${number(result.added)} ${selected?.label || selected?.name} boxes. Total: ${number(result.total_boxes)}.`);
     } catch (error) { if (account === targetAccount) showError('#box-error', error.message); else toast(error.message, true); }
     finally { button.textContent = 'Give boxes'; lockForm(boxForm, false); }
+  });
+  $('#matchmaking-form').addEventListener('submit', async event => {
+    event.preventDefault(); showError('#matchmaking-error', '');
+    try { toast((await api('/api/matchmaking', {test_players: $('#test-players').value})).message); }
+    catch (error) { showError('#matchmaking-error', error.message); }
+  });
+  $('#end-matches').addEventListener('click', async () => {
+    showError('#matchmaking-error', '');
+    try { toast((await api('/api/end_matches', {})).message); refreshState(true); }
+    catch (error) { showError('#matchmaking-error', error.message); }
   });
   for (const button of $$('[data-bot-action]')) button.addEventListener('click', async () => {
     if (button.disabled) return;

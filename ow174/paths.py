@@ -22,7 +22,7 @@ class Paths:
 
     profiles: Path = ROOT / "profiles"
     template: Path = ROOT / "profile.json"
-    matches: Path = LOGS_DIR / "matches"
+    default_account: Path = ROOT / "default_account.txt"  # the account a started game logs in as
     client_log: Path = ROOT / "client_msgs.log"
     inject_file: Path = ROOT / "inject.jsonl"
     log_file: Path = LOG_FILE

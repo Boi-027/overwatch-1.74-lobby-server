@@ -84,7 +84,19 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--game-port",
         type=int,
         default=defaults.game_port,
-        help="first UDP port of game instances (default: 3730, 0: off)",
+        help="the game server's UDP port (default: 3730, 0: off)",
+    )
+    parser.add_argument(
+        "--game-host",
+        default=defaults.game_host,
+        help="address games are sent to for a match, if not the one they reach the lobby at "
+        "(behind a router's port forward: the public address)",
+    )
+    parser.add_argument(
+        "--test-players",
+        type=int,
+        default=defaults.test_players,
+        help="start a match once this many players search (default: 0 = full teams only)",
     )
     parser.add_argument(
         "--save", type=Path, default=defaults.paths.template, help="template profile for new accounts"
@@ -166,7 +178,6 @@ def _paths(args: argparse.Namespace) -> Paths:
     return Paths(
         profiles=folder / "profiles",
         template=args.save,
-        matches=folder / "matches",
         client_log=folder / "client_msgs.log",
         inject_file=folder / "inject.jsonl",
         log_file=folder / "ow174.log",
@@ -185,19 +196,24 @@ def run(args: argparse.Namespace) -> None:
         port=args.port,
         dashboard_port=args.dashboard_port,
         game_port=args.game_port,
+        game_host=args.game_host,
+        test_players=max(0, args.test_players),
         paths=_paths(args),
     )
     game = relay = None
     if args.mode != "server":
         game = find_game(args.game_exe)
         close_running_copy(game)
-    if args.mode == "retail":
+    if args.mode == "retail" or settings.game_port > 0:
         ensure_requirements()
+    if args.mode == "retail":
         relay = ensure_relay_dll()
 
     load_or_create_profile(settings.paths.template)
     server = LobbyServer(settings)
     listener = _bind(server)
+    if settings.game_port > 0:
+        _start_game_server(server)
     if settings.dashboard_port > 0:
         start_dashboard(server, port=settings.dashboard_port)
     threading.Thread(
@@ -310,6 +326,16 @@ def _bind(server: LobbyServer):
     except OSError as error:
         raise LaunchError(
             f"Port {server.settings.port} is taken ({error}). "
+            "Is the server already running in another window?"
+        ) from error
+
+
+def _start_game_server(server: LobbyServer) -> None:
+    try:
+        server.start_game_server()
+    except OSError as error:
+        raise LaunchError(
+            f"UDP port {server.settings.game_port} is taken ({error}). "
             "Is the server already running in another window?"
         ) from error
 

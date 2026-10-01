@@ -5,7 +5,9 @@ friends list and always online; it joins parties it is invited to, so the social
 tried with one client.
 
 A chat channel is {"+0x0": id, "+0x10": type, "+0x14": index}. The types used here are 4 for a
-party (the id is the party id) and 7 for General. Whispers (type 3) use their own messages.
+party (the id is the party id), 6 for the players of a match (the id is the match id) and 7 for
+General. Whispers (type 3) use their own messages. That 6 is the match ("All") chat and 5 the team
+chat comes from ProCore's notes and is not confirmed yet.
 """
 
 import os
@@ -20,7 +22,7 @@ from ow174.content.queue import group_slot, queue_entry, role_choice
 from ow174.content.ranked import EVENT_QUEUES, ROLES, rating_of
 from ow174.jam.values import id16
 
-CHANNEL_GROUP, CHANNEL_GENERAL = 4, 7
+CHANNEL_GROUP, CHANNEL_MATCH, CHANNEL_GENERAL = 4, 6, 7
 GENERAL_CHANNEL_ID = (0x8B0C, 0xCCCC00000F995BE6)  # the id the retail server used for General
 # A party entity id carries this type and tag in its high bytes, like the one in Identity.create.
 PARTY_ENTITY_TYPE = 0x1D << 40
@@ -63,6 +65,11 @@ def _random_id16() -> tuple[int, int]:
 def _random_party_entity() -> tuple[int, int]:
     sequence = int.from_bytes(os.urandom(4), "little")
     return sequence | PARTY_ENTITY_TYPE | ID_HIGH_TAG, _random_u64()
+
+
+def _channel_key(channel: dict) -> tuple:
+    channel_id = channel.get("+0x0") or {}
+    return channel_id.get("+0x0"), channel_id.get("+0x8")
 
 
 @dataclass(eq=False)
@@ -110,6 +117,8 @@ class Social:
         self.sessions: dict[int, object] = {}  # account_lo -> Session of a logged-in client
         self.parties: dict[int, Party] = {}  # account_lo -> Party
         self.general = {"+0x0": id16(*GENERAL_CHANNEL_ID), "+0x10": CHANNEL_GENERAL, "+0x14": 0}
+        self.match_chats: dict[int, tuple] = {}  # account_lo -> the id of its match's chat channel
+        self.match_channels: dict[int, dict] = {}  # account_lo -> that channel
         self._lock = threading.RLock()
 
     # --- presence ------------------------------------------------------------------------------
@@ -282,10 +291,31 @@ class Social:
         return {"+0x78": channel, "+0x90": self.member(sender), "+0x100": text, "+0x128": flags}
 
     def channel_members(self, channel: dict) -> list[Account]:
-        if channel.get("+0x10") != CHANNEL_GROUP:
+        kind = channel.get("+0x10")
+        if kind == CHANNEL_MATCH:
+            key = _channel_key(channel)
+            return [account for account in self.online() if self.match_chats.get(account.account_lo) == key]
+        if kind != CHANNEL_GROUP:
             return self.online()
         party = self.party_by_id(channel.get("+0x0"))
         return list(party.members) if party else []
+
+    def open_match_chat(self, match_id: tuple, accounts: list[Account]) -> dict:
+        """The chat channel of a match's players, which the game's in-match chat posts to."""
+        channel = {"+0x0": id16(*match_id), "+0x10": CHANNEL_MATCH, "+0x14": 0}
+        with self._lock:
+            for account in accounts:
+                self.match_chats[account.account_lo] = _channel_key(channel)
+                self.match_channels[account.account_lo] = channel
+        return channel
+
+    def match_chat_of(self, account: Account) -> dict | None:
+        return self.match_channels.get(account.account_lo)
+
+    def leave_match_chat(self, account: Account) -> dict | None:
+        with self._lock:
+            self.match_chats.pop(account.account_lo, None)
+            return self.match_channels.pop(account.account_lo, None)
 
     # --- parties -------------------------------------------------------------------------------
 

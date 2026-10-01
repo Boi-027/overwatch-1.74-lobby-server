@@ -1,5 +1,6 @@
+"""The lobby hands queue and Practice Range requests to the matchmaker."""
+
 import sys
-import tempfile
 import threading
 import unittest
 from pathlib import Path
@@ -11,28 +12,29 @@ from ow174.accounts.profile import Profile
 from ow174.jam.codec import Schemas
 from ow174.lobby.handlers import build_router
 from ow174.lobby.session import Session
-from ow174.matches.runtime import MatchManager
 
-QUEUE = 0x1C6EC712
+MATCHMAKE = 0x1C6EC712
 CUSTOM = 0xA6E53896
 
 
 class LobbyMatchTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.tmp.cleanup)
-        self.matches = MatchManager(Path(self.tmp.name), base_port=0)
-        self.addCleanup(self.matches.close)
+        self.calls = []
         self.schemas = Schemas()
         account = SimpleNamespace(name="Alpha", profile=Profile(player_name="Alpha"), account_lo=1)
-        party = SimpleNamespace(queue=None, roles={}, members=[account])
+        self.party = SimpleNamespace(queue=None, roles={}, members=[account])
+        matchmaker = SimpleNamespace(
+            search=lambda party, key, card: self.calls.append(("search", card)),
+            cancel=lambda party: self.calls.append(("cancel",)),
+            practice=lambda session: self.calls.append(("practice", session.account.name)),
+        )
         server = SimpleNamespace(
-            matches=self.matches,
+            matchmaker=matchmaker,
             schemas=self.schemas,
             state_lock=threading.RLock(),
             router=build_router(),
             recorder=SimpleNamespace(record=lambda *args: None),
-            social=SimpleNamespace(party_of=lambda account: party),
+            social=SimpleNamespace(party_of=lambda account: self.party),
             notify_party=lambda party: None,
             content=SimpleNamespace(arcade=SimpleNamespace(has_roles=lambda card: False)),
             session_of=lambda account_lo: self.session,
@@ -41,24 +43,21 @@ class LobbyMatchTests(unittest.TestCase):
         self.session.account = account
         self.session.logged_in = True
         self.session.log = lambda *args: None
-        self.session.announce([QUEUE, CUSTOM])
+        self.session.send = lambda *args: True
+        self.session.announce([MATCHMAKE, CUSTOM])
 
-    def test_captured_practice_request_allocates_real_server(self):
+    def test_the_practice_range_request_starts_a_practice_match(self):
         self.session.dispatch(2, 0, bytes.fromhex("020004000000"))
-        states = self.matches.snapshot()
-        self.assertEqual(len(states), 1, "24000 must reach the instance allocator")
-        self.assertEqual(states[0]["player"], "Alpha")
-        self.assertEqual(states[0]["state"], "listening")
+        self.assertEqual(self.calls, [("practice", "Alpha")])
 
-    def test_search_and_cancel_messages_start_then_stop_worker(self):
-        # Captured Mystery Heroes request and cancellation have identical bodies.
+    def test_a_queue_without_roles_searches_at_once_and_cancel_stops_it(self):
+        # A captured Mystery Heroes request (card 0x0630000000000002); its cancel has the same body.
         body = bytes.fromhex(
             "0200000000003006000000000000000000000000000000000000000000000000000000004086f3004486f400"
         )
         self.session.dispatch(1, 0, body)
-        self.assertEqual(len(self.matches.snapshot()), 1)
         self.session.dispatch(1, 2, body)
-        self.assertEqual(self.matches.snapshot(), [])
+        self.assertEqual(self.calls, [("search", 0x0630000000000002), ("cancel",)])
 
 
 if __name__ == "__main__":

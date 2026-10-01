@@ -222,10 +222,15 @@ class Schemas:
         return self.base(crc) + frame[start], frame[start + 1 :]
 
     def decode(self, crc: int, msg_id: int, body: bytes, strict=True) -> dict:
-        value, pos = _read_fields(self.fields(crc, msg_id), body, 0, _Bits())
+        value, pos = self.read(crc, msg_id, body)
         if strict and pos != len(body):
             raise DecodeError(f"{len(body) - pos} bytes left over")
         return value
+
+    def read(self, crc: int, msg_id: int, data: bytes, pos: int = 0) -> tuple[dict, int]:
+        """Decode the message whose fields start at `pos`: the value and where the message ends. The
+        game link packs messages back to back with no length."""
+        return _read_fields(self.fields(crc, msg_id), data, pos, _Bits())
 
     def encode(self, crc: int, msg_id: int, value: dict) -> bytes:
         out = bytearray()

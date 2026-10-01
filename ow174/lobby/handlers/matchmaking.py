@@ -1,7 +1,7 @@
 """Queueing for a game, and the group finder.
 
-No real match is created: the game connection is still blocked (see docs/STATE.md). A queue request
-starts a local game-server process that only records what it receives.
+A party that searches goes to the matchmaker (lobby/matchmaker.py), which puts it into a match on
+the game server once enough players search the same queue.
 """
 
 import json
@@ -65,19 +65,20 @@ def enter_queue(session: Session, value: dict) -> None:
     key = value["+0x78"]
     party = session.server.social.party_of(session.account)
     _send_members(session, party, 44201, queue_joined(key))
-    if session.server.content.arcade.has_roles(_mode_guid(value)):
-        party.queue = key
-        party.queue_state = PICKING
-        # The role badge on each portrait shows these roles (0x7FF7898FC8D0); they are new each time.
-        party.roles = {}
-        party.accepted = {session.account.account_lo}
-        party.ready = set()
-        party.pass_roles = {}
-        party.passes_taken = set()
-        _send_members(session, party, 56200, wait_times(), QUEUE_WAITS)
-        session.server.notify_party(party)
-        session.log("[MM] Role check started")
-    _allocate_game(session, _mode_guid(value), "queue")
+    if not session.server.content.arcade.has_roles(_mode_guid(value)):
+        session.server.matchmaker.search(party, key, _mode_guid(value))
+        return
+    party.queue = key
+    party.queue_state = PICKING
+    # The role badge on each portrait shows these roles (0x7FF7898FC8D0); they are new each time.
+    party.roles = {}
+    party.accepted = {session.account.account_lo}
+    party.ready = set()
+    party.pass_roles = {}
+    party.passes_taken = set()
+    _send_members(session, party, 56200, wait_times(), QUEUE_WAITS)
+    session.server.notify_party(party)
+    session.log("[MM] Role check started")
 
 
 @routes.on(MATCHMAKE, CANCEL_QUEUE)
@@ -177,6 +178,9 @@ def _update_queue(session: Session, party) -> None:
         _send_members(session, party, 44201, queue_joined(party.queue))
         _take_passes(session, party)
         session.log("[MM] Everyone is ready: searching")
+        session.server.notify_party(party)
+        session.server.matchmaker.search(party, party.queue, party.queue["+0x0"]["+0x0"])
+        return
     session.server.notify_party(party)
 
 
@@ -212,11 +216,7 @@ def _leave_queue(session: Session, party, key: dict, skip: int | None = None) ->
     """Takes the party out of the queue. Members get 44202, so their client drops its queue entry
     and closes the role screens; the one who cancelled (skip) dropped it already."""
     _send_members(session, party, 44202, queue_left(key), skip=skip)
-    matches = session.server.matches
-    for member in party.members:
-        member_session = session.server.session_of(member.account_lo)
-        if matches is not None and member_session:
-            matches.cancel(member_session.conn_id, mode=key["+0x0"]["+0x0"])
+    session.server.matchmaker.cancel(party)
     if party.queue is not None:
         _give_passes_back(session, party)
         party.queue = None
@@ -246,21 +246,9 @@ def _role_names(chosen: list[int]) -> str:
 def create_game(session: Session, value: dict) -> None:
     if (value.get("+0x78"), value.get("+0xA8")) == PRACTICE_RANGE:
         # The Practice Range request carries a creation kind, not a mode GUID.
-        _allocate_game(session, 0, "practice")
+        session.server.matchmaker.practice(session)
     else:
         session.log(f"[MM] Unknown create-game request: {to_jsonable(value)}")
-
-
-def _allocate_game(session: Session, mode: int, activity: str) -> None:
-    matches = session.server.matches
-    if matches is None:
-        session.log("[MM] Game instances are off (--game-port 0)")
-        return
-    instance = matches.request(session.conn_id, session.account.name, mode, activity)
-    session.log(
-        f"[MM] {activity}: instance {instance.directory.name}, PID {instance.process.pid}, "
-        f"UDP 127.0.0.1:{instance.port}, waiting for the game client"
-    )
 
 
 # The group finder. The client sends 52200-52205 (9529F0ED) and gets its answers in 52300-52302
