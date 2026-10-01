@@ -213,6 +213,7 @@ class Matchmaker:
     def __init__(self, server, minimum_players: int = 0) -> None:
         self.server = server
         self.minimum_players = minimum_players  # 0: full teams; more: tests start with that many
+        self.forced_map: int | None = None  # a map Quick Play / Arcade must load; None = the card's pick
         self.rules = load_rules()
         self.tickets: list[Ticket] = []
         self.lock = threading.RLock()
@@ -258,18 +259,32 @@ class Matchmaker:
         self.tickets = [ticket for ticket in self.tickets if id(ticket) not in used]
         self._start(chosen_map, roster)
 
+    def _pick_map(self, rules: QueueRules):
+        """A map of the card that the server can host, with the ruleset it is played in. If the dashboard
+        forced a map, that one is used with any of the card's rulesets it supports; when the forced map
+        can't be hosted in this card's modes, the card's own random pick is used so a match still starts."""
+        if self.forced_map is not None:
+            forced = self._map_choices([(self.forced_map, ())], rules.rulesets)
+            if forced:
+                return random.choice(forced)
+            log.info("[MM] Forced map 0x%X is not playable in %s; using the card's pick", self.forced_map,
+                     rules.name or "this card")
+        choices = self._map_choices(rules.maps, rules.rulesets)
+        return random.choice(choices) if choices else None
+
     @staticmethod
-    def _pick_map(rules: QueueRules):
-        """A random map of the card that the server can host, with the ruleset it is played in."""
+    def _map_choices(maps, rulesets) -> list:
+        """The (GameMap, ruleset) pairs the server can host from these maps. `modes` of () allows any
+        ruleset mode (so a forced map is tried against every mode the card plays)."""
         choices = []
-        for map_guid, modes in rules.maps:
-            for ruleset in rules.rulesets:
+        for map_guid, modes in maps:
+            for ruleset in rulesets:
                 if modes and ruleset.mode not in modes:
                     continue
                 found = game_map(map_guid, ruleset.mode, ruleset.mode_name, ruleset.free_for_all)
                 if found is not None:
                     choices.append((found, ruleset))
-        return random.choice(choices) if choices else None
+        return choices
 
     def _players(self, party: Party) -> list:
         """The members who can play: online, not the bot."""
