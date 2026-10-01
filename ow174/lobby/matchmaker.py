@@ -267,8 +267,11 @@ class Matchmaker:
             forced = self._map_choices([(self.forced_map, ())], rules.rulesets)
             if forced:
                 return random.choice(forced)
-            log.info("[MM] Forced map 0x%X is not playable in %s; using the card's pick", self.forced_map,
-                     rules.name or "this card")
+            log.info(
+                "[MM] Forced map 0x%X is not playable in %s; using the card's pick",
+                self.forced_map,
+                rules.name or "this card",
+            )
         choices = self._map_choices(rules.maps, rules.rulesets)
         return random.choice(choices) if choices else None
 
