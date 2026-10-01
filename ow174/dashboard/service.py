@@ -26,6 +26,7 @@ from ow174.content.ranked import (
     wins_of,
 )
 from ow174.dashboard.errors import ApiError, parse_bool, parse_guid, parse_int
+from ow174.game import content
 from ow174.jam.groups import PARTY
 from ow174.launcher import LaunchError
 from ow174.lobby.handlers.party import MERGE_REQUEST, merge_request
@@ -267,6 +268,8 @@ class DashboardService:
     def _server_info(self, online: set) -> dict:
         game = getattr(self.lobby, "game", None)
         settings = self.lobby.settings
+        matchmaker = getattr(self.lobby, "matchmaker", None)
+        forced_map = getattr(matchmaker, "forced_map", None)
         return {
             "host": settings.host,
             "port": settings.port,
@@ -276,7 +279,9 @@ class DashboardService:
             "game_runtime_available": game is not None,
             "second_games": getattr(self.lobby, "games", None) is not None,
             "matchmaking_supported": game is not None,
-            "test_players": getattr(getattr(self.lobby, "matchmaker", None), "minimum_players", 0),
+            "test_players": getattr(matchmaker, "minimum_players", 0),
+            "maps": content.map_catalog(),
+            "forced_map": f"0x{forced_map:X}" if forced_map else "",
         }
 
     @staticmethod
@@ -688,6 +693,23 @@ class DashboardService:
         if not players:
             return {"message": "Matches start with full teams."}
         return {"message": f"Matches start as soon as {players} player(s) search."}
+
+    def set_map(self, data: dict) -> dict:
+        """The map Quick Play and Arcade load, or the queue's random pick when empty/'random'. The chosen
+        map is only used when it can be hosted in the queue's modes; otherwise the queue falls back."""
+        matchmaker = getattr(self.lobby, "matchmaker", None)
+        if matchmaker is None:
+            raise ApiError("Matchmaking is off.", 409)
+        value = str(data.get("map") or "").strip()
+        if not value or value.lower() == "random":
+            matchmaker.forced_map = None
+            return {"message": "Quick Play and Arcade use the queue's random map."}
+        guid = parse_guid(value)
+        name = content.map_name(guid)
+        if name is None:
+            raise ApiError("The data does not know that map.", 400)
+        matchmaker.forced_map = guid
+        return {"message": f"Quick Play and Arcade will load {name} (when the mode allows it)."}
 
     def end_matches(self) -> dict:
         game = self.lobby.game
