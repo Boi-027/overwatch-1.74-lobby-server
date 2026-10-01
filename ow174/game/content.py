@@ -98,6 +98,27 @@ def _map_entries() -> dict[int, dict]:
     return {int(key, 16): entry for key, entry in json.loads(MAPS_PATH.read_text(encoding="utf-8")).items()}
 
 
+def map_catalog() -> list[dict]:
+    """Every map the data knows (plus the Practice Range), for the dashboard's map picker:
+    {guid hex, name}, sorted by name."""
+    maps = [{"guid": f"0x{PRACTICE_RANGE.map_guid:X}", "name": PRACTICE_RANGE.name}]
+    maps += [
+        {"guid": f"0x{guid:X}", "name": entry.get("name") or f"0x{guid:X}"}
+        for guid, entry in _map_entries().items()
+        if guid != PRACTICE_RANGE.map_guid
+    ]
+    maps.sort(key=lambda item: item["name"])
+    return maps
+
+
+def map_name(guid: int) -> str | None:
+    """A map's name, or None when the data does not know it."""
+    if guid == PRACTICE_RANGE.map_guid:
+        return PRACTICE_RANGE.name
+    entry = _map_entries().get(guid)
+    return entry.get("name") if entry else None
+
+
 def _first_round_spawns(entry: dict, free_for_all: bool) -> tuple[Spawn, ...]:
     """Each team's spawn points of the first objective (team 1 attacks it, team 0 defends), or of any
     objective when the map names none; the free-for-all points in a free-for-all mode."""
