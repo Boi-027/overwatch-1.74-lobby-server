@@ -9,8 +9,14 @@ This branch adds our own game server and real matchmaking. It works in the game,
 - For tests, the dashboard's "Players to start" starts a match with fewer players (1 = alone).
 - The game connects to our UDP game server (port 3730), loads the map and spawns the player.
 - Hero select in the Practice Range and in the PvP modes, with skins: the body wears the chosen skin.
-  The H key opens hero select again.
+  The H key opens hero select again, and a pick mid-match replaces the body under a new entity id.
 - PvP modes: "Assemble your team" with a 30 s countdown, then hero select closes.
+- Hero statescript behind `--hero-scripts`: the server runs the hero's graphs, and the client shows
+  the in-game HUD layers and the hero's gun; the fire button drives the weapon script's volley and
+  the ammo counter's variable carries a full magazine. `--test-map MAP:MODE` joins one map through
+  the group finder's match-found banner, which is the state the HUD layers need. What every state
+  slot of every hero is, and what is still open, is written down in
+  [docs/HERO-WEAPONS.md](docs/HERO-WEAPONS.md).
 - The team list on the hero select screen shows yourself.
 - Walking. Other players see your body move and change heroes.
 - Leaving a match from the menu.
@@ -21,9 +27,14 @@ Written but not checked in the game yet: the golden weapon, match chat with the 
 
 ## Not done yet
 
-- Weapons, abilities and the in-game HUD. The client predicts them but rolls them back without the
-  server's answers, so the server has to run the heroes' statescript graphs itself. Started: the graph
-  data (`data/game_graphs_174.json.gz`, `ow174/game/script/graph.py`).
+- The HUD's ammo and health readouts: the numbers live in the weapon script's sync vars (and on the
+  gun's own display), but the readout layer of the HUD screens is not mounted yet, and the round
+  phase travels in a game-mode graph that is not snapshotted, so the client stays in a permanent
+  pre-round. The animations and presenters must enter as state transitions, not as active bits:
+  an active one plays the moment the body activates (see docs/HERO-WEAPONS.md for the tables and
+  the open threads).
+- Heroes with swappable weapons (Torbjorn) render both scripts' cosmetics at once: the cosmetic
+  states must follow the weapon the manager swaps to, not all light up together.
 - Other players' bodies play a run animation while standing.
 - Teammates in the hero select team list.
 - "Leave the match as a group" does nothing.

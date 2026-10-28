@@ -12,14 +12,19 @@
 
 ## Partly works
 
-- Practice Range and matchmaking: the game sends its requests (24000 for the Practice Range, 44100 to search, 44102 to cancel), and the server starts or stops a worker for each. No match actually starts.
-- `tools/probe_practice.py` can put the game into the "searching" state (message 53000 with state 4, answered by 52903). It resets the game back to idle afterwards.
+- Practice Range and matchmaking: the game sends its requests (24000 for the Practice Range, 44100 to
+  search, 44102 to cancel), and the server starts a match on one: 20600 hands over a game server, the
+  game loads the map and spawns the player. What a match is and is not, item by item, is in [WIP.md](../WIP.md).
+- `tools/probe_practice.py` can put the game into the "searching" state (message 53000 with state 4,
+  answered by 52903). It resets the game back to idle afterwards.
 
 ## Does not work yet
 
-- Joining a match. Sending a server address (message 20600) gave no network traffic from the game.
+- Match flow after "Assemble your team": no round phase, no objectives, no damage. The hero's own
+  weapons, HUD readouts and abilities are scripted server-side already (see `--hero-scripts`,
+  [docs/HERO-WEAPONS.md](docs/HERO-WEAPONS.md)), but they cover the body and the gun, not the match.
 
-Do not describe this server as able to play matches.
+A match runs up to hero select and a live hero body in the world; do not describe it as a playable game yet.
 
 ## Data
 

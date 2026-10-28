@@ -91,6 +91,7 @@ def cancel_queue(session: Session, value: dict) -> None:
 @routes.on(MATCHMAKE, ACCEPT)
 def accept(session: Session, value: dict) -> None:
     party = session.server.social.party_of(session.account)
+    session.server.matchmaker.banner_accept()  # the banner's Accept joins right away
     if party.queue is None:
         session.log("[MM] Accept (44104) without a role check")
         return

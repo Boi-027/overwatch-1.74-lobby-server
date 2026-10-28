@@ -64,7 +64,9 @@ class QueueTests(unittest.TestCase):
         self.sessions = {}
         self.searches = []
         matchmaker = SimpleNamespace(
-            search=lambda party, key, card: self.searches.append(card), cancel=lambda party: None
+            search=lambda party, key, card: self.searches.append(card),
+            cancel=lambda party: None,
+            banner_accept=lambda: None,
         )
         self.server = SimpleNamespace(
             social=self.social,

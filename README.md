@@ -56,7 +56,9 @@ py -m ruff check .
 py -B -m unittest discover -s tests
 ```
 
-The code is in `ow174/`. The relay DLL source is in `relay/`.
+The code is in `ow174/`. The relay DLL source is in `relay/`. The statescript record formats, the
+frame-number rules and the observed failure modes are written down in [docs/STATESCRIPT.md](docs/STATESCRIPT.md);
+what it takes to get a hero's gun and HUD rendered in [docs/HERO-WEAPONS.md](docs/HERO-WEAPONS.md).
 
 ## Credits
 

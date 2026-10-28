@@ -201,5 +201,78 @@ class GameServerTests(unittest.TestCase):
             game.receive()
 
 
+class FakeClient:
+    """Records what a match queues, no sockets."""
+
+    def __init__(self):
+        self.entities = []
+
+    def queue_entities(self, updates):
+        self.entities += updates
+
+    def queue_reliable(self, message, value):
+        pass
+
+
+class ScriptedBodySequenceTests(unittest.TestCase):
+    """The two-record sequence offline: an empty graph-info chunk on the create, the full snapshot
+    following as its own record at base 3 with CmFD above the client's tick."""
+
+    def scripted(self):
+        match = match_module.Match(PRACTICE_RANGE, hero_scripts=True)
+        player = match.add_player(1, "Alpha", 0, 0, False)
+        player.client = FakeClient()
+        player.spawned = True
+        player.has_body = True
+        match.now = 0.0
+        return match, player
+
+    def test_the_create_carries_the_empty_graph_info_chunk(self):
+        match, player = self.scripted()
+        body, ui = match.own_body_updates(player)  # the body and the world's UI entity
+        self.assertEqual(body.chunk.count, 56)  # the empty graph-info frame, wrapped
+        self.assertEqual(player.body_script.last, 1)
+        self.assertEqual(player.body_script.data_last, 1)
+        self.assertEqual(ui.entity, 0x00000000000063F1)  # the UI definition's entity
+        self.assertEqual(match.ui_script.last, 1)
+
+    def test_the_snapshot_follows_as_its_own_record(self):
+        match, player = self.scripted()
+        match.own_body_updates(player)
+        match.update(0.6, 1000)  # half a second later, one tick after the create
+        snapshot, hud = [u for u in player.client.entities if u.chunk is not None]
+        self.assertEqual(snapshot.chunk_last, 3)
+        self.assertEqual(player.body_script.last, 3)
+        self.assertEqual(player.body_script.cmfd, 1008)  # max(prev + 1, command frame 1000 + 8)
+        bits = BitReader(snapshot.chunk.getvalue())
+        self.assertFalse(bits.bit())  # w_u32(0): the small form, the snapshot is wrapped at base 0
+        self.assertEqual(bits.bits(16), 0)
+        self.assertEqual(snapshot.entity, player.body)
+        self.assertEqual(hud.entity, match.ui_script.entity)  # the HUD's snapshot rides the same rule
+        self.assertEqual(hud.chunk_last, 3)
+        self.assertEqual(match.ui_sends, 1)
+
+    def test_retries_stop_after_three_sends(self):
+        match, player = self.scripted()
+        match.own_body_updates(player)
+        for now in (0.6, 1.7, 2.8):
+            match.update(now, 1000)
+        self.assertEqual(player.body_full_sends, 3)
+        match.update(4.0, 1000)
+        self.assertEqual(player.body_full_sends, 3)
+
+    def test_a_plain_match_sends_bodies_without_chunks(self):
+        match = match_module.Match(PRACTICE_RANGE)
+        player = match.add_player(1, "Alpha", 0, 0, False)
+        player.client = FakeClient()
+        player.spawned = True
+        player.has_body = True
+        (body,) = match.own_body_updates(player)
+        self.assertIsNone(body.chunk)
+        self.assertIsNone(player.body_script)
+        match.update(1.0, 1000)
+        self.assertEqual([u for u in player.client.entities if u.chunk is not None], [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -113,6 +113,138 @@ def subscript(child: int) -> BitWriter:
     return out
 
 
+def switch_data(branch: int = 0) -> BitWriter:
+    """The state data of an active BooleanSwitch: one branch bit (the reader at 0xa099e0). A bare
+    active bit is not enough: the client then parses the following instance's data as states and the
+    whole frame tail shifts."""
+    out = BitWriter()
+    out.bit(branch)
+    return out
+
+
+def stack_data() -> BitWriter:
+    """The state data of an active Stack: two bits (the value they encode is 0). Like
+    switch_data, the bare active bit desyncs the frame."""
+    out = BitWriter()
+    out.bits(0, 2)
+    return out
+
+
+def sender_data() -> BitWriter:
+    """The state data of an active GameMessageEntry (the sender class): a compact u16 follows the
+    active bit, whose zero form is one 0 bit."""
+    out = BitWriter()
+    out.bit(0)
+    return out
+
+
+def volley_data(start_time: int = 0) -> BitWriter:
+    """The state data of a WeaponVolley entry (reader 0xd60400): the start time as a sign-magnitude
+    int - sign bit, then a varint width (one 0 bit means 8, 1-0 means 16, 1-1 means 32) and the
+    value - a flag (a second int follows when set), a flag (a part follows when set) and six more
+    bits. A zero start is 18 bits and is the form the live firing runs sent. The data belongs to
+    the has-data bit, not to the active bit: a stopped volley must send it as well, or the frame
+    tail shifts."""
+    out = BitWriter()
+    out.bit(0)  # sign
+    out.w_var(start_time)
+    out.bit(0)  # no second int
+    out.bit(0)  # no part
+    out.bits(0, 6)
+    return out
+
+
+def button_data(count: int = 0) -> BitWriter:
+    """The state data of a LogicalButton entry: a 4-bit press counter."""
+    out = BitWriter()
+    out.bits(count & 0xF, 4)
+    return out
+
+
+def expiry_data(ticks: int = 0) -> BitWriter:
+    """The state data of the unnamed two-bit class (0x691BFA55, reader 0xc91150): one
+    sign-magnitude int. The reader subtracts it from the owner snapshot's frame count and stores
+    the result as the state's expiry tick, so the number is a delay in frames; zero is an
+    immediate expiry and the smallest safe payload (ten bits)."""
+    out = BitWriter()
+    out.bit(0)  # sign: positive
+    out.w_var(ticks)
+    return out
+
+
+def anim_data(reference: tuple[int, int, int] | None = None) -> BitWriter:
+    """The state data of an active Anim (reader 0xcbd370): an optional state reference (present
+    bit, then the instance id as a varint - one 0 bit means 4 bits, 1-0 means 8, 1-1 means 16 -
+    and a state index of the referenced graph's stored width), a 3-bit field, and a gate bit
+    (set: one more bit, set: a sign-magnitude int follows). With no reference the state plays
+    nothing - the form a static picture sends; `reference` is (instance, width_bits, state) for
+    the graph whose CosmeticEntity should host the animation."""
+    out = BitWriter()
+    if reference is None:
+        out.bit(0)
+    else:
+        instance, width, state = reference
+        out.bit(1)
+        if instance < 16:
+            out.bit(0)
+            out.bits(instance, 4)
+        elif instance < 256:
+            out.bits(0b01, 2)
+            out.bits(instance, 8)
+        else:
+            out.bits(0b11, 2)
+            out.bits(instance, 16)
+        out.bits(state, width)
+    out.bits(0, 3)  # the field
+    out.bit(0)  # gate: no trailing int
+    return out
+
+
+@dataclass(frozen=True)
+class HasData:
+    """A state entry of a class whose form is has-data + active + state data (WeaponVolley,
+    LogicalButton; see DATA_STATES below and loadout.HAS_DATA_STATES). The payload is read by
+    the client whenever has-data is set, active or not, so stopping such a state means sending
+    it again inactive, not dropping the entry."""
+
+    payload: BitWriter
+    active: bool = True
+
+
+# The state-data forms of the entries in a full snapshot (the native predicate at 0xf5e960 over
+# the graph metadata's state types): the classes in DATA_STATES take a bare active bit plus their
+# own small payload - the BooleanSwitch's branch bit, the Stack's two bits, the sender's compact
+# u16 and the Anim's optional reference. The classes in HAS_DATA_STATES take the two-bit has-data
+# form instead. The predicate's fourth true class, 0x2F07046F, has no state in any graph of our
+# data, so its reader can stay unread. Everything else needs no data bits.
+DATA_STATES = {
+    "STUStatescriptStateBooleanSwitch": switch_data,
+    "STUStatescriptStateStack": stack_data,
+    "STUStatescriptStateGameMessageEntry": sender_data,
+    "STUStatescriptStateAnim": anim_data,
+}
+
+HAS_DATA_STATES = {
+    "STUStatescriptStateWeaponVolley": volley_data,
+    "STUStatescriptStateLogicalButton": button_data,
+    "STU_691BFA55": expiry_data,  # one sign-magnitude int: the delay until the state expires
+}
+
+
+def active_data(cls: str):
+    """The state-data payload builder this class needs when active, or None when the bare bit is
+    enough for it. The has-data classes take the entry form HasData(payload) instead - see
+    HAS_DATA_STATES for which builder belongs to which class."""
+    return DATA_STATES.get(cls)
+
+
+def has_data_entry(cls: str, **fields):
+    """The HasData entry for a two-bit class, built with the class's own payload (start_time for
+    a volley, count for a button), or None for a class without a known two-bit form."""
+    builder = HAS_DATA_STATES.get(cls)
+    return None if builder is None else HasData(builder(**fields))
+
+
 @dataclass
 class Instance:
     index: int
@@ -143,8 +275,13 @@ def _variables(out: BitWriter, variables: dict[int, Value]) -> None:
     out.w_var(0)
 
 
-def owner_full_frame(cmfd: int, instances: list[Instance], entity_vars: dict[int, Value]) -> BitWriter:
-    """An owner (H=1) full frame. `cmfd` must be larger than any CmFD sent to this entity before."""
+def owner_full_frame(
+    cmfd: int, instances: list[Instance], entity_vars: dict[int, Value], lbss: int | None = None
+) -> BitWriter:
+    """An owner (H=1) full frame. `cmfd` must be larger than any CmFD sent to this entity before.
+    `lbss` (the "bits to skip if this frame was already applied" varint) is required when the frame
+    is wrapped in a chunk at a non-zero base: a chunk below the manager's last applied frame must
+    say how far to jump over the body, and without it the skip lands mid-frame."""
     if cmfd < 1:
         raise ValueError("CmFD 0 is always stale")
     out = BitWriter()
@@ -152,6 +289,8 @@ def owner_full_frame(cmfd: int, instances: list[Instance], entity_vars: dict[int
     out.bit(1)  # H
     out.bit(0)  # C
     out.w_var(cmfd)
+    if lbss is not None:
+        out.w_var(lbss)
     last = 0
     for instance in sorted(instances, key=lambda item: item.index):
         out.w_u16(instance.index - last)
@@ -175,13 +314,40 @@ def owner_full_frame(cmfd: int, instances: list[Instance], entity_vars: dict[int
         else:
             out.bit(0)
         for bit in range(instance.graph.owner_states):
-            on = bit in instance.active
-            out.bit(on)
-            payload = instance.active.get(bit)
-            if on and payload is not None:
-                out.append(payload)
+            entry = instance.active.get(bit)
+            if isinstance(entry, HasData):
+                out.bit(1)  # has-data
+                out.bit(entry.active)
+                out.append(entry.payload)  # read whenever has-data is set, active or not
+            else:
+                on = bit in instance.active
+                out.bit(on)
+                if on and entry is not None:
+                    out.append(entry)
         out.bits(0b11, 2)  # the instance's event list ends (code 3)
     out.bits(0, 2)  # the frame's event lists: none
+    return out
+
+
+def graph_create_frame(instances: list[Instance]) -> BitWriter:
+    """The graph-info frame that rides an entity's create: the instance list with plain create
+    descriptors, no variables, no states, CmFD 0 (the interpreter takes the client's own tick). It
+    only creates the instances; the states and variables go in the owner full snapshot that follows.
+    Listing states here too creates them twice, and an instance the create frame does not mention is
+    not created by the later snapshot."""
+    out = BitWriter()
+    out.bit(0)  # lead
+    out.bit(1)  # H
+    out.bit(0)  # C
+    out.w_var(0)  # no CmFD: the client tick is stored as the base
+    last = 0
+    for instance in sorted(instances, key=lambda item: item.index):
+        out.w_u16(instance.index - last)
+        last = instance.index
+        _descriptor(out, instance)
+    out.w_u16(0)
+    out.bit(0)  # no entity variables
+    out.bits(0, 2)  # no frame events
     return out
 
 
@@ -243,8 +409,11 @@ class Stream:
         self.next_ack = 0.0  # when the next ack-only delta may go
 
     def next_cmfd(self, newest: int) -> int:
-        """The client skips an owner frame whose CmFD is not larger than the last one."""
-        self.cmfd = max(newest, self.cmfd + 1)
+        """The client skips an owner frame whose CmFD is not larger than the last one, and the
+        interpreter requires it to exceed the tick stamp the graph-create frame left (set to the
+        client's own tick): frames numbered below that tick leave the game "waiting for updates
+        that never came". The working rule is therefore CmFD = max(prev + 1, newest + 8)."""
+        self.cmfd = max(self.cmfd + 1, newest + 8)
         return self.cmfd
 
     @property

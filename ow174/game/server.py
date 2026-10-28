@@ -16,7 +16,7 @@ import time
 from ctypes import wintypes
 from dataclasses import dataclass
 
-from ow174.game import messages, world
+from ow174.game import loadout, messages, world
 from ow174.game.bits import BitReader
 from ow174.game.commands import InputError, read_commands
 from ow174.game.link import (
@@ -225,6 +225,31 @@ class Client:
             return
         if commands and self.player.spawned:
             self.player.take_commands(commands)
+            self._log_commands(commands, now)
+
+    def _log_commands(self, commands: list, now: float) -> None:
+        """Three lines that make a live match readable: the first command frame we ever get from this
+        client (its yaw/pitch/buttons/movement, so you can see what the client thinks it is holding),
+        every change of the button word (a press or a release, with its frame) and a position snapshot
+        while the player moves. Input telemetry, so at DEBUG: the normal log stays readable, a run
+        that hunts for a lost command turns the level up and sees it arrive."""
+        first = commands[0]
+        if not getattr(self, "_seen_commands", False):
+            self._seen_commands = True
+            self.log(
+                f"[in] first command frame {first.frame} yaw {first.yaw} pitch {first.pitch} "
+                f"buttons {first.buttons:06X} fwd {first.forward} right {first.right}",
+                logging.DEBUG,
+            )
+        buttons = commands[-1].buttons
+        if getattr(self, "_buttons", None) != buttons:
+            self.log(f"[in] buttons {buttons:06X} (frame {commands[-1].frame})", logging.DEBUG)
+            self._buttons = buttons
+        if (first.forward or first.right) and now - getattr(self, "_pos_logged", 0.0) >= 2.0:
+            self._pos_logged = now
+            mover = getattr(self.player, "mover", None)
+            x, y, z = mover.position if mover else (0.0, 0.0, 0.0)
+            self.log(f"[snap] pos {x:.1f} {y:.1f} {z:.1f} (frame {first.frame})", logging.DEBUG)
 
     def _reliable_in(self, seq: int, msg_id: int, value: dict, now: float) -> None:
         if seq < self.expected_in:
@@ -249,11 +274,24 @@ class Client:
 
 
 class GameServer:
-    def __init__(self, host: str = "127.0.0.1", port: int = 3730, on_leave=None, skin_of=no_skin) -> None:
+    def __init__(
+        self,
+        host: str = "127.0.0.1",
+        port: int = 3730,
+        on_leave=None,
+        skin_of=no_skin,
+        hero_scripts=False,
+        hero_states: set[str] | None = None,
+    ) -> None:
         self.host = host
         self.port = port
         self.on_leave = on_leave  # called with each player who leaves a match
         self.skin_of = skin_of  # (account, hero) -> the equipped (skin theme, golden weapon); no locks
+        # Give every hero body its statescript graphs (the HUD's data source, see loadout.py).
+        # hero_states replaces the shipped allow-list: None keeps SHIP_STATES, an empty set
+        # activates every class the encoder can write today.
+        self.hero_scripts = hero_scripts
+        self.hero_states = loadout.SHIP_STATES if hero_states is None else hero_states or None
         self.sock: socket.socket | None = None
         self.lock = threading.RLock()
         self.handoffs: dict[int, tuple[Handoff, Player]] = {}  # connection id -> waiting player
@@ -283,7 +321,13 @@ class GameServer:
         """A match for these players: [(account_lo, name, hero GUID, team, tournament)]. Returns the
         20600 data of each, in the same order."""
         with self.lock:
-            match = Match(game_map, on_leave=self._left, skin_of=self.skin_of)
+            match = Match(
+                game_map,
+                on_leave=self._left,
+                skin_of=self.skin_of,
+                hero_scripts=self.hero_scripts,
+                hero_states=self.hero_states,
+            )
             handoffs = []
             for account_lo, name, hero, team, tournament in players:
                 player = match.add_player(account_lo, name, hero, team, tournament)

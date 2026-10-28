@@ -25,11 +25,11 @@ import math
 import secrets
 import time
 
-from ow174.game import heroselect, world
+from ow174.game import heroselect, loadout, world
 from ow174.game.commands import Command, CommandQueue
 from ow174.game.content import SOLDIER, GameMap, Hero, heroes, spawn_point
 from ow174.game.mover import FlatMover
-from ow174.game.statescript import Float, Stream, owner_ack, variables_frame
+from ow174.game.statescript import Float, HasData, Stream, owner_ack, variables_frame, volley_data
 from ow174.game.world import (
     OP_CREATE,
     OP_DESTROY,
@@ -47,6 +47,11 @@ log = logging.getLogger("ow174.game")
 PLAYER_DEFINITION = 0x040000000000000E  # 000E.003, the player (controller) entity
 GAME_MODE_DEFINITION = 0x04000000000016B2
 GAME_MODE_ENTITY = 0xD0000010
+# The UI entity of a world (see heroselect.world_ui_chunk): definition 1F1, the one the client's
+# UI manager knows; created by the server and attached to the game mode entity so that the HUD
+# widgets of its statescript pass their world-ownership check.
+UI_DEFINITION = 0x04000000000001F1
+UI_ENTITY = 0x00000000000063F1
 PLAYER_FLAGS = WITH_PARTICIPANT | PLAYER_PATH | WITH_TRANSFORM | WITH_SCALE
 BODY_FLAGS = WITH_TRANSFORM | WITH_SCALE
 
@@ -111,6 +116,20 @@ class Player:
         # Other players' bodies this player's client has: body -> False in the frame of its create.
         self.seen: dict[int, bool] = {}
         self.script = Stream(self.entity)  # the player entity's statescript: the controller
+        # The hero body's statescript stream exists only with scripted bodies; until then the body
+        # arrives without graphs and the client's HUD shows its defaults (loadout.py explains the
+        # frames). The two counters drive the vendor's two-step sequence: the create carries the
+        # graph-info record (body_script.last = 1), the full snapshot follows separately.
+        self.body_script: Stream | None = None
+        self.body_full_next = 0.0
+        self.body_full_sends = 0
+        # The gun, lit by the fire button: (instance, state) of the body's WeaponVolley and the
+        # volley's on/off edges (a volley must be sent off again - see loadout.volley_data).
+        self.volley: tuple[int, int] | None = None
+        self.fire_pending = False
+        self.fire_last = False
+        self.volley_on = False
+        self.volley_off_at = 0.0
         self.mode_script = Stream(GAME_MODE_ENTITY)  # the game mode entity's variables: the countdown
         self.next_countdown = 0.0
         self.select_open = True
@@ -125,16 +144,31 @@ class Player:
         return Movement(mover.position, mover.yaw, mover.pitch, mover.velocity, flags)
 
     def take_commands(self, commands: list[Command]) -> None:
-        """Move the server's copy of the body. Without a body the client moves nothing either."""
+        """Move the server's copy of the body. Without a body the client moves nothing either. A
+        fresh press of the fire button arms the volley (Match.update lights the state)."""
         seconds = self.quanta / 1e6
         for command in self.commands.new(commands):
             if self.has_body:
                 self.mover.step(command, seconds)
+                fire = bool(command.buttons & 1)
+                if fire and not self.fire_last:
+                    self.fire_pending = True
+                self.fire_last = fire
 
     def new_body(self) -> None:
         """The next body id, at the spawn point: the server's flat mover is not exact enough to put a
-        new body where the old one stood. Ids cycle through the player's 255."""
+        new body where the old one stood. Ids cycle through the player's 255. A new body is a new
+        entity: its statescript stream starts fresh (new CmFD, new frame count) and the client
+        ignores the destroyed id for 30 s, which is why the id changes."""
         self.body = self.entity | ((self.body & 0xFF) % 255 + 1)
+        self.body_script = None
+        self.body_full_next = 0.0
+        self.body_full_sends = 0
+        self.volley = None
+        self.fire_pending = False
+        self.fire_last = False
+        self.volley_on = False
+        self.volley_off_at = 0.0
         self.mover = FlatMover(self.spawn[0], _yaw_units(self.spawn[1]))
 
     def describe(self) -> str:
@@ -146,20 +180,38 @@ def no_skin(account_lo: int, hero: int) -> tuple[int, bool]:
 
 
 class Match:
-    def __init__(self, game_map: GameMap, on_leave=None, skin_of=no_skin) -> None:
+    def __init__(
+        self, game_map: GameMap, on_leave=None, skin_of=no_skin, hero_scripts=False, hero_states=None
+    ) -> None:
         self.id = (secrets.randbits(63), secrets.randbits(63))
         self.game_map = game_map
         # (account, hero GUID) -> (skin theme, golden weapon) the player has equipped, from the lobby.
         # The client's hero select equips a skin through the lobby (24500), even in a match.
         self.skin_of = skin_of
+        # Put the hero's statescript graphs on every body (loadout.py): the HUD's data source. Off by
+        # default; the server turns it on with --hero-scripts and the state allow-list below.
+        self.hero_scripts = hero_scripts
+        # The state classes the snapshots may activate (names match as suffixes; launchers and the
+        # HUD gate are structure and always stay). loadout.SHIP_STATES proved stable for every hero;
+        # None sends everything the encoder can write today (loadout.HAS_DATA_STATES lists what it
+        # cannot write yet). The game server fills in the shipped set by default.
+        self.hero_states = hero_states
         self.controller = heroselect.controller_of(game_map.mode_guid)
         self.tick = 0  # the server's frame number, set every tick
+        self.now = 0.0  # the wall-clock time of the last tick, for the spawn and snapshot timers
         self.assemble_ends: float | None = None  # PvP: when "assemble your team" ends
         self.assembled = False
         self.players: list[Player] = []
         self.started = time.time()
         self.on_leave = on_leave  # called with each player who leaves
         self.ended = False
+        # The world's UI entity (heroselect.world_ui_chunk): the HUD's mount on an entity the
+        # game world owns, which the widget visibility predicate demands. Two counters again:
+        # the create carries the graph-info record (last = 1), the snapshot follows separately.
+        self.ui_script: Stream | None = None
+        self.ui_next = 0.0
+        self.ui_sends = 0
+        self.ui_player: Player | None = None
 
     def add_player(self, account_lo: int, name: str, hero_guid: int, team: int, tournament: bool) -> Player:
         hero = heroes().get(hero_guid) or heroes()[SOLDIER]
@@ -234,13 +286,46 @@ class Match:
 
     def own_body_updates(self, viewer: Player) -> list[EntityUpdate]:
         """The viewer's own body: its movement state rides in the create (at frame 0xFFFFFFFE) and in a
-        movement record at the packet frame, as in ProCore's working spawn."""
+        movement record at the packet frame, as in ProCore's working spawn. With hero scripts the
+        create additionally carries the vendor's first record, the empty graph-info chunk: the
+        activating full snapshot follows as its own module-1 record a moment later (update sends
+        it, at least a datagram apart - listing the states in both records creates every instance
+        twice and the client crashes when the activation wait expires)."""
         state = viewer.movement()
-        return [
+        chunk = None
+        if self.hero_scripts:
+            chunk = loadout.body_graph_chunk(viewer.hero.body, allow=self.hero_states)
+            if chunk is not None:
+                viewer.body_script = Stream(viewer.body)
+                viewer.body_script.last = 1
+                viewer.body_script.data_last = 1
+                viewer.body_full_next = self.now + 0.5
+                viewer.volley = loadout.volley_target(viewer.hero.body)  # the gun to light on fire
+        updates = [
             EntityUpdate(
-                viewer.body, OP_CREATE, lambda origin: self._body_create(origin, viewer, state), state
+                viewer.body, OP_CREATE, lambda origin: self._body_create(origin, viewer, state), state,
+                chunk=chunk,
             )
         ]
+        if self.hero_scripts and self.ui_script is None:
+            # once per match: the UI entity the HUD rides (heroselect.py explains the predicate).
+            # A world-owned entity by registration alone - the create path stores the game world
+            # into entity+0x120, which is what GetWorld answers, so no movement parent is needed.
+            # The create carries its graph-info record, update sends the snapshot.
+            self.ui_script = Stream(UI_ENTITY)
+            self.ui_script.last = 1
+            self.ui_script.data_last = 1
+            self.ui_next = self.now + 0.5
+            self.ui_player = viewer
+            updates.append(
+                EntityUpdate(
+                    UI_ENTITY, OP_CREATE,
+                    lambda origin: world.create(origin, UI_DEFINITION, {}),
+                    None,
+                    chunk=heroselect.world_ui_graph_chunk(),
+                )
+            )
+        return updates
 
     def _body_create(self, origin: int, owner: Player, state: Movement | None) -> world.RecordWriter:
         components = world.health(HEALTH, HEALTH)
@@ -309,6 +394,7 @@ class Match:
         """Run the spawn steps of players who loaded, keep their statescript acked, and show new bodies
         to the others."""
         self.tick = tick
+        self.now = now
         if self.assemble_ends is not None and not self.assembled and now >= self.assemble_ends:
             self._end_assemble(now)
         for player in self.players:
@@ -319,6 +405,27 @@ class Match:
                 self._spawn_steps(player, client, now)
             if player.script.data_last and now >= player.script.next_ack:
                 self._owner_ack(player, player.script, now)
+            stream = player.body_script
+            if (
+                stream is not None
+                and stream.delivered < 3  # the client has not confirmed the snapshot yet
+                and player.body_full_sends < 3
+                and now >= player.body_full_next
+            ):
+                # the second hero record, a tick and a datagram apart from the create's graph-info
+                # frame, repeated until it lands: a chunk at or below the highest frame the client
+                # applied is dropped there, so a resend after a lost packet is safe (see
+                # _body_snapshot)
+                self._body_snapshot(player, now)
+            if stream is not None and stream.delivered >= 3 and stream.last >= 3:
+                # the snapshot is on the client: the gun may answer the fire button
+                if player.volley is not None and player.fire_pending and not player.volley_on:
+                    player.fire_pending = False
+                    self._volley(player, now, on=True)
+                elif player.volley_on and now >= player.volley_off_at:
+                    self._volley(player, now, on=False)
+            if stream is not None and stream.data_last and now >= stream.next_ack:
+                self._owner_ack(player, stream, now)
             if self.assembling() and player.steps_done >= 4 and now >= player.next_countdown:
                 self._send_countdown(player, now)
         for viewer in self.players:
@@ -327,6 +434,13 @@ class Match:
             for other in self.players:
                 if other is not viewer and self._shown(other) and other.body not in viewer.seen:
                     viewer.client.queue_entities([self.remote_body_create(viewer, other)])
+        if (
+            self.ui_script is not None
+            and self.ui_script.delivered < 3  # the client has not confirmed the HUD snapshot yet
+            and self.ui_sends < 3
+            and now >= self.ui_next
+        ):
+            self._ui_snapshot(now)
 
     def _spawn_steps(self, player: Player, client, now: float) -> None:
         waited = now - player.loaded_at
@@ -388,7 +502,9 @@ class Match:
         cmfd = player.script.next_cmfd(self._newest_frame(player))
         practice = self.controller is heroselect.PRACTICE
         skins = player.select_open and (practice or self.assembling())
-        frame = heroselect.controller_frame(self.controller, cmfd, player.select_open, skins, practice)
+        frame = heroselect.controller_frame(
+            self.controller, cmfd, player.select_open, skins, practice, self.hero_scripts
+        )
         player.client.queue_entities([player.script.full_frame(frame)])
         state = "open" if player.select_open else "closed"
         log.info("[game] %s: %s's controller sent (hero select %s)", self.label(), player.name, state)
@@ -402,6 +518,59 @@ class Match:
             return
         cmfd = stream.next_cmfd(self._newest_frame(player))
         player.client.queue_entities([stream.ack_delta(owner_ack(cmfd))])
+
+    def _body_snapshot(self, player: Player, now: float, entries=None) -> None:
+        """The hero's full snapshot, the second record of the body's statescript: wrapped at base 0
+        with CmFD above the client's tick stamp (Stream.next_cmfd), in its own datagram. The one
+        shape the client accepts: the create's graph-info frame only lifts the manager over the
+        tick, and this frame creates the instances and sets the states. The client drops a chunk at
+        or below the highest frame it applied, so the retry below is safe after a lost packet.
+        `entries` patches two-bit states (the volley) on top of the static picture; every such
+        frame must carry the entry's state data, active or not."""
+        cmfd = player.body_script.next_cmfd(self._newest_frame(player))
+        chunk = loadout.body_full_chunk(player.hero.body, cmfd, allow=self.hero_states, entries=entries)
+        if chunk is None:
+            return
+        last = max(player.body_script.last + 1, 3)
+        update = EntityUpdate(player.body, chunk=chunk)
+        update.chunk_last = last
+        update.stream = player.body_script
+        update.resend = False
+        player.body_script.last = last
+        player.body_script.data_last = max(player.body_script.data_last, last)
+        player.client.queue_entities([update])
+        player.body_full_sends += 1
+        player.body_full_next = now + 1.0
+        log.info("[game] %s: %s's body snapshot sent, cmfd %d", self.label(), player.name, cmfd)
+
+    def _ui_snapshot(self, now: float) -> None:
+        """The HUD's full snapshot on the world's UI entity (heroselect.world_ui_chunk): the same
+        CmFD and numbering rules as the body's picture, sent once."""
+        cmfd = self.ui_script.next_cmfd(self._newest_frame(self.ui_player))
+        update = EntityUpdate(UI_ENTITY, chunk=heroselect.world_ui_chunk(cmfd))
+        last = max(self.ui_script.last + 1, 3)
+        update.chunk_last = last
+        update.stream = self.ui_script
+        update.resend = False
+        self.ui_script.last = last
+        self.ui_script.data_last = max(self.ui_script.data_last, last)
+        self.ui_player.client.queue_entities([update])
+        self.ui_sends += 1
+        self.ui_next = now + 1.0
+        log.info("[game] %s: world UI entity snapshot sent, cmfd %d", self.label(), cmfd)
+
+    VOLLEY_SECONDS = 0.25  # the vendor's live pulse: volley on, then off about 250 ms later
+
+    def _volley(self, player: Player, now: float, on: bool) -> None:
+        """One volley frame of the body's WeaponVolley state: on, a full snapshot lights the state
+        with its state data; off, the same entry goes out inactive - and still carries the data,
+        because the client reads it whenever the has-data bit is set."""
+        entry = HasData(volley_data(self._newest_frame(player) & 0xFF), active=on)
+        self._body_snapshot(player, now, entries={player.volley: entry})
+        player.volley_on = on
+        player.volley_off_at = now + self.VOLLEY_SECONDS if on else 0.0
+        log.info("[game] %s: %s's volley %s at frame %d", self.label(), player.name,
+                 "lit" if on else "stopped", self._newest_frame(player))
 
     def game_message(self, player: Player, value: dict, now: float) -> None:
         """21616: a game message a statescript action sends to the server, such as a hero pick."""
@@ -440,10 +609,13 @@ class Match:
             log.info("[game] %s: %s loaded the map", self.label(), player.name)
 
     def switch_hero(self, player: Player, hero: Hero) -> None:
-        """The body of a picked hero. The first one just comes. A switch creates the new body under a
-        new id at the spawn point, moves the player's components 44 and 75 to it and destroys the old
-        body in the same frame: retail drops the old one at once too (OW2 traffic), while ProCore's
-        .sethero kept it 0.5 s, and it showed when the hero select screen closed."""
+        """The body of a picked hero. The first one just comes. Picking the hero you already have is
+        a no-op: the client keeps its body and only the hero select closing matters; recreating the
+        same body under a new id worked in a bare match but left the old scripts behind. A switch
+        creates the new body under a new id at the spawn point, moves the player's components 44 and
+        75 to it and destroys the old body in the same frame: retail drops the old one at once too
+        (OW2 traffic), while ProCore's .sethero kept it 0.5 s, and it showed when the hero select
+        screen closed. The client ignores a destroyed id for 30 s, so the new id differs."""
         old = player.body if player.has_body else None
         if old is not None:
             player.new_body()

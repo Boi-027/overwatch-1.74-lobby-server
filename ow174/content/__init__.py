@@ -58,9 +58,15 @@ class Content:
         self.ranked.event_cards = lambda profile: self.arcade.competitive_cards(profile, server_time(profile))
         self.leaderboard = Leaderboard(self.player, self.ranked)
         # Skins newer than the capture (Luchador, Royal Knight) show the default model unless their
-        # skin theme is in the preload list, so every catalog skin theme is offered.
+        # skin theme is in the preload list, so every catalog skin theme is offered. The gun view
+        # models are the same rule: a cosmetic builds only when its .003 definition is resident,
+        # and the weapon scripts' cosmetic defs are not in the 1.68 list either.
         catalog_themes = [unlock.skin_theme for unlock in items.unlocks.values() if unlock.skin_theme]
-        self._preload_skins = (*PRELOAD_EXTRA_SKINS, *catalog_themes)
+        from ow174.game import loadout  # here only: the game package is the graph data's owner
+        from ow174.game.content import heroes
+
+        guns = {guid for hero in heroes().values() for guid in loadout.gun_defs(hero.body)}
+        self._preload_skins = (*PRELOAD_EXTRA_SKINS, *catalog_themes, *sorted(guns))
 
     def login_messages(self, profile: Profile, identity: Identity) -> list[tuple]:
         """Everything sent after the client logs in, in the order the retail server sent it."""

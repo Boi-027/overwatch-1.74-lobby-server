@@ -25,6 +25,7 @@ import threading
 import time
 from dataclasses import dataclass, field
 
+from ow174.content.queue import SEARCHING
 from ow174.game.content import PRACTICE_RANGE, game_map
 from ow174.jam.groups import CHAT_IN, HANDOFF, QUEUE
 from ow174.paths import DATA_DIR
@@ -34,6 +35,7 @@ log = logging.getLogger("ow174.lobby")
 
 QUEUES_PATH = DATA_DIR / "game_queues_174.json"
 QUEUE_POPPED = 1
+ACCEPT_WINDOW = 5.0  # seconds the 44203 banner is held; the client's own window is 5000 ms too
 ANY_ROLE = (2, 1, 3)  # tank, damage, support: what "All roles" picks
 ROLE_NUMBERS = {0x0D80000000000850: 2, 0x0D8000000000084E: 1, 0x0D80000000000851: 3}  # role GUID -> number
 SEARCH_LIMIT = 20000  # roster search steps per attempt
@@ -217,6 +219,7 @@ class Matchmaker:
         self.rules = load_rules()
         self.tickets: list[Ticket] = []
         self.lock = threading.RLock()
+        self._pending = None  # a (game_map, roster, popped) waiting out the 44203 accept window
 
     # --- the queue -----------------------------------------------------------------------------
 
@@ -300,11 +303,26 @@ class Matchmaker:
     # --- starting a match ----------------------------------------------------------------------
 
     def practice(self, session) -> None:
-        """Training > Practice Range: a match of one on the Practice Range."""
+        """Training > Practice Range: a match of one on the Practice Range, or on --test-map when
+        that names a playable one - a PvP map walks the client through the assemble screen, and
+        that mode is what builds the in-game HUD layers (game/heroselect.py)."""
+        game = PRACTICE_RANGE
+        spec = self.server.settings.test_map
+        if spec:
+            try:
+                map_guid, mode_guid = (int(part, 16) for part in spec.split(":"))
+            except ValueError:
+                log.warning("[MM] bad --test-map %r, using the Practice Range", spec)
+            else:
+                found = game_map(map_guid, mode_guid, mode_name="", free_for_all=False)
+                if found is None:
+                    log.warning("[MM] --test-map %s is not hostable, using the Practice Range", spec)
+                else:
+                    game = found
         ticket = Ticket(
             self.server.social.party_of(session.account), {}, 0, time.time(), [(session.account, [])]
         )
-        self._start(PRACTICE_RANGE, Roster([[(ticket, session.account, 0)]]), popped=False)
+        self._start(game, Roster([[(ticket, session.account, 0)]]), popped=False)
 
     def _start(self, game_map, roster: Roster, popped: bool = True) -> None:
         server = self.server
@@ -320,16 +338,87 @@ class Matchmaker:
                     entries.append((session, ticket, team))
         if not entries:
             return
+        if server.settings.test_map:
+            # 44203 is the group banner: the client enters mode 5 (the reason string says
+            # 'Leaving match lobby'), the UI manager writes var 0x04d2, and the UI chain
+            # 0x046b -> 0x05ce -> 0x0bce sets var 0x09ba - the term that makes the native state
+            # machine build the HUD layers (HUD_Root, layer 0502) before the world loads.
+            # Without it the client goes menu -> mode 6 straight, the term stays 0 and the HUD
+            # is never created (see game/heroselect.py). The banner's Accept sends 44104; the
+            # client times itself out after 5 s, the server auto-accepts when the window ends
+            # (the dwell is the point, the click is not). The chat channel opens at the commit.
+            # A 44203 for a queue the client is not in finds no entry and does nothing, so the
+            # match first joins the queue itself: 44201 is the client's own queue-system entry
+            # (44100 alone only marks the join pending), and the party state carries it too. The
+            # key slots are 4 u64 on the wire; the nested form keeps social.pass_pool happy and
+            # serialises to the same zeros on both sides, which is all the client's entry lookup
+            # compares. A live run took the entry (search tile, role banner, real assemble).
+            key = {"+0x0": {"+0x0": QUICK_PLAY, "+0x8": 0, "+0x10": 0}}
+            for session, ticket, _team in entries:
+                session.send(
+                    QUEUE, 44201,
+                    {"+0x78": {"+0x0": key, "+0x30": {"+0x0": 0, "+0x8": 0, "+0x10": 0},
+                               "+0x48": 0, "+0x50": 0.0, "+0x54": SEARCHING}},
+                )
+                party = server.social.party_of(session.account)
+                party.queue = key
+                party.queue_state = SEARCHING
+                server.notify_party(party)
+                ticket.key = key  # the commit's 44202 must carry the key the client has
+                session.send(QUEUE, 44203, {"+0x78": key})
+                session.log("[MM] Group banner (44203); mode 5 until the match joins")
+            self._pending = (game_map, roster, False)  # the commit must NOT send 44202: popping
+            # the queue entry cancels the banner, and the client leaves mode 5 one tick before
+            # the load; retail answers the GO (44104) with 20402/20600 only, so the dwell holds
+            # through the loading screen. The entry is dropped by the join itself.
+            threading.Timer(ACCEPT_WINDOW, self._commit_start).start()
+            return
+        self._commit_start(game_map, roster, None, popped)
+
+    def banner_accept(self) -> None:
+        """The banner's Accept (44104): join now instead of waiting out the timer - every held
+        second of mode 5 is one the UI chain runs, and the dwell has lived either way."""
+        with self.lock:
+            if self._pending is None:
+                return
+        self._commit_start()
+
+    def _commit_start(self, game_map=None, roster=None, channel=None, popped=True) -> None:
+        """The join: every player gets the chat channel and the 20600 handoff, and the game
+        server sends the entity table from there. Called after the 44203 banner's accept
+        window (or directly when there was no banner)."""
+        server = self.server
+        game = server.game
+        if game is None:
+            return
+        if game_map is None:  # the timer path: what the banner was waiting for
+            with self.lock:
+                pending, self._pending = self._pending, None
+            if pending is None:
+                return
+            game_map, roster, popped = pending
+        entries = []  # (session, ticket, team)
+        for team, members in enumerate(roster.teams):
+            for ticket, account, _role in members:
+                session = server.session_of(account.account_lo)
+                if session is not None:
+                    entries.append((session, ticket, team))
+        if not entries:
+            return
         players = [
             (s.account.account_lo, s.account.name, self._hero(s), team, s.tournament)
             for s, _, team in entries
         ]
         handoffs = game.create_match(game_map, players)
         tickets = {id(ticket): ticket for _, ticket, _ in entries}
-        if popped:
-            for ticket in tickets.values():
-                self._end_search(ticket)
-        channel = server.social.open_match_chat(handoffs[0].match_id, [s.account for s, _, _ in entries])
+        for ticket in tickets.values():
+            # The queue entry must be gone from the client before the world loads: a party state
+            # that still carries it re-offers role selection on the loading screen (the banner
+            # itself dies by its own deadline or the accept, not by the party state). 44202 rides
+            # only where the search was ended by the queue itself.
+            self._end_search(ticket)
+        if channel is None:
+            channel = server.social.open_match_chat(handoffs[0].match_id, [s.account for s, _, _ in entries])
         for (session, ticket, _team), handoff in zip(entries, handoffs, strict=True):
             if popped:
                 session.send(QUEUE, 44202, {"+0x78": ticket.key, "+0xA8": QUEUE_POPPED})

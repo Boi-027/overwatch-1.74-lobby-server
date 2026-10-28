@@ -150,14 +150,18 @@ def health(now: float, most: float) -> dict:
 
 
 class Movement:
-    """One movement state. yaw and pitch are the commands' s16 angle units."""
+    """One movement state. yaw and pitch are the commands' s16 angle units. `parent` (entity,
+    component) attaches the entity: the client then answers GetWorld from the parent's world,
+    which is how a server entity (the UI root, say) becomes world-owned."""
 
-    def __init__(self, position, yaw=0, pitch=0, velocity=(0.0, 0.0, 0.0), flags=0) -> None:
+    def __init__(self, position, yaw=0, pitch=0, velocity=(0.0, 0.0, 0.0), flags=0,
+                 parent: tuple[int, int] | None = None) -> None:
         self.position = tuple(position)
         self.yaw = int(yaw)
         self.pitch = int(pitch)
         self.velocity = tuple(velocity)
         self.flags = int(flags)
+        self.parent = parent
 
 
 def _selector(out: BitWriter, value: int, width_index: int, width: int) -> None:
@@ -219,7 +223,14 @@ def write_movement(out: BitWriter, state: Movement, frame_back: int | None) -> N
     else:
         out.bit(0)
     out.bits(0, 9)  # nine optional parts
-    out.bit(0)  # no parent: world space
+    if state.parent is None:
+        out.bit(0)  # no parent: world space
+    else:
+        # reader 0x140c5f680: bit(1), then the parent entity id and the parent component index -
+        # both FIXED u32, not varints; the index is the parent's runtime component slot (44, 47...)
+        out.bit(1)
+        out.bits(state.parent[0] & 0xFFFFFFFF, 32)
+        out.bits(state.parent[1] & 0xFFFFFFFF, 32)
     out.bits(0, 5)  # +52, +60, +56, +384, +832
 
 
